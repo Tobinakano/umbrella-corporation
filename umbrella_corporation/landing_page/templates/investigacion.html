@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investigación y Proyectos — Umbrella Corporation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e8eaeb;--bg2:#d2d6d9;--bg3:#c0c5c8;
+  --light:#f4f6f7;--dark:#1a1e21;--dark2:#252c31;
+  --mid:#5c666d;--muted:#9aa3a8;
+  --red:#c8102e;--red-dim:rgba(200,16,46,.07);--red-line:rgba(200,16,46,.3);
+  --warn:#e8a000;--green:#00c864;
+  --border:rgba(26,30,33,.13);--border-s:rgba(26,30,33,.26);
+  --mono:'DM Mono',monospace;
+  --cond:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+  --hosp-deep:#1c3a4a;
+  --hosp-mid:#2a4f63;
+  --hosp-panel:#1e3d4e;
+  --hosp-term:#162e3a;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--dark);font-family:var(--body);overflow-x:hidden;cursor:none}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+#cur{position:fixed;width:7px;height:7px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+#cur-r{position:fixed;width:24px;height:24px;border:1px solid rgba(200,16,46,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .2s ease-out}
+
+#loader{position:fixed;inset:0;z-index:10000;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .8s,visibility .8s}
+#loader.out{opacity:0;visibility:hidden}
+.ld-logo{width:72px;height:72px;mix-blend-mode:screen}
+.ld-wrap{width:260px}
+.ld-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.35em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:10px}
+.ld-bars{display:flex;flex-direction:column;gap:4px}
+.ld-bar{height:1px;background:rgba(255,255,255,.07);position:relative;overflow:hidden}
+.ld-bar::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;animation:sweep linear forwards}
+.ld-bar:nth-child(1)::after{background:var(--red);animation-duration:.8s;animation-delay:.2s}
+.ld-bar:nth-child(2)::after{background:rgba(255,255,255,.4);animation-duration:.6s;animation-delay:.7s}
+.ld-bar:nth-child(3)::after{background:var(--warn);animation-duration:1s;animation-delay:.45s}
+.ld-bar:nth-child(4)::after{background:rgba(255,255,255,.2);animation-duration:.75s;animation-delay:1s}
+@keyframes sweep{to{left:0}}
+.ld-st{font-family:var(--mono);font-size:8px;letter-spacing:.3em;color:var(--green);margin-top:6px;animation:blink 1s step-end infinite}
+.ld-code{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15);letter-spacing:.12em}
+@keyframes blink{50%{opacity:0}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;transition:all .35s}
+nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shadow:0 1px 0 var(--red)}
+.n-logo{display:flex;align-items:center;gap:10px}
+.n-logo img{width:45px;height:45px}
+.n-brand{font-family:var(--cond);font-size:18px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--dark)}
+.n-brand span{color:var(--red)}
+.n-brand small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:1px}
+.n-links{display:flex;list-style:none;height:75px;align-items:stretch}
+.n-links a{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;padding:0 24px;border-left:1px solid var(--border);position:relative;transition:all .3s}
+.n-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .3s}
+.n-links a:hover{color:var(--dark)}
+.n-links a:hover::after{transform:scaleX(1)}
+.n-links a.active{color:var(--red);font-weight:600}
+.n-links a.active::after{transform:scaleX(1)}
+.n-pill{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 20px;border:none;cursor:pointer;transition:filter .3s}
+.n-pill:hover{filter:brightness(1.12)}
+.burger{cursor:pointer;display:none;flex-direction:column;gap:6px;padding:8px}
+.burger span{width:28px;height:3px;background:var(--dark);transition:all .3s}
+.burger.active span:nth-child(1){transform:rotate(45deg) translate(10px, 10px)}
+.burger.active span:nth-child(2){opacity:0}
+.burger.active span:nth-child(3){transform:rotate(-45deg) translate(7px, -7px)}
+
+.mob{position:fixed;inset:0;z-index:400;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;transform:translateX(100%);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.mob.open{transform:none}
+.mob a{font-family:var(--cond);font-size:1.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light);transition:all .3s;padding:10px 20px;border-bottom:2px solid transparent}
+.mob a:hover{color:var(--red);border-bottom-color:var(--red)}
+.mob a.active{color:var(--red);border-bottom-color:var(--red)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 60px}
+
+.sec-eyebrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:7px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;position:relative}
+.sec-eyebrow::before{content:'';width:14px;height:1px;background:var(--muted)}
+.sec-h{font-family:var(--cond);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:.02em;text-transform:uppercase;color:var(--dark);margin-bottom:8px}
+.sec-h .r{color:var(--red)}
+.sec-rule{background:rgba(200,16,46,.12);height:2px;width:48px;margin-bottom:24px;position:relative}
+.sec-rule::after{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:6px;height:6px;background:var(--red);border-radius:50%}
+
+#projects{background:var(--bg);padding:80px 0;margin-top:100px}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
+.proj-filters{display:flex;gap:1px}
+.pf{font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border-s);color:var(--muted);cursor:pointer;background:transparent;transition:all .25s}
+.pf.act,.pf:hover{border-color:var(--red);color:var(--red)}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border-s)}
+.proj-card{background:var(--light);padding:28px;border:1px solid transparent;transition:all .3s;cursor:default;position:relative}
+.proj-card:hover{background:#fff;border-color:var(--border-s)}
+.proj-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.proj-card:hover::after{transform:scaleX(1)}
+.proj-id{font-family:var(--mono);font-size:7px;letter-spacing:.3em;color:var(--red);text-transform:uppercase;margin-bottom:8px}
+.proj-name{font-family:var(--cond);font-size:1.2rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dark);margin-bottom:10px}
+.proj-desc{font-size:.8rem;line-height:1.8;color:var(--mid);font-weight:300;margin-bottom:20px}
+.phase{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.phase-track{flex:1;height:2px;background:var(--bg2)}
+.phase-fill{height:100%}
+.phase-lbl{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.1em}
+.phase-pct{font-family:var(--mono);font-size:7px;color:var(--dark);font-weight:500}
+.cls-badge{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:7px;letter-spacing:.15em;border:1px solid;padding:3px 7px}
+.cls-badge.a{color:var(--red);border-color:rgba(200,16,46,.35)}
+.cls-badge.b{color:#4488ff;border-color:rgba(68,136,255,.3)}
+.cls-badge.c{color:var(--green);border-color:rgba(0,200,100,.3)}
+
+#console{background:var(--hosp-deep);padding:80px 0}
+.console-wrap{display:grid;grid-template-columns:1fr 1fr;background:var(--hosp-deep)}
+.console-left{padding:60px 48px;border-right:1px solid rgba(255,255,255,.07)}
+.console-left .sec-eyebrow{color:rgba(255,255,255,.4)}
+.console-left .sec-eyebrow::before{background:rgba(255,255,255,.4)}
+.console-left .sec-h{color:var(--light)}
+.console-left .sec-rule{background:var(--light)}
+.console-left .sec-rule::after{background:var(--red)}
+.console-left p{font-size:.85rem;line-height:1.9;color:rgba(255,255,255,.45);font-weight:300;margin-bottom:14px}
+.alert-box{background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.25);border-left:3px solid var(--red);padding:12px 16px;margin-top:16px}
+.alert-box p{font-family:var(--mono);font-size:8px;letter-spacing:.1em;color:rgba(200,16,46,.8);text-transform:uppercase;margin:0;line-height:1.7}
+.console-right{display:grid;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,.05)}
+.term-block{background:var(--hosp-panel);padding:24px;font-family:var(--mono);font-size:9px;line-height:1.7;color:var(--green)}
+.term-block-hd{display:flex;gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05);align-items:center}
+.td{width:8px;height:8px;border-radius:50%}
+.td.r{background:#ff5f56}.td.y{background:#ffbd2e}.td.g{background:#27c93f}
+.term-block-title{font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.2);margin-left:auto;text-transform:uppercase}
+.tl{white-space:pre;overflow:hidden;font-size:8px}
+.tl.d{color:rgba(0,200,100,.3)}
+.tl.w{color:var(--warn)}
+.tl.e{color:var(--red)}
+.tl.s{color:#4f8}
+.tl.b{color:rgba(255,255,255,.4)}
+.t-blink{display:inline-block;width:5px;height:9px;background:var(--green);vertical-align:middle;animation:blink .7s step-end infinite}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:1100px){
+  nav,nav.sc{padding:0 36px;height:75px}
+  .console-wrap{grid-template-columns:1fr}
+  .container{padding:0 36px}
+  .proj-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav,nav.sc{padding:0 20px;height:65px}
+  .n-logo{gap:8px}
+  .n-logo img{width:35px;height:35px}
+  .n-brand{font-size:14px}
+  .n-brand small{font-size:8px}
+  .n-links{display:none}
+  .burger{display:flex}
+  .proj-grid{grid-template-columns:1fr}
+  .container{padding:0 20px}
+  .proj-top{flex-direction:column;align-items:flex-start;gap:16px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="ld-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+  <div class="ld-wrap">
+    <div class="ld-lbl">UMBRELLA CORP — INICIALIZANDO ACCESO</div>
+    <div class="ld-bars">
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+    </div>
+    <div class="ld-st">▸ VERIFICANDO CLEARANCE...</div>
+  </div>
+  <div class="ld-code">UC-LAB-ALPHA // BSL-4 // RACCOON CITY CENTRAL</div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <a href="/" onclick="cm()">Principal</a>
+  <a href="/empresa/" onclick="cm()">Empresa</a>
+  <a href="/investigacion/" onclick="cm()" class="active">Investigación</a>
+  <a href="/ubicaciones/" onclick="cm()">Ubicaciones</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="n-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC" style="width:32px;height:32px">
+    <div class="n-brand">UMBRELLA <span>CORP</span><small>PHARMACEUTICAL & BIOTECH RESEARCH</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="/" class="nav-link">Principal</a></li>
+    <li><a href="/empresa/" class="nav-link">Empresa</a></li>
+    <li><a href="/investigacion/" class="nav-link active">Investigación</a></li>
+    <li><a href="/ubicaciones/" class="nav-link">Ubicaciones</a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="proj-top rv">
+      <div>
+        <div class="sec-eyebrow">// Iniciativas Clasificadas</div>
+        <h2 class="sec-h">Proyectos<br>en <span class="r">Curso</span></h2>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="proj-filters">
+        <button class="pf act">Todos</button>
+        <button class="pf">Fase I–II</button>
+        <button class="pf">Fase III</button>
+        <button class="pf">Clasificados</button>
+      </div>
+    </div>
+    <div class="proj-grid">
+      <!-- PROJ 1 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-001 · VIROLOGÍA</div>
+        <div class="proj-name">Proyecto T</div>
+        <p class="proj-desc">Desarrollo de un agente mutágeno de amplio espectro con capacidad de reactivación neurológica. Pruebas en 12 instalaciones. Resultados superan expectativas del protocolo inicial en un 340%.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:87%;background:var(--red)"></div></div>
+          <span class="phase-pct">87%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE III — EN EVALUACIÓN INTERNA</div>
+      </div>
+      <!-- PROJ 2 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-002 · BIOINGENIERÍA</div>
+        <div class="proj-name">Proyecto Nemesis</div>
+        <p class="proj-desc">Síntesis de un organismo de respuesta autónoma con capacidad de seguimiento selectivo. Tasa de éxito: 99.7%. Aplicaciones: gestión de incidentes de bioseguridad. Autorización nivel máximo.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:100%;background:var(--dark)"></div></div>
+          <span class="phase-pct">OPR.</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">OPERATIVO — DESPLIEGUE AUTORIZADO</div>
+      </div>
+      <!-- PROJ 3 -->
+      <div class="proj-card rv">
+        <div class="cls-badge b">BETA</div>
+        <div class="proj-id">UC-PROJ-003 · GENÓMICA</div>
+        <div class="proj-name">Proyecto G</div>
+        <p class="proj-desc">Investigación de un organismo con capacidad de regeneración celular ilimitada y adaptación autónoma. Los sujetos exhiben resistencia a condiciones terminales convencionales. Contenido en SECTOR-G.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:62%;background:#4488ff"></div></div>
+          <span class="phase-pct">62%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE II — SUJETOS CONTENIDOS</div>
+      </div>
+      <!-- PROJ 4 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-004 · NEUROLOGÍA</div>
+        <div class="proj-name">Proyecto Lazarus</div>
+        <p class="proj-desc">Protocolo de reactivación neurológica post-mortem. Aplicaciones médicas con clasificación máxima. Pruebas en instalaciones subterráneas. Datos: disponibles únicamente bajo autorización del Consejo.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:45%;background:var(--red)"></div></div>
+          <span class="phase-pct">45%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">CLASIFICADO — ACCESO DENEGADO</div>
+      </div>
+      <!-- PROJ 5 -->
+      <div class="proj-card rv">
+        <div class="cls-badge c">OPEN</div>
+        <div class="proj-id">UC-PROJ-005 · FARMACOLOGÍA</div>
+        <div class="proj-name">Proyecto Antídoto P-30</div>
+        <p class="proj-desc">Desarrollo de un compuesto de bloqueo del sistema inmunológico para aplicaciones de control de infecciones resistentes. P-30 inhibe la respuesta autónoma con precisión de 0.001 mg/kg en modelos animales.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:78%;background:var(--green)"></div></div>
+          <span class="phase-pct">78%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE III — ENSAYO CLÍNICO INTERNO</div>
+      </div>
+      <!-- PROJ 6 -->
+      <div class="proj-card rv">
+        <div class="cls-badge b">BETA</div>
+        <div class="proj-id">UC-PROJ-006 · COGNITIVO</div>
+        <div class="proj-name">Proyecto Ashford</div>
+        <p class="proj-desc">Mejora cognitiva mediante modificación viral controlada. Los sujetos presentan capacidades intelectuales superiores al 400% de la norma. Efectos secundarios: monitoreados y clasificados. 12 sujetos activos.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:55%;background:#4488ff"></div></div>
+          <span class="phase-pct">55%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">SUJETOS ACTIVOS: 12 — EN OBSERVACIÓN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ RESEARCH CONSOLE ══════════ -->
+<section id="console">
+  <div class="console-wrap">
+    <div class="console-left rv">
+      <div class="sec-eyebrow">// Consola de Investigación</div>
+      <h2 class="sec-h" style="color:var(--light)">Datos en<br>tiempo real</h2>
+      <div class="sec-rule" style="background:rgba(255,255,255,.2)"><span style="position:absolute;right:-12px;top:-1px;width:8px;height:5px;background:var(--red);display:block"></span></div>
+      <p>Nuestros sistemas de monitoreo UCNET integran en tiempo real los datos de las 2,847 muestras activas en el complejo central. Cada parámetro es registrado, analizado y archivado bajo el protocolo de trazabilidad ISO-UC/4.</p>
+      <p>El sistema de alerta temprana detecta desviaciones en contención a nivel de 0.001%, garantizando la integridad de nuestros laboratorios… y del entorno externo.</p>
+      <div class="alert-box">
+        <p>⚠ ALERTA ACTIVA — SECTOR E02 — Desviación de integridad 0.02% detectada. Protocolo Gamma en ejecución. Personal no autorizado debe evacuar el área inmediatamente.</p>
+      </div>
+    </div>
+    <div class="console-right">
+      <div class="term-block">
+        <div class="term-block-hd">
+          <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+          <div class="term-block-title">UC-SHELL // VIROLOGÍA</div>
+        </div>
+        <div class="tl d">// MÓDULO: ANÁLISIS DE SECUENCIAS T-VIRUS</div>
+        <div class="tl">$ run seq_analysis --sample T-004-MU3 --mode deep</div>
+        <div class="tl d">// Cargando base de datos genómica...</div>
+        <div class="tl">Comparando 8,241,800 pares de bases...</div>
+        <div class="tl d">// Progreso: [████████████████████] 100%</div>
+        <div class="tl s">✓ Secuencia T-004-MU3: VALIDADA</div>
+        <div class="tl">Mutaciones detectadas: 12 (esperadas: 8)</div>
+        <div class="tl w">⚠ 4 mutaciones no documentadas — revisión requerida</div>
+        <div class="tl">$ flag_mutation --ids MU-09,MU-10,MU-11,MU-12</div>
+        <div class="tl s">✓ Muestras enviadas a División de Biocontención</div>
+        <div class="tl">$ <span class="t-blink"></span></div>
+      </div>
+      <div class="term-block">
+        <div class="term-block-hd">
+          <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+          <div class="term-block-title">UC-SHELL // CONTENCIÓN</div>
+        </div>
+        <div class="tl d">// MONITOR DE INTEGRIDAD — SECTOR E02</div>
+        <div class="tl">$ monitor --sector E02 --interval 500ms</div>
+        <div class="tl d">// [00:00:00.500] Estado: NOMINAL (99.98%)</div>
+        <div class="tl d">// [00:00:01.000] Estado: NOMINAL (99.98%)</div>
+        <div class="tl w">// [00:00:01.500] ANOMALÍA: Sello 3B → 99.96%</div>
+        <div class="tl e">// [00:00:02.000] ALERTA: Umbral mínimo excedido</div>
+        <div class="tl">$ run countermeasure --target SEAL-3B --auto</div>
+        <div class="tl d">// Activando refuerzo magnético...</div>
+        <div class="tl s">✓ Sello 3B restaurado: 99.99%</div>
+        <div class="tl d">// Incidente registrado: UC-LOG-20240315-E02</div>
+        <div class="tl">$ <span class="t-blink"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEPARTAMENTOS ══════════ -->
+<section style="background:var(--bg);padding:80px 60px;">
+  <div style="max-width:1200px;">
+    <div class="sec-eyebrow">// Divisiones Especializadas</div>
+    <h2 class="sec-h">Departamentos de<br><span class="r">Investigación Avanzada</span></h2>
+    <div class="sec-rule"></div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px;">
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">Virología Aplicada</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">Síntesis y análisis de agentes virales con aplicaciones médicas y de contención. Nuestro departamento ha producido breakthroughs significativos. Actualmente desarrollamos vectores de entrega con precisión submicroscópica.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Raccoon City Central, Kyoto, Bajo Lagos</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">Bioingeniería Orgánica</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">Diseño y construcción de organismos sintéticos con funciones especializadas. Dominamos la integración de múltiples genomas en estructuras viables y autónomas.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: SECTOR-G Subterráneo, Facility IV Europa</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">Edición Genómica</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">Servicios CRISPR de última generación con precisión de 0.0001% en off-target effects. Nuestro equipo puede rediseñar secuencias completas en ciclos de 48 horas.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Lab Complex Alpha, Singapur Tower</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">Inmunología Extrema</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">Investigación en sistemas inmunológicos rediseñados. Estudiamos organismos con capacidades que los sistemas biológicos convencionales nunca alcanzarían naturalmente.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Facility VI Asia-Pacífico</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+© 1968–2024 Umbrella Corporation. Todos los derechos reservados.
+</footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},2600)});
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>50));
+
+const mob=document.getElementById('mob');
+const burger=document.getElementById('burger');
+function tm(){mob.classList.toggle('open');burger.classList.toggle('active')}
+function cm(){mob.classList.remove('open');burger.classList.remove('active')}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),(i%4)*80);
+      obs.unobserve(e.target);
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.pf').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.pf').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+  })
+});
+</script>
+</body>
+</html>

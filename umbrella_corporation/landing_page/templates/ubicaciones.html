@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ubicaciones y Personal — Umbrella Corporation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e8eaeb;--bg2:#d2d6d9;--bg3:#c0c5c8;
+  --light:#f4f6f7;--dark:#1a1e21;--dark2:#252c31;
+  --mid:#5c666d;--muted:#9aa3a8;
+  --red:#c8102e;--red-dim:rgba(200,16,46,.07);--red-line:rgba(200,16,46,.3);
+  --warn:#e8a000;--green:#00c864;
+  --border:rgba(26,30,33,.13);--border-s:rgba(26,30,33,.26);
+  --mono:'DM Mono',monospace;
+  --cond:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+  --hosp-deep:#1c3a4a;
+  --hosp-mid:#2a4f63;
+  --hosp-panel:#1e3d4e;
+  --hosp-term:#162e3a;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--dark);font-family:var(--body);overflow-x:hidden;cursor:none}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+#cur{position:fixed;width:7px;height:7px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+#cur-r{position:fixed;width:24px;height:24px;border:1px solid rgba(200,16,46,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .2s ease-out}
+
+#loader{position:fixed;inset:0;z-index:10000;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .8s,visibility .8s}
+#loader.out{opacity:0;visibility:hidden}
+.ld-logo{width:72px;height:72px;mix-blend-mode:screen}
+.ld-wrap{width:260px}
+.ld-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.35em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:10px}
+.ld-bars{display:flex;flex-direction:column;gap:4px}
+.ld-bar{height:1px;background:rgba(255,255,255,.07);position:relative;overflow:hidden}
+.ld-bar::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;animation:sweep linear forwards}
+.ld-bar:nth-child(1)::after{background:var(--red);animation-duration:.8s;animation-delay:.2s}
+.ld-bar:nth-child(2)::after{background:rgba(255,255,255,.4);animation-duration:.6s;animation-delay:.7s}
+.ld-bar:nth-child(3)::after{background:var(--warn);animation-duration:1s;animation-delay:.45s}
+.ld-bar:nth-child(4)::after{background:rgba(255,255,255,.2);animation-duration:.75s;animation-delay:1s}
+@keyframes sweep{to{left:0}}
+.ld-st{font-family:var(--mono);font-size:8px;letter-spacing:.3em;color:var(--green);margin-top:6px;animation:blink 1s step-end infinite}
+.ld-code{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15);letter-spacing:.12em}
+@keyframes blink{50%{opacity:0}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;transition:all .35s}
+nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shadow:0 1px 0 var(--red)}
+.n-logo{display:flex;align-items:center;gap:10px}
+.n-logo img{width:45px;height:45px}
+.n-brand{font-family:var(--cond);font-size:18px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--dark)}
+.n-brand span{color:var(--red)}
+.n-brand small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:1px}
+.n-links{display:flex;list-style:none;height:75px;align-items:stretch}
+.n-links a{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;padding:0 24px;border-left:1px solid var(--border);position:relative;transition:all .3s}
+.n-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .3s}
+.n-links a:hover{color:var(--dark)}
+.n-links a:hover::after{transform:scaleX(1)}
+.n-links a.active{color:var(--red);font-weight:600}
+.n-links a.active::after{transform:scaleX(1)}
+.n-pill{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 20px;border:none;cursor:pointer;transition:filter .3s}
+.n-pill:hover{filter:brightness(1.12)}
+.burger{cursor:pointer;display:none;flex-direction:column;gap:6px;padding:8px}
+.burger span{width:28px;height:3px;background:var(--dark);transition:all .3s}
+.burger.active span:nth-child(1){transform:rotate(45deg) translate(10px, 10px)}
+.burger.active span:nth-child(2){opacity:0}
+.burger.active span:nth-child(3){transform:rotate(-45deg) translate(7px, -7px)}
+
+.mob{position:fixed;inset:0;z-index:400;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;transform:translateX(100%);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.mob.open{transform:none}
+.mob a{font-family:var(--cond);font-size:1.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light);transition:all .3s;padding:10px 20px;border-bottom:2px solid transparent}
+.mob a:hover{color:var(--red);border-bottom-color:var(--red)}
+.mob a.active{color:var(--red);border-bottom-color:var(--red)}
+
+.sec-eyebrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:7px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;position:relative}
+.sec-eyebrow::before{content:'';width:14px;height:1px;background:var(--muted)}
+.sec-h{font-family:var(--cond);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:.02em;text-transform:uppercase;color:var(--dark);margin-bottom:8px}
+.sec-h .r{color:var(--red)}
+.sec-rule{background:rgba(200,16,46,.12);height:2px;width:48px;margin-bottom:24px;position:relative}
+.sec-rule::after{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:6px;height:6px;background:var(--red);border-radius:50%}
+
+#facilities{background:var(--light);border-top:1px solid var(--border-s);padding:80px 0;margin-top:100px}
+.fac-wrap{display:grid;grid-template-columns:1fr 400px;gap:0}
+.fac-left{padding:80px 60px;border-right:1px solid var(--border-s)}
+.world-panel{background:var(--bg2);border:1px solid var(--border);padding:28px;margin-top:40px;position:relative;overflow:hidden}
+.world-panel::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(26,30,33,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,30,33,.04) 1px,transparent 1px);background-size:24px 24px}
+.world-panel-hd{font-family:var(--mono);font-size:7px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+.world-panel-hd span{color:var(--red)}
+.world-svg{width:100%;height:auto;position:relative;z-index:1}
+
+.fac-right{display:flex;flex-direction:column}
+.fac-panel-hd{background:var(--hosp-deep);padding:13px 22px;border-bottom:2px solid var(--red);display:flex;align-items:center;justify-content:space-between}
+.fac-panel-hd-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.22em;color:rgba(255,255,255,.3);text-transform:uppercase}
+.fac-panel-hd-id{font-family:var(--cond);font-size:1.1rem;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.12)}
+.fac-list{display:flex;flex-direction:column}
+.fac-item{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:background .25s;cursor:default}
+.fac-item:hover{background:var(--bg)}
+.fac-num{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--red);width:24px;flex-shrink:0}
+.fac-info{flex:1}
+.fac-name{font-size:.88rem;font-weight:500;letter-spacing:.03em;color:var(--dark);margin-bottom:3px}
+.fac-coord{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.1em}
+.fac-badge{font-family:var(--mono);font-size:7px;letter-spacing:.14em;border:1px solid;padding:3px 7px;text-transform:uppercase;flex-shrink:0}
+.fac-badge.act{color:var(--green);border-color:rgba(0,200,100,.35)}
+.fac-badge.cls{color:var(--red);border-color:var(--red-line)}
+.fac-badge.sec{color:#6688ff;border-color:rgba(102,136,255,.35)}
+
+#recruitment{background:var(--hosp-deep);position:relative;overflow:hidden}
+#recruitment::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.01) 79px,rgba(255,255,255,.01) 80px)}
+#recruitment::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(-45deg,var(--warn) 0,var(--warn) 6px,transparent 6px,transparent 12px);opacity:.3}
+.rec-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:600px}
+.rec-left{padding:80px 60px;border-right:1px solid rgba(255,255,255,.08)}
+.rec-left .sec-eyebrow{color:rgba(255,255,255,.3)}
+.rec-left .sec-eyebrow::before{background:rgba(255,255,255,.3)}
+.rec-left .sec-h{color:var(--light);font-size:clamp(2.2rem,4vw,3.5rem)}
+.rec-left .sec-rule{background:var(--light)}
+.rec-left .sec-rule::after{background:var(--red)}
+.rec-left p{font-size:.88rem;line-height:1.9;color:rgba(255,255,255,.38);font-weight:300;margin-bottom:28px}
+.rec-fine{font-family:var(--mono);font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.18);line-height:1.8;margin-top:20px;border-top:1px solid rgba(255,255,255,.06);padding-top:16px}
+
+.rec-right{padding:60px 48px;display:flex;flex-direction:column;justify-content:center}
+.form-hd{font-family:var(--mono);font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.form-grid.full{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.field input,.field select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--light);padding:10px 12px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;outline:none;transition:border-color .3s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:rgba(200,16,46,.5)}
+.field select option{background:#1a1e21}
+.form-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.form-disclaimer{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;line-height:1.6;max-width:220px}
+
+.btn{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+.btn.p{background:var(--red);color:#fff}
+.btn.p:hover{filter:brightness(1.12);box-shadow:0 0 20px rgba(200,16,46,.4)}
+
+#testi{background:var(--bg2);border-top:1px solid var(--border-s);padding:80px 0}
+.testi-hd{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:48px;padding:0 60px}
+.testi-desc{font-size:.88rem;line-height:1.9;color:var(--mid);font-weight:300}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:0 60px}
+.testi-card{background:var(--light);padding:36px 30px;transition:background .3s;position:relative}
+.testi-card:hover{background:#fff}
+.testi-qmark{font-family:var(--cond);font-size:3.5rem;font-weight:800;color:rgba(200,16,46,.08);line-height:1;margin-bottom:12px}
+.testi-txt{font-size:.83rem;line-height:1.9;color:var(--mid);font-weight:300;font-style:italic;margin-bottom:20px}
+.testi-auth{display:flex;align-items:center;gap:10px}
+.testi-av{width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;font-weight:600;color:var(--dark);border:1px solid var(--border-s);flex-shrink:0}
+.testi-name{font-size:.82rem;font-weight:500;letter-spacing:.03em;color:var(--dark)}
+.testi-role{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.1em;margin-top:2px}
+.testi-cls{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:7px;letter-spacing:.14em;color:rgba(200,16,46,.45);border:1px solid rgba(200,16,46,.18);padding:3px 7px}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:1100px){
+  .fac-wrap,.rec-wrap,.testi-hd{grid-template-columns:1fr}
+  .fac-right{border-top:1px solid var(--border-s)}
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .testi-hd,.testi-grid{margin:0 36px;padding:0 36px}
+}
+@media(max-width:768px){
+  nav,nav.sc{padding:0 20px;height:65px}
+  .n-logo{gap:8px}
+  .n-logo img{width:35px;height:35px}
+  .n-brand{font-size:14px}
+  .n-brand small{font-size:8px}
+  .n-links{display:none}
+  .burger{display:flex}
+  .fac-left{padding:50px 24px}
+  .rec-wrap{grid-template-columns:1fr}
+  .rec-left{padding:50px 24px}
+  .rec-right{padding:40px 24px}
+  .testi-grid{grid-template-columns:1fr;margin:0 20px}
+  .testi-hd{padding:40px 24px 0;gap:24px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="ld-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+  <div class="ld-wrap">
+    <div class="ld-lbl">UMBRELLA CORP — INICIALIZANDO ACCESO</div>
+    <div class="ld-bars">
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+    </div>
+    <div class="ld-st">▸ VERIFICANDO CLEARANCE...</div>
+  </div>
+  <div class="ld-code">UC-LAB-ALPHA // BSL-4 // RACCOON CITY CENTRAL</div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <a href="/" onclick="cm()">Principal</a>
+  <a href="/empresa/" onclick="cm()">Empresa</a>
+  <a href="/investigacion/" onclick="cm()">Investigación</a>
+  <a href="/ubicaciones/" onclick="cm()" class="active">Ubicaciones</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="n-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC" style="width:32px;height:32px">
+    <div class="n-brand">UMBRELLA <span>CORP</span><small>PHARMACEUTICAL & BIOTECH RESEARCH</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="/" class="nav-link">Principal</a></li>
+    <li><a href="/empresa/" class="nav-link">Empresa</a></li>
+    <li><a href="/investigacion/" class="nav-link">Investigación</a></li>
+    <li><a href="/ubicaciones/" class="nav-link active">Ubicaciones</a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ══════════ FACILITIES ══════════ -->
+<section id="facilities">
+  <div class="fac-wrap">
+    <div class="fac-left rv">
+      <div class="sec-eyebrow">// Red Global</div>
+      <h2 class="sec-h">Instalaciones<br><span class="r">Mundiales</span></h2>
+      <div class="sec-rule"></div>
+      <p style="font-size:.88rem;line-height:1.9;color:var(--mid);font-weight:300;max-width:420px">Operamos una red de instalaciones de investigación de nivel máximo distribuidas estratégicamente en 6 continentes. Cada sede cumple con nuestros estándares internos de bioseguridad Sigma — más estrictos que cualquier regulación gubernamental.</p>
+
+      <!-- WORLD MAP SVG -->
+      <div class="world-panel">
+        <div class="world-panel-hd">
+          RED DE INSTALACIONES UC — TIEMPO REAL <span>● 6 ACTIVAS</span>
+        </div>
+        <svg class="world-svg" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 55 L108 50 L122 75 L118 115 L98 130 L78 122 L58 105 L48 80Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M96 148 L122 143 L127 172 L118 210 L102 215 L92 194 L88 170Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M210 50 L248 46 L256 66 L248 82 L228 86 L212 76Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M215 96 L253 91 L262 124 L258 162 L237 172 L222 160 L212 134 L212 112Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M262 47 L368 43 L382 67 L378 108 L348 118 L308 112 L272 98 L262 72Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M358 158 L397 154 L407 178 L392 194 L367 194 L353 180Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M88 90 Q158 58 226 62" stroke="rgba(200,16,46,.2)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <path d="M226 62 Q298 57 373 75" stroke="rgba(200,16,46,.2)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <path d="M88 90 Q98 142 110 190" stroke="rgba(200,16,46,.12)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <g><circle cx="88" cy="90" r="4" fill="var(--red)" opacity=".9"/><circle cx="88" cy="90" r="8" fill="var(--red)" opacity=".12"><animate attributeName="r" values="4;12;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="2s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="226" cy="62" r="3.5" fill="var(--red)" opacity=".8"/><circle cx="226" cy="62" r="7" fill="var(--red)" opacity=".1"><animate attributeName="r" values="3;10;3" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="2.5s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="373" cy="75" r="3.5" fill="var(--red)" opacity=".8"/><circle cx="373" cy="75" r="7" fill="var(--red)" opacity=".1"><animate attributeName="r" values="3;10;3" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="1.8s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="236" cy="168" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <g><circle cx="388" cy="178" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <g><circle cx="112" cy="190" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <text x="94" y="87" font-size="6" fill="var(--mid)" font-family="monospace">RACCOON CITY</text>
+          <text x="230" y="59" font-size="6" fill="var(--mid)" font-family="monospace">LONDON</text>
+          <text x="378" y="72" font-size="6" fill="var(--mid)" font-family="monospace">TOKYO</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="fac-right">
+      <div class="fac-panel-hd">
+        <div class="fac-panel-hd-lbl">INSTALACIONES GLOBALES</div>
+        <div class="fac-panel-hd-id">FAC/NET</div>
+      </div>
+      <div class="fac-list">
+        <div class="fac-item rv"><div class="fac-num">01</div><div class="fac-info"><div class="fac-name">HQ — Raccoon City</div><div class="fac-coord">37°N 105°W · ARKLAY MOUNTAINS, USA</div></div><div class="fac-badge cls">CLASIFICADO</div></div>
+        <div class="fac-item rv"><div class="fac-num">02</div><div class="fac-info"><div class="fac-name">Laboratorio Europeo Central</div><div class="fac-coord">51°N 0°W · LONDON, UNITED KINGDOM</div></div><div class="fac-badge act">ACTIVO</div></div>
+        <div class="fac-item rv"><div class="fac-num">03</div><div class="fac-info"><div class="fac-name">Centro I+D Asia-Pacífico</div><div class="fac-coord">35°N 139°E · TOKYO, JAPAN · BSL-4</div></div><div class="fac-badge sec">SEGURO</div></div>
+        <div class="fac-item rv"><div class="fac-num">04</div><div class="fac-info"><div class="fac-name">Instalación Subterránea Omega</div><div class="fac-coord">[DATOS ELIMINADOS] · NIVEL MÁXIMO</div></div><div class="fac-badge cls">CLASIFICADO</div></div>
+        <div class="fac-item rv"><div class="fac-num">05</div><div class="fac-info"><div class="fac-name">Centro Biocontención Delta</div><div class="fac-coord">33°S 18°E · CAPE TOWN, SOUTH AFRICA</div></div><div class="fac-badge act">ACTIVO</div></div>
+        <div class="fac-item rv"><div class="fac-num">06</div><div class="fac-info"><div class="fac-name">Laboratorio Umbrella Sur</div><div class="fac-coord">23°S 46°W · SÃO PAULO, BRAZIL</div></div><div class="fac-badge sec">SEGURO</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ RECRUITMENT ══════════ -->
+<section id="recruitment">
+  <div class="rec-wrap">
+    <div class="rec-left rv">
+      <div class="sec-eyebrow">// Recursos Humanos</div>
+      <h2 class="sec-h">Únete a la<br>élite <span class="r">científica</span></h2>
+      <div class="sec-rule"></div>
+      <p>Buscamos investigadores con disposición para trabajar en los límites de lo que la ciencia convencional considera posible. En Umbrella, el único límite es la lealtad corporativa.</p>
+      <p>Ofrecemos laboratorios de última generación, acceso a proyectos clasificados, beneficios corporativos de nivel Sigma y un contrato de confidencialidad vitalicio. El proceso de selección incluye evaluación biométrica, psicológica y de compatibilidad genética.</p>
+      <div class="rec-fine">
+        Al enviar su solicitud, acepta los términos del Acuerdo UC-7.3 de no divulgación permanente, el Protocolo de Seguridad Biológica Nivel Omega y renuncia a toda reclamación derivada de incidentes de laboratorio. Umbrella Corporation no se responsabiliza de efectos secundarios del proceso de incorporación. Resultados individuales pueden variar significativamente.
+      </div>
+    </div>
+    <div class="rec-right rv">
+      <div class="form-hd">SOLICITUD DE ACCESO — UC/HR/RECRUITMENT</div>
+      <div class="form-grid">
+        <div class="field"><label>Nombre</label><input type="text" placeholder="Dr. / Dra."></div>
+        <div class="field"><label>Apellido</label><input type="text" placeholder=""></div>
+        <div class="field"><label>Email Corporativo</label><input type="email" placeholder="nombre@institucion.edu"></div>
+        <div class="field"><label>Área de Especialización</label>
+          <select>
+            <option value="">Seleccionar...</option>
+            <option>Virología Avanzada</option>
+            <option>Ingeniería Genética</option>
+            <option>Farmacología Molecular</option>
+            <option>Biocontención</option>
+            <option>Neurobiología</option>
+            <option>Clasificado</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid full">
+        <div class="field"><label>Nivel de Clearance Actual</label>
+          <select>
+            <option>Sin clearance previo</option>
+            <option>Nivel 1 — Público</option>
+            <option>Nivel 2 — Restringido</option>
+            <option>Nivel 3 — Confidencial</option>
+            <option>Nivel 4 — Alto Secreto</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-footer">
+        <div class="form-disclaimer">Al aplicar acepta el acuerdo UC-7.3 y el Protocolo Omega. Sin excepciones.</div>
+        <button class="btn p">Enviar Solicitud →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TESTIMONIALS ══════════ -->
+<section id="testi">
+  <div class="testi-hd">
+    <div class="rv">
+      <div class="sec-eyebrow">// Personal Científico</div>
+      <h2 class="sec-h">Voces del<br><span class="r">Laboratorio</span></h2>
+      <div class="sec-rule"></div>
+    </div>
+    <p class="testi-desc rv">Nuestros investigadores son seleccionados entre los mejores del mundo. Sus aportaciones —las que podemos divulgar— representan lo más avanzado de la ciencia contemporánea.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card rv">
+      <div class="testi-cls">ALPHA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">Nunca imaginé que la ciencia pudiera llevarse tan lejos. Umbrella me dio acceso a recursos y tecnología que ningún otro laboratorio del mundo se atrevería a financiar. El precio fue razonable.</p>
+      <div class="testi-auth">
+        <div class="testi-av">AW</div>
+        <div><div class="testi-name">Dr. Alexander Wesker</div><div class="testi-role">DIRECTOR — INVESTIGACIÓN VIRAL · BSL-4</div></div>
+      </div>
+    </div>
+    <div class="testi-card rv">
+      <div class="testi-cls">BETA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">El Proyecto T redefinió todo lo que creía saber sobre biología molecular. Ahora entiendo cosas que los manuales ni siquiera contemplan. Algunas noches, esos conocimientos me quitan el sueño.</p>
+      <div class="testi-auth">
+        <div class="testi-av">LS</div>
+        <div><div class="testi-name">Dra. Lisa Strauss</div><div class="testi-role">INVESTIGADORA SENIOR — GENÓMICA</div></div>
+      </div>
+    </div>
+    <div class="testi-card rv">
+      <div class="testi-cls">GAMMA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">Cuando firmé el contrato no esperaba que las "responsabilidades adicionales" incluyeran lo que incluyen. Pero los beneficios son excepcionales. Y la pensión… si llegas a cobrarla.</p>
+      <div class="testi-auth">
+        <div class="testi-av">MR</div>
+        <div><div class="testi-name">Dr. Marcus Reid</div><div class="testi-role">JEFE DE BIOINGENIERÍA — NIVEL OMEGA</div></div>
+      </div>
+    </div>
+    <div class="testi-card rv">
+      <div class="testi-cls">ALPHA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">He trabajado en universidades, institutos públicos y corporaciones. Nada se compara. Aquí no hay comités de ética que ralenticen el progreso. Los resultados hablan por sí solos.</p>
+      <div class="testi-auth">
+        <div class="testi-av">EC</div>
+        <div><div class="testi-name">Dra. Elena Costello</div><div class="testi-role">DIRECTORA — VIROLOGÍA APLICADA</div></div>
+      </div>
+    </div>
+    <div class="testi-card rv">
+      <div class="testi-cls">BETA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">Los recursos financieros ilimitados para investigación. Libertad creativa. Y sobre todo, la certeza de que lo que hacemos cambiará el futuro. Algunos llaman a esto ciencia disruptiva. Yo solo llamo resultado.</p>
+      <div class="testi-auth">
+        <div class="testi-av">SH</div>
+        <div><div class="testi-name">Dr. Samuel Hérnandez</div><div class="testi-role">BIOINGENIERO SENIOR — SECTOR-G</div></div>
+      </div>
+    </div>
+    <div class="testi-card rv">
+      <div class="testi-cls">GAMMA</div>
+      <div class="testi-qmark">"</div>
+      <p class="testi-txt">El contrato tiene cláusulas particulares. Restricciones sobre lo que podemos publicar, con quién podemos hablar. Pero eso es el precio de acceso a tecnología que el resto del mundo no posee.</p>
+      <div class="testi-auth">
+        <div class="testi-av">JK</div>
+        <div><div class="testi-name">Dra. Jane Kim</div><div class="testi-role">INVESTIGADORA DE GENÓMICA — LAB ALPHA</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUEVA SECCIÓN: BENEFICIOS Y OPORTUNIDADES -->
+<section style="background:var(--light);padding:80px 60px;border-top:1px solid var(--border-s);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="sec-eyebrow">// Oportunidades Profesionales</div>
+    <h2 class="sec-h">Beneficios para<br><span class="r">Personal Calificado</span></h2>
+    <div class="sec-rule"></div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;">
+      <div>
+        <h3 style="font-family:var(--cond);font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:16px;border-bottom:2px solid var(--red);padding-bottom:12px;">▶ COMPENSACIÓN FINANCIERA</h3>
+        <ul style="font-size:.95rem;color:var(--mid);line-height:2;list-style:none;">
+          <li style="margin-bottom:10px;">Salarios top 1% de la industria farmacéutica global</li>
+          <li style="margin-bottom:10px;">Bonificación variable basada en publicaciones de investigación (clasificadas)</li>
+          <li style="margin-bottom:10px;">Stock options con vesting a 3 años</li>
+          <li style="margin-bottom:10px;">Fondo de retiro corporativo con matching 200%</li>
+          <li style="margin-bottom:10px;">Compensación por incidentes de contención</li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 style="font-family:var(--cond);font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:16px;border-bottom:2px solid var(--red);padding-bottom:12px;">▶ DESARROLLO PROFESIONAL</h3>
+        <ul style="font-size:.95rem;color:var(--mid);line-height:2;list-style:none;">
+          <li style="margin-bottom:10px;">Acceso a equipamiento de investigación sin rival en la industria</li>
+          <li style="margin-bottom:10px;">Conferencias y seminarios internacionales (todos los gastos pagados)</li>
+          <li style="margin-bottom:10px;">Colaboración con los investigadores más avanzados del mundo</li>
+          <li style="margin-bottom:10px;">Formación continua en protocolos y metodologías patentadas</li>
+          <li style="margin-bottom:10px;">Oportunidades de especialización en áreas de punta</li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 style="font-family:var(--cond);font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:16px;border-bottom:2px solid var(--red);padding-bottom:12px;">▶ BENEFICIOS DE SEGURIDAD</h3>
+        <ul style="font-size:.95rem;color:var(--mid);line-height:2;list-style:none;">
+          <li style="margin-bottom:10px;">Seguros de vida premium (hasta 5x el salario anual)</li>
+          <li style="margin-bottom:10px;">Cobertura médica total + servicios veterinarios especializados</li>
+          <li style="margin-bottom:10px;">Protección contra incidentes de bioseguridad nivel BSL-4</li>
+          <li style="margin-bottom:10px;">Asignación de vivienda segura cerca de instalaciones</li>
+          <li style="margin-bottom:10px;">Programa de protecciones discreción indefinida*</li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 style="font-family:var(--cond);font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:16px;border-bottom:2px solid var(--red);padding-bottom:12px;">▶ BENEFICIOS ADICIONALES</u></h3>
+        <ul style="font-size:.95rem;color:var(--mid);line-height:2;list-style:none;">
+          <li style="margin-bottom:10px;">Comedor corporativo con chef internacional (sin costo)</li>
+          <li style="margin-bottom:10px;">Facilidades recreativas privadas en cada complejo</li>
+          <li style="margin-bottom:10px;">Transporte seguro las 24/7</li>
+          <li style="margin-bottom:10px;">Programas de bienestar empresarial personalizados</li>
+          <li style="margin-bottom:10px;">Acceso VIP a hospitales de investigación Umbrella</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div style="background:var(--red-dim);border:1px solid var(--red-line);border-left:3px solid var(--red);padding:24px;margin-top:40px;">
+      <p style="font-family:var(--mono);font-size:8px;letter-spacing:.1em;color:var(--red);text-transform:uppercase;margin:0;">* La protección contra incidentes se aplica solo al personal y sus familias inmediatas. Sujeto a cál alusulas de confidencialidad perpetua. Artículos 12.7 y 15.3 del contrato de empleo.</p>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+© 1968–2024 Umbrella Corporation. Todos los derechos reservados.
+</footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},2600)});
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>50));
+
+const mob=document.getElementById('mob');
+const burger=document.getElementById('burger');
+function tm(){mob.classList.toggle('open');burger.classList.toggle('active')}
+function cm(){mob.classList.remove('open');burger.classList.remove('active')}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),(i%4)*80);
+      obs.unobserve(e.target);
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
