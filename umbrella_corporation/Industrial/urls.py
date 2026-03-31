@@ -1,5 +1,6 @@
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    # Agrega aquí tus rutas para la app Industrial
+    path('', views.index, name='index'),
 ]

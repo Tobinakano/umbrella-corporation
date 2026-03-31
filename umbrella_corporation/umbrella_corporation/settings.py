@@ -74,7 +74,21 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'umbrella_corporation.wsgi.application'
+
+# Configuración de archivos estáticos
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'borrador' / 'static',
+    BASE_DIR / 'Alimentaria' / 'static',
+    BASE_DIR / 'Armamentista' / 'static',
+    BASE_DIR / 'Farmaceutica' / 'static',
+    BASE_DIR / 'Industrial' / 'static',
+    BASE_DIR / 'Investigacion' / 'static',
+    BASE_DIR / 'Secret_Area' / 'static',
+    BASE_DIR / 'USS' / 'static',
+]
 
 
 # Database
