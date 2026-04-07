@@ -1,0 +1,639 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armamentista Legal — Umbrella Corporation</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#e8eaeb;--bg2:#d2d6d9;--bg3:#c0c5c8;
+            --light:#f4f6f7;--dark:#1a1e21;--dark2:#252c31;
+            --mid:#5c666d;--muted:#9aa3a8;
+            --red:#c8102e;--red-dim:rgba(200,16,46,.07);--red-line:rgba(200,16,46,.3);
+            --warn:#e8a000;--green:#00c864;
+            --border:rgba(26,30,33,.13);--border-s:rgba(26,30,33,.26);
+            --mono:'DM Mono',monospace;
+            --cond:'Barlow Condensed',sans-serif;
+            --body:'Barlow',sans-serif;
+            --hosp-deep:#1c3a4a;
+            --hosp-mid:#2a4f63;
+            --hosp-panel:#1e3d4e;
+            --hosp-term:#162e3a;
+        }
+
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--dark);font-family:var(--body);overflow-x:hidden;cursor:none}
+        a{text-decoration:none;color:inherit}
+        img{display:block;max-width:100%}
+
+        /* CURSOR */
+        #cur{position:fixed;width:7px;height:7px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+        #cur-r{position:fixed;width:24px;height:24px;border:1px solid rgba(200,16,46,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .2s ease-out}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:500;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;transition:all .35s}
+        nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shadow:0 1px 0 var(--red)}
+        .n-logo{display:flex;align-items:center;gap:10px}
+        .n-logo img{width:30px;height:30px}
+        .n-brand{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--dark)}
+        .n-brand span{color:var(--red)}
+        .n-brand small{display:block;font-family:var(--mono);font-size:7px;letter-spacing:.2em;color:var(--muted);margin-top:1px}
+        .n-links{display:flex;list-style:none;height:56px;align-items:stretch}
+        .n-links a{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;padding:0 16px;border-left:1px solid var(--border);position:relative;transition:color .25s}
+        .n-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .3s}
+        .n-links a:hover{color:var(--dark)}
+        .n-links a:hover::after{transform:scaleX(1)}
+        .n-pill{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 20px;border:none;cursor:pointer;transition:filter .3s}
+        .n-pill:hover{filter:brightness(1.12)}
+        .burger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+        .burger span{width:20px;height:1px;background:var(--dark)}
+
+        /* MOBILE NAV */
+        .mob{position:fixed;inset:0;z-index:400;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transform:translateX(100%);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+        .mob.open{transform:none}
+        .mob a{font-family:var(--cond);font-size:2rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light);transition:color .3s}
+        .mob a:hover{color:var(--red)}
+
+        /* ══════════ HERO ══════════ */
+        #hero{position:relative;min-height:100vh;background:var(--hosp-deep);display:flex;flex-direction:column;overflow:hidden}
+
+        .h-ceiling{position:absolute;top:0;left:0;right:0;height:5px;display:flex;gap:2px;z-index:3}
+        .h-ceil-p{flex:1;background:rgba(255,255,255,.04)}
+        .h-ceil-p.on{background:rgba(255,255,255,.3);box-shadow:0 0 30px rgba(255,255,255,.1)}
+
+        .h-floor{position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--warn);opacity:.6;z-index:3}
+
+        .h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px}
+
+        .h-seam{position:absolute;left:56px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.05);z-index:1}
+        .h-seam::after{content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.03)}
+
+        .h-stripe{position:absolute;left:0;right:0;top:50%;height:2px;background:var(--red);opacity:.15}
+
+        .h-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 380px;flex:1;margin-top:56px}
+
+        .h-left{padding:72px 48px 72px 80px;display:flex;flex-direction:column;justify-content:center}
+        .h-specimen{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
+        .h-spec-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink .9s step-end infinite}
+        .h-logo{width:80px;margin-bottom:24px;mix-blend-mode:screen}
+        .h-h1{font-family:var(--cond);font-size:clamp(3rem,7vw,6.5rem);font-weight:800;line-height:.93;letter-spacing:.02em;text-transform:uppercase;color:var(--light);margin-bottom:10px}
+        .h-h1 .r{color:var(--red)}
+        .h-h1 .ghost{opacity:.28;font-weight:300}
+        .h-sub{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:32px;padding-left:12px;border-left:2px solid var(--red)}
+        .h-desc{font-size:.9rem;font-weight:300;line-height:1.85;color:rgba(255,255,255,.42);max-width:440px;margin-bottom:40px}
+        .h-btns{display:flex;gap:8px;flex-wrap:wrap}
+        .btn{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+        .btn.p{background:var(--red);color:#fff}
+        .btn.p:hover{filter:brightness(1.12);box-shadow:0 0 20px rgba(200,16,46,.4)}
+        .btn.g{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.14)}
+        .btn.g:hover{border-color:rgba(255,255,255,.4);color:var(--light)}
+        .btn-arr{font-size:10px}
+
+        .h-right{background:rgba(0,40,60,.45);border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column}
+        .h-plate{background:rgba(0,30,45,.5);border-bottom:1px solid rgba(255,255,255,.07);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+        .h-plate-id{font-family:var(--cond);font-size:1.6rem;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.1)}
+        .h-plate-st{font-family:var(--mono);font-size:7px;letter-spacing:.2em;color:var(--green);display:flex;align-items:center;gap:5px}
+        .h-plate-st::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink .8s step-end infinite}
+        .h-rows{padding:16px;display:flex;flex-direction:column;gap:1px;flex:1}
+        .h-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+        .h-row-k{font-family:var(--mono);font-size:7px;letter-spacing:.14em;color:rgba(255,255,255,.25);text-transform:uppercase}
+        .h-row-v{font-family:var(--mono);font-size:9px;font-weight:500}
+        .h-row-v.ok{color:var(--green)}
+        .h-row-v.al{color:var(--red)}
+        .h-row-v.w{color:var(--warn)}
+        .h-row-v.n{color:rgba(255,255,255,.6)}
+
+        .h-term{margin:0 16px 16px;background:var(--hosp-term);border:1px solid rgba(255,255,255,.08);padding:14px;font-family:var(--mono);font-size:8px;line-height:1.85;color:var(--green)}
+        .term-hd{display:flex;gap:5px;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.05);align-items:center}
+        .td{width:8px;height:8px;border-radius:50%}
+        .td.r{background:#ff5f56}.td.y{background:#ffbd2e}.td.g{background:#27c93f}
+
+        @keyframes blink{50%{opacity:0}}
+
+        /* ══════════ PRODUCTS SECTION ══════════ */
+        #products{background:var(--light);border-top:1px solid var(--border-s);padding:80px 0}
+        .prod-header{padding:80px 60px;text-align:center}
+        .sec-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+        .sec-eyebrow::before{content:'';width:20px;height:1px;background:var(--red)}
+        .sec-eyebrow::after{content:'';width:20px;height:1px;background:var(--red)}
+        .sec-h{font-family:var(--cond);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--dark);margin-bottom:20px}
+        .prod-desc{font-size:.95rem;line-height:1.9;color:var(--mid);font-weight:300;max-width:700px;margin:0 auto;margin-bottom:24px}
+        .prod-highlight{color:var(--red);font-weight:500}
+
+        .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border-s);padding:0 60px 80px 60px}
+        .prod-card{background:var(--light);padding:40px 32px;border:1px solid transparent;transition:all .35s;cursor:default;position:relative;overflow:hidden}
+        .prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);transition:background .35s}
+        .prod-card:hover{background:#fff;border-color:transparent}
+        .prod-card:hover::before{background:var(--red)}
+        .prod-icon{font-size:2.5rem;margin-bottom:16px;display:inline-block}
+        .prod-name{font-family:var(--cond);font-size:1.3rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--dark);margin-bottom:12px}
+        .prod-items{list-style:none;margin-bottom:16px}
+        .prod-items li{font-size:.85rem;line-height:1.8;color:var(--mid);font-weight:300;display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+        .prod-items li::before{content:'▸';color:var(--red);font-weight:bold;flex-shrink:0}
+        .prod-cta{font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);display:inline-flex;align-items:center;gap:6px}
+        .prod-cta::after{content:'→';font-weight:bold}
+
+        /* ══════════ DETAIL SECTION ══════════ */
+        #product-details{background:var(--bg);padding:0 0 80px 0}
+        .detail-wrap{padding:0 60px;display:grid;gap:1px;background:var(--border-s)}
+        .detail-card{background:var(--light);padding:36px;scroll-margin-top:90px}
+        .detail-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+        .detail-title{font-family:var(--cond);font-size:1.35rem;letter-spacing:.05em;text-transform:uppercase;color:var(--dark)}
+        .detail-img{
+            width:100%;
+            max-width:560px;
+            height:220px;
+            object-fit:contain;
+            background:var(--bg2);
+            border:1px solid var(--border);
+            margin:6px auto 14px auto;
+            padding:6px;
+        }
+        .detail-desc{font-size:.9rem;line-height:1.9;color:var(--mid);margin-bottom:14px}
+        .detail-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+        .detail-list li{font-size:.84rem;line-height:1.7;color:var(--mid);position:relative;padding-left:14px}
+        .detail-list li::before{content:'▸';position:absolute;left:0;color:var(--red)}
+        .back-link{display:inline-flex;margin-top:16px;font-family:var(--mono);font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+
+        /* ══════════ FOOTER INFO SECTION ══════════ */
+        #footer-info{background:var(--light);padding:0 0 60px 0}
+        .info-wrap{padding:0 60px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-s)}
+        .info-card{background:var(--light);padding:28px;scroll-margin-top:90px}
+        .info-title{font-family:var(--cond);font-size:1.2rem;letter-spacing:.04em;text-transform:uppercase;color:var(--dark);margin-bottom:12px}
+        .info-text{font-size:.85rem;line-height:1.9;color:var(--mid)}
+
+        /* ══════════ FOOTER ══════════ */
+        footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
+        .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding:60px;margin-bottom:0;border-bottom:1px solid rgba(255,255,255,.06)}
+        .foot-brand{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+        .foot-brand img{width:28px;height:28px;mix-blend-mode:screen}
+        .foot-brand-txt{font-family:var(--mono);font-size:10px;letter-spacing:.22em;font-weight:500;color:rgba(255,255,255,.6)}
+        .foot-desc{font-size:.78rem;color:rgba(255,255,255,.22);line-height:1.85;font-weight:300}
+        .foot-col h5{font-family:var(--mono);font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+        .foot-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+        .foot-links a{font-size:.78rem;color:rgba(255,255,255,.22);letter-spacing:.04em;transition:color .3s;display:flex;align-items:center;gap:6px}
+        .foot-links a::before{content:'›';color:var(--red);font-size:.9rem}
+        .foot-links a:hover{color:rgba(255,255,255,.6)}
+        .foot-bottom{padding:20px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .foot-legal{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.18);letter-spacing:.08em;line-height:1.8}
+        .foot-legal a{color:rgba(200,16,46,.4)}
+
+        /* ══════════ MODALS ══════════ */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1200;padding:20px}
+        .modal-overlay.show{display:flex}
+        .modal-box{width:min(680px,95vw);max-height:85vh;overflow:auto;background:var(--light);border:1px solid var(--border-s);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--bg)}
+        .modal-title{font-family:var(--cond);font-size:1.3rem;letter-spacing:.05em;text-transform:uppercase;color:var(--dark)}
+        .modal-close{border:1px solid var(--border-s);background:transparent;color:var(--dark);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:6px 10px;cursor:pointer}
+        .modal-close:hover{border-color:var(--red);color:var(--red)}
+        .modal-body{padding:20px}
+        .modal-body p{font-size:.9rem;line-height:1.85;color:var(--mid);margin-bottom:12px}
+        .modal-list{list-style:none;display:grid;gap:8px}
+        .modal-list li{font-size:.85rem;line-height:1.75;color:var(--mid);padding-left:14px;position:relative}
+        .modal-list li::before{content:'▸';position:absolute;left:0;color:var(--red)}
+        .no-scroll{overflow:hidden}
+
+        /* ══════════ RESPONSIVE ══════════ */
+        @media(max-width:1100px){
+            nav,nav.sc{padding:0 36px}
+            .h-left{padding:60px 36px}
+            .h-right{display:none}
+            .prod-grid{grid-template-columns:1fr;padding:0 36px 60px 36px}
+            .prod-header{padding:60px 36px}
+            .detail-wrap{padding:0 36px}
+            .detail-list{grid-template-columns:1fr}
+            .info-wrap{padding:0 36px;grid-template-columns:1fr}
+            .foot-grid{grid-template-columns:1fr 1fr;gap:36px;padding:40px}
+            .info-wrap{padding:0 20px}
+            .info-card{padding:22px}
+        }
+
+        @media(max-width:768px){
+            nav,nav.sc{padding:0 20px;height:50px}
+            .n-links,.n-pill{display:none}
+            .burger{display:flex}
+            .h-left{padding:50px 20px}
+            .prod-grid{grid-template-columns:1fr;padding:0 20px 50px 20px}
+            .prod-header{padding:50px 20px}
+            .detail-wrap{padding:0 20px}
+            .detail-card{padding:24px}
+            .detail-img{height:190px;max-width:100%}
+            .foot-grid{grid-template-columns:1fr;padding:32px 24px}
+            .foot-bottom{padding:16px 24px;flex-direction:column;text-align:center}
+        }
+    </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+    <a href="/">Atrás</a>
+    <a href="#products" onclick="cm()">Productos</a>
+    <a href="/" onclick="cm()">Inicio</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+    <a href="/" class="n-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+        <div class="n-brand">UMBRELLA <span>CORP</span><small>ARMAMENTISTA LEGAL</small></div>
+    </a>
+    <ul class="n-links">
+        <li><a href="#products">Productos</a></li>
+        <li><a href="/">Inicio</a></li>
+    </ul>
+    <a href="/" class="n-pill">Atrás</a>
+    <div class="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ══════════ HERO SECTION ══════════ -->
+<section id="hero">
+    <div class="h-ceiling">
+        <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+        <div class="h-ceil-p on"></div><div class="h-ceil-p on"></div>
+        <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+        <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+        <div class="h-ceil-p on"></div><div class="h-ceil-p on"></div>
+        <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+    </div>
+    <div class="h-floor"></div>
+    <div class="h-grid"></div>
+    <div class="h-seam"></div>
+    <div class="h-stripe"></div>
+
+    <div class="h-inner">
+        <div class="h-left">
+            <div class="h-specimen"><div class="h-spec-dot"></div>DIVISIÓN ARMAMENTISTA — AUTORIZACIÓN REQUERIDA</div>
+            <img class="h-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Corporation">
+            <h1 class="h-h1">Seguridad<br><span class="r">Avanzada</span><br><span class="ghost">Legal</span></h1>
+            <div class="h-sub">DIVISIÓN DE TECNOLOGÍA DE DEFENSA — AUTORIZADA INTERNACIONALMENTE</div>
+            <p class="h-desc">Umbrella Corporation no vende armas peligrosas. Vende seguridad avanzada. Nuestras soluciones de equipamiento táctico y defensa están diseñadas exclusivamente para agencias gubernamentales, fuerzas especiales y organismos de seguridad autorizados.</p>
+            <div class="h-btns">
+                <a href="#products" class="btn p"><span class="btn-arr">▶</span> Ver Catálogo</a>
+                <a href="/" class="btn g">Volver al Inicio</a>
+            </div>
+        </div>
+
+        <div class="h-right">
+            <div class="h-plate">
+                <div class="h-plate-id">ARM-01</div>
+                <div class="h-plate-st">AUTORIZACIÓN ACTIVA</div>
+            </div>
+            <div class="h-rows">
+                <div class="h-row"><span class="h-row-k">Nivel Autorización</span><span class="h-row-v ok">MÁXIMO</span></div>
+                <div class="h-row"><span class="h-row-k">Acceso a Catálogo</span><span class="h-row-v ok">COMPLETO</span></div>
+                <div class="h-row"><span class="h-row-k">Productos Activos</span><span class="h-row-v ok">47</span></div>
+                <div class="h-row"><span class="h-row-k">Estado División</span><span class="h-row-v ok">OPERACIONAL</span></div>
+                <div class="h-row"><span class="h-row-k">Certificación</span><span class="h-row-v ok">INTERNACIONAL</span></div>
+                <div class="h-row"><span class="h-row-k">Control de Calidad</span><span class="h-row-v ok">100%</span></div>
+            </div>
+            <div class="h-term">
+                <div class="term-hd">
+                    <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+                </div>
+                <div style="color: rgba(0,200,100,.5); font-size: 7px;">$ UMBRELLA SECURITY SUITE v2.4.1<br>$ ACCESS LEVEL: CONFIDENTIAL<br>$ STATUS: OK - All Systems Nominal</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ PRODUCTS SECTION ══════════ -->
+<section id="products">
+    <div class="prod-header">
+        <div class="sec-eyebrow">Catálogo Completo</div>
+        <h2 class="sec-h">Tipos de <span class="r">Productos</span></h2>
+        <p class="prod-desc">Soluciones de equipamiento táctico y defensa de <span class="prod-highlight">última generación</span>, desarrolladas bajo los más estrictos estándares internacionales de seguridad.</p>
+    </div>
+
+    <div class="prod-grid">
+        <!-- Card 2: Chalecos Antibalas -->
+        <div class="prod-card">
+            <h3 class="prod-name">Protección Balística</h3>
+            <ul class="prod-items">
+                <li>Chalecos antibalas nivel IV</li>
+                <li>Placas cerámicas de alto rendimiento</li>
+                <li>Malla de dispersión de impacto</li>
+                <li>Sistemas de ajuste ergonómico</li>
+            </ul>
+            <a href="#proteccion-balistica" class="prod-cta">Explorar mas</a>
+        </div>
+
+        <!-- Card 5: Rifles Autorizados -->
+        <div class="prod-card">
+            <h3 class="prod-name">Rifles de Uso Autorizado</h3>
+            <ul class="prod-items">
+                <li>Rifles de asalto certificados NATO</li>
+                <li>Sistemas de precisión a larga distancia</li>
+                <li>Componentes de acero aleado forjado</li>
+                <li>Mantenimiento y soporte técnico</li>
+            </ul>
+            <a href="#rifles-autorizados" class="prod-cta">Explorar mas</a>
+        </div>
+
+        <!-- Card 6: Sistemas No Letales -->
+        <div class="prod-card">
+            <h3 class="prod-name">Sistemas de Control No Letal</h3>
+            <ul class="prod-items">
+                <li>Dispositivos de electrochoque de rango extendido</li>
+                <li>Granadas de gas sector seguro</li>
+                <li>Munición de goma de precisión</li>
+                <li>Sistemas sonoros de dispersión</li>
+            </ul>
+            <a href="#control-no-letal" class="prod-cta">Explorar mas</a>
+        </div>
+
+        <!-- Card 7: Tecnología Militar -->
+        <div class="prod-card">
+            <h3 class="prod-name">Tecnología Militar Avanzada</h3>
+            <ul class="prod-items">
+                <li>Sistemas de vigilancia nocturna</li>
+                <li>Equipos de visión térmica infrarroja</li>
+                <li>Radares de baja frecuencia</li>
+                <li>Sistemas de navegación GPS de precisión</li>
+            </ul>
+            <a href="#tecnologia-militar" class="prod-cta">Explorar mas</a>
+        </div>
+
+        <!-- Card 8: Drones de Vigilancia -->
+        <div class="prod-card">
+            <h3 class="prod-name">Drones de Vigilancia</h3>
+            <ul class="prod-items">
+                <li>Drones de cuadricóptero de largo alcance</li>
+                <li>Cámaras 4K de alta resolución</li>
+                <li>Autonomía de vuelo 120+ minutos</li>
+                <li>Control por satélite disponible</li>
+            </ul>
+            <a href="#drones-vigilancia" class="prod-cta">Explorar mas</a>
+        </div>
+
+        <!-- Card 9: Sistemas de Reconocimiento -->
+        <div class="prod-card">
+            <h3 class="prod-name">Sistemas de Reconocimiento</h3>
+            <ul class="prod-items">
+                <li>Software de análisis de inteligencia artificial</li>
+                <li>Sistemas de escaneo biométrico</li>
+                <li>Interfaz de mapeo en tiempo real</li>
+                <li>Integración con bases de datos federales</li>
+            </ul>
+            <a href="#sistemas-reconocimiento" class="prod-cta">Explorar mas</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ PRODUCT DETAIL SECTION ══════════ -->
+<section id="product-details">
+    <div class="prod-header" style="padding-top:20px;">
+        <div class="sec-eyebrow">Informacion Ampliada</div>
+        <h2 class="sec-h">Explorar <span class="r">Mas</span></h2>
+        <p class="prod-desc">Cada categoria incluye caracteristicas tecnicas, aplicaciones y alcance operativo para misiones autorizadas.</p>
+    </div>
+
+    <div class="detail-wrap">
+        <article id="proteccion-balistica" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Proteccion Balistica</h3></div>
+            <img class="detail-img" src="{% static 'chalecos.jpg' %}" alt="Proteccion balistica">
+            <p class="detail-desc">Linea de proteccion personal para unidades operativas con enfoque en movilidad, cobertura y absorcion de impacto.</p>
+            <ul class="detail-list">
+                <li>Chalecos nivel IV con cobertura frontal y lateral.</li>
+                <li>Placas multicapa para amenazas de alto calibre.</li>
+                <li>Mallas internas de disipacion de energia.</li>
+                <li>Paneles intercambiables para distintos escenarios.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+
+        <article id="rifles-autorizados" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Rifles de Uso Autorizado</h3></div>
+            <img class="detail-img" src="{% static 'rifles.jpg' %}" alt="Rifles de uso autorizado">
+            <p class="detail-desc">Plataforma para tiradores especializados, orientada a control de precision y confiabilidad operacional.</p>
+            <ul class="detail-list">
+                <li>Sistemas de disparo semiautomatico de precision.</li>
+                <li>Rieles modulares para optica y accesorios tacticos.</li>
+                <li>Materiales reforzados para condiciones extremas.</li>
+                <li>Programa de mantenimiento certificado por Umbrella.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+
+        <article id="control-no-letal" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Sistemas de Control No Letal</h3></div>
+            <img class="detail-img" src="{% static 'granada de gas.jpg' %}" alt="Sistemas de control no letal">
+            <p class="detail-desc">Herramientas para contencion y dispersion con foco en reduccion de dano y control de situaciones criticas.</p>
+            <ul class="detail-list">
+                <li>Dispositivos electricos de alcance extendido.</li>
+                <li>Granadas de gas para neutralizacion temporal.</li>
+                <li>Municion de impacto controlado para distancia media.</li>
+                <li>Sistemas acusticos para control de multitudes.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+
+        <article id="tecnologia-militar" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Tecnologia Militar Avanzada</h3></div>
+            <img class="detail-img" src="{% static 'vision nocturna.png' %}" alt="Tecnologia militar avanzada">
+            <p class="detail-desc">Suite de apoyo tactico para reconocimiento, deteccion y navegacion en escenarios de baja visibilidad.</p>
+            <ul class="detail-list">
+                <li>Visores nocturnos de nueva generacion.</li>
+                <li>Lectura termica para rastreo de objetivos.</li>
+                <li>Radar tactico para cartografia de entorno.</li>
+                <li>Guiado GPS de precision con redundancia.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+
+        <article id="drones-vigilancia" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Drones de Vigilancia</h3></div>
+            <img class="detail-img" src="{% static 'drones.jpg' %}" alt="Drones de vigilancia">
+            <p class="detail-desc">Plataforma aerea para observacion en tiempo real con capacidad de patrullaje y registro avanzado de imagen.</p>
+            <ul class="detail-list">
+                <li>Vuelo estable en condiciones climaticas adversas.</li>
+                <li>Camara 4K con zoom optico y digital.</li>
+                <li>Retorno inteligente y rutas programadas.</li>
+                <li>Telemetria en vivo para centro de operaciones.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+
+        <article id="sistemas-reconocimiento" class="detail-card">
+            <div class="detail-top"><h3 class="detail-title">Sistemas de Reconocimiento</h3></div>
+            <img class="detail-img" src="{% static 'camaras.jpg' %}" alt="Sistemas de reconocimiento">
+            <p class="detail-desc">Capacidades de analitica avanzada para identificacion, clasificacion y seguimiento de objetivos de interes.</p>
+            <ul class="detail-list">
+                <li>Analisis de video asistido por inteligencia artificial.</li>
+                <li>Reconocimiento biometrico multi-factor.</li>
+                <li>Mapeo dinamico con capa de eventos en vivo.</li>
+                <li>Integracion con sistemas institucionales autorizados.</li>
+            </ul>
+            <a href="#products" class="back-link">Volver al catalogo</a>
+        </article>
+    </div>
+</section>
+
+<!-- ══════════ FOOTER INFO ══════════ -->
+<section id="footer-info">
+    <div class="prod-header" style="padding-top:20px;">
+        <div class="sec-eyebrow">Informacion Legal</div>
+        <h2 class="sec-h">Terminos y <span class="r">Certificaciones</span></h2>
+        <p class="prod-desc">Documentacion general para uso autorizado de catalogos de seguridad avanzada.</p>
+    </div>
+    <div class="info-wrap">
+        <article id="terminos-uso" class="info-card">
+            <h3 class="info-title">Terminos de Uso</h3>
+            <p class="info-text">El acceso a este catalogo esta limitado a personal autorizado. Toda solicitud de equipamiento se valida por protocolo interno y marco legal vigente. El uso de esta informacion fuera de procesos oficiales queda prohibido.</p>
+        </article>
+        <article id="certificaciones" class="info-card">
+            <h3 class="info-title">Certificaciones</h3>
+            <p class="info-text">La division opera bajo estandares internacionales de control de calidad, trazabilidad de componentes y seguridad operativa. Las certificaciones tecnicas se revisan periodicamente por auditorias internas y externas.</p>
+        </article>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="foot-grid">
+        <div>
+            <div class="foot-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+                <div class="foot-brand-txt">UMBRELLA CORP</div>
+            </div>
+            <p class="foot-desc">División de Armamentista Legal especializada en soluciones de defensa avanzada. Sirviendo a fuerzas de seguridad internacionales desde 1968.</p>
+        </div>
+        <div class="foot-col">
+            <h5>Soporte</h5>
+            <ul class="foot-links">
+                <li><a href="#" data-modal-target="modal-documentacion" onclick="openModal(event)">Documentación</a></li>
+                <li><a href="#" data-modal-target="modal-contacto" onclick="openModal(event)">Contacto Técnico</a></li>
+            </ul>
+        </div>
+        <div class="foot-col">
+            <h5>Legal</h5>
+            <ul class="foot-links">
+                <li><a href="#terminos-uso">Términos de Uso</a></li>
+                <li><a href="#certificaciones">Certificaciones</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <div class="foot-legal">© 2024 Umbrella Corporation. Todos los derechos reservados. <a href="#terminos-uso">Politicas</a></div>
+        <div style="font-family: var(--mono); font-size: 7px; letter-spacing: .2em; color: rgba(200, 16, 46, .3);">UC-ARM-LEGAL-2024</div>
+    </div>
+</footer>
+
+<!-- MODAL: DOCUMENTACION -->
+<div id="modal-documentacion" class="modal-overlay" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="doc-title">
+        <div class="modal-head">
+            <h3 id="doc-title" class="modal-title">Documentacion Tecnica</h3>
+            <button class="modal-close" type="button" onclick="closeModalById('modal-documentacion')">Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Esta seccion contiene referencias operativas para adquisicion, mantenimiento y uso responsable del catalogo de la division armamentista legal.</p>
+            <ul class="modal-list">
+                <li>Guia de seleccion por tipo de operacion y escenario.</li>
+                <li>Ficha tecnica por categoria y parametros de uso.</li>
+                <li>Procedimiento de solicitud, validacion y entrega.</li>
+                <li>Protocolos de seguridad, almacenamiento y transporte.</li>
+                <li>Cronograma de mantenimiento preventivo y revision.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: CONTACTO TECNICO -->
+<div id="modal-contacto" class="modal-overlay" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="contacto-title">
+        <div class="modal-head">
+            <h3 id="contacto-title" class="modal-title">Contacto Tecnico</h3>
+            <button class="modal-close" type="button" onclick="closeModalById('modal-contacto')">Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Soporte especializado para consultas de catalogo, compatibilidad de equipo y seguimiento de solicitudes autorizadas.</p>
+            <ul class="modal-list">
+                <li>Correo: armamentista.legal@umbrella-corp.local</li>
+                <li>Telefono interno: +1 (555) 0199 - Extension 401</li>
+                <li>Horario: Lunes a Viernes, 08:00 - 18:00</li>
+                <li>Canal urgente: UC-SUPPORT / PRIORIDAD ALPHA</li>
+                <li>Sede: Umbrella Division Armamentista - Sector Legal</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // CURSOR PERSONALIZADO
+    const cur = document.getElementById('cur');
+    const curR = document.getElementById('cur-r');
+    document.addEventListener('mousemove', (e) => {
+        cur.style.left = e.clientX + 'px';
+        cur.style.top = e.clientY + 'px';
+        curR.style.left = e.clientX + 'px';
+        curR.style.top = e.clientY + 'px';
+    });
+
+    // NAVBAR SCROLL EFFECT
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 56) {
+            nav.classList.add('sc');
+        } else {
+            nav.classList.remove('sc');
+        }
+    });
+
+    // MOBILE MENU TOGGLE
+    const mob = document.getElementById('mob');
+    function tm() {
+        mob.classList.toggle('open');
+    }
+
+    function cm() {
+        mob.classList.remove('open');
+    }
+
+    function openModal(event) {
+        event.preventDefault();
+        const targetId = event.currentTarget.getAttribute('data-modal-target');
+        const modal = document.getElementById(targetId);
+        if (modal) {
+            modal.classList.add('show');
+            document.body.classList.add('no-scroll');
+        }
+    }
+
+    function closeModalById(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('show');
+        }
+        if (!document.querySelector('.modal-overlay.show')) {
+            document.body.classList.remove('no-scroll');
+        }
+    }
+
+    function closeModalOnBackdrop(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            event.target.classList.remove('show');
+            if (!document.querySelector('.modal-overlay.show')) {
+                document.body.classList.remove('no-scroll');
+            }
+        }
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.show').forEach((modal) => {
+                modal.classList.remove('show');
+            });
+            document.body.classList.remove('no-scroll');
+        }
+    });
+</script>
+
+</body>
+</html>

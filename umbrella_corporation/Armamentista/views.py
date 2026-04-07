@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def armamentista_legal_view(request):
+    return render(request, 'armamentista_legal.html')
