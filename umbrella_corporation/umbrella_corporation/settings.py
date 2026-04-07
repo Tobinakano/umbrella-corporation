@@ -38,7 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'borrador',
+<<<<<<< HEAD
     'Armamentista',
+=======
+    'Alimentaria',
+    'Armamentista',
+    'Farmaceutica',
+    'Industrial',
+    'Investigacion',
+    'Secret_Area',
+    'USS',
+>>>>>>> e77830f40f162c557a4bf9ec852f903884fded35
 ]
 
 MIDDLEWARE = [
@@ -68,7 +78,21 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'umbrella_corporation.wsgi.application'
+
+# Configuración de archivos estáticos
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'borrador' / 'static',
+    BASE_DIR / 'Alimentaria' / 'static',
+    BASE_DIR / 'Armamentista' / 'static',
+    BASE_DIR / 'Farmaceutica' / 'static',
+    BASE_DIR / 'Industrial' / 'static',
+    BASE_DIR / 'Investigacion' / 'static',
+    BASE_DIR / 'Secret_Area' / 'static',
+    BASE_DIR / 'USS' / 'static',
+]
 
 
 # Database
