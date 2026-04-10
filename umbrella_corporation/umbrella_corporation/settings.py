@@ -39,12 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'borrador',
     'Alimentaria',
+<<<<<<< Updated upstream
     'Armamentista',
     'Farmaceutica',
     'Industrial',
     'Investigacion',
     'Secret_Area',
     'USS',
+=======
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [

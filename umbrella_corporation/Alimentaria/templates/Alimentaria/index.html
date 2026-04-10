@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umbrella Alimentaria | Division Oficial de Nutricion Avanzada</title>
+    <meta name="description" content="Umbrella Alimentaria, division oficial de Umbrella Corporation: alimentos de alto rendimiento, control biotecnologico y estandares globales.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'Alimentaria/css/styles.css' %}">
+</head>
+<body>
+    <div id="cur"></div>
+    <div id="cur-r"></div>
+
+    <header class="site-header" id="inicio">
+        <nav class="navbar container" aria-label="Navegacion principal">
+            <a class="brand" href="#inicio" aria-label="Umbrella Alimentaria inicio">
+                <img class="brand-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Logo Umbrella Corporation">
+                <span class="brand-text">
+                    <strong>Umbrella <span>Alimentaria</span></strong>
+                    <small>Division Oficial de Nutricion Avanzada</small>
+                </span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-menu" aria-label="Abrir menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="menu" id="main-menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre">Sobre Nosotros</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#tecnologia">Tecnologia</a></li>
+                <li><a href="#operaciones">Operaciones</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero reveal">
+            <!-- IMAGEN HERO: guardar como static/Alimentaria/img/hero.jpg -->
+            <img class="hero-bg-image" src="{% static 'Alimentaria/img/hero.jpg' %}" alt="Hero Umbrella Alimentaria">
+            <div class="container hero-content">
+                <p class="hero-spec"><span></span>Sector ALM-01 · Acceso autorizado · Umbrella Food Systems</p>
+                <p class="kicker">Bioingenieria Nutricional de Precision</p>
+                <h1>Umbrella Alimentaria.<br>Nutricion estrategica<br>para operaciones globales.</h1>
+                <p>Somos la division alimentaria de Umbrella Corporation. Disenamos, producimos y distribuimos lineas nutricionales de alto rendimiento para sectores civiles, industriales y escenarios de demanda critica.</p>
+                <div class="hero-actions">
+                    <a href="#productos" class="btn-primary">Explorar catalogo</a>
+                    <a href="#operaciones" class="btn-secondary">Ver operaciones</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="about container reveal" id="sobre">
+            <div class="section-heading">
+                <p class="kicker">Sobre la Division</p>
+                <h2>Nutricion corporativa con estandares biotecnologicos Umbrella</h2>
+            </div>
+            <div class="about-grid">
+                <p>La Division Alimentaria de Umbrella Corporation integra ciencia de materiales, microbiologia aplicada y protocolos de bioseguridad para crear alimentos funcionales de alto rendimiento. Nuestra cadena opera bajo supervision automatizada para garantizar trazabilidad completa y calidad consistente.</p>
+                <p>Desde centros de investigacion en zonas estrategicas, abastecemos a mas de 50 paises con lineas alimentarias orientadas a resistencia fisica, estabilidad metabolica y respuesta inmune optimizada. Cada lote es validado por sistemas de control molecular en tiempo real.</p>
+            </div>
+        </section>
+
+        <section class="products reveal" id="productos">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="kicker">Portafolio</p>
+                    <h2>Productos alimenticios de nueva generacion</h2>
+                </div>
+                <div class="product-table-wrap" aria-label="Tabla de productos de la Division Alimentaria">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Descripcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nutrimax X</td>
+                                <td>Suplemento proteico de alto rendimiento</td>
+                            </tr>
+                            <tr>
+                                <td>UmbraGrow</td>
+                                <td>Fertilizante organico de nueva generacion</td>
+                            </tr>
+                            <tr>
+                                <td>BioFresh</td>
+                                <td>Linea de alimentos procesados "100% naturales"</td>
+                            </tr>
+                            <tr>
+                                <td>ViralEnergy</td>
+                                <td>Bebida energetica corporativa</td>
+                            </tr>
+                            <tr>
+                                <td>ReGen Food</td>
+                                <td>Alimentos de recuperacion celular</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cards-grid">
+                    <article class="card">
+                        <!-- IMAGEN PRODUCTO 1: guardar como static/Alimentaria/img/producto-1.jpg -->
+                        <img src="{% static 'Alimentaria/img/producto-1.jpg' %}" alt="Nutrimax X">
+                        <div class="card-content">
+                            <h3>Nutrimax X</h3>
+                            <p>Suplemento proteico de alto rendimiento.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <!-- IMAGEN PRODUCTO 2: guardar como static/Alimentaria/img/producto-2.jpg -->
+                        <img src="{% static 'Alimentaria/img/producto-2.jpg' %}" alt="UmbraGrow">
+                        <div class="card-content">
+                            <h3>UmbraGrow</h3>
+                            <p>Fertilizante organico de nueva generacion.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <!-- IMAGEN PRODUCTO 3: guardar como static/Alimentaria/img/producto-3.jpg -->
+                        <img src="{% static 'Alimentaria/img/producto-3.jpg' %}" alt="BioFresh">
+                        <div class="card-content">
+                            <h3>BioFresh</h3>
+                            <p>Linea de alimentos procesados "100% naturales".</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <!-- IMAGEN PRODUCTO 4: guardar como static/Alimentaria/img/producto-4.jpg -->
+                        <img src="{% static 'Alimentaria/img/producto-4.jpg' %}" alt="ViralEnergy">
+                        <div class="card-content">
+                            <h3>ViralEnergy</h3>
+                            <p>Bebida energetica corporativa.</p>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <!-- IMAGEN PRODUCTO 5: guardar como static/Alimentaria/img/producto-5.jpg -->
+                        <img src="{% static 'Alimentaria/img/producto-5.jpg' %}" alt="ReGen Food">
+                        <div class="card-content">
+                            <h3>ReGen Food</h3>
+                            <p>Alimentos de recuperacion celular.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="technology container reveal" id="tecnologia">
+            <div class="section-heading">
+                <p class="kicker">Proceso y Tecnologia</p>
+                <h2>Fabricacion inteligente de grado corporativo</h2>
+            </div>
+            <div class="timeline">
+                <article>
+                    <h3>1. Seleccion molecular</h3>
+                    <p>Materias primas evaluadas por bioescaneo para detectar pureza, valor nutritivo y compatibilidad funcional.</p>
+                </article>
+                <article>
+                    <h3>2. Sintesis controlada</h3>
+                    <p>Procesamiento con reactores de temperatura adaptativa y sellado esteril para preservar estabilidad biologica.</p>
+                </article>
+                <article>
+                    <h3>3. Validacion global</h3>
+                    <p>Cada lote supera pruebas de resistencia, trazabilidad y auditoria de calidad antes de su distribucion internacional.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="operations reveal" id="operaciones">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="kicker">Operaciones Alimentaria</p>
+                    <h2>Cadena completa: laboratorio, planta y distribucion internacional</h2>
+                </div>
+                <div class="operations-grid">
+                    <article class="op-card">
+                        <!-- IMAGEN OPERACION 1: guardar como static/Alimentaria/img/operacion-1.jpg -->
+                        <img src="{% static 'Alimentaria/img/operacion-1.jpg' %}" alt="Control de laboratorio Umbrella Alimentaria">
+                        <div>
+                            <h3>Control de laboratorio</h3>
+                            <p>Analitica nutricional por lotes, control de trazabilidad y simulacion de estabilidad en diferentes climas y altitudes.</p>
+                        </div>
+                    </article>
+                    <article class="op-card">
+                        <!-- IMAGEN OPERACION 2: guardar como static/Alimentaria/img/operacion-2.jpg -->
+                        <img src="{% static 'Alimentaria/img/operacion-2.jpg' %}" alt="Produccion industrial automatizada">
+                        <div>
+                            <h3>Produccion automatizada</h3>
+                            <p>Lineas con monitoreo en tiempo real, esterilidad multicapa y empaques con sello anti-manipulacion corporativo.</p>
+                        </div>
+                    </article>
+                    <article class="op-card">
+                        <!-- IMAGEN OPERACION 3: guardar como static/Alimentaria/img/operacion-3.jpg -->
+                        <img src="{% static 'Alimentaria/img/operacion-3.jpg' %}" alt="Logistica global de alimentos Umbrella">
+                        <div>
+                            <h3>Logistica global</h3>
+                            <p>Red de distribucion en rutas priorizadas con respuesta 24/7 para abastecimiento de centros operativos en 50+ paises.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats reveal" aria-label="Estadisticas corporativas">
+            <div class="container stats-grid">
+                <article>
+                    <h3><span class="counter" data-target="50" data-suffix="+">0</span></h3>
+                    <p>Paises abastecidos</p>
+                </article>
+                <article>
+                    <h3><span class="counter" data-target="99.9" data-suffix="%">0</span></h3>
+                    <p>Indice de calidad certificada</p>
+                </article>
+                <article>
+                    <h3><span class="counter" data-target="24" data-suffix="/7">0</span></h3>
+                    <p>Supervision biosegura</p>
+                </article>
+                <article>
+                    <h3><span class="counter" data-target="1200" data-suffix="+">0</span></h3>
+                    <p>Especialistas en la division</p>
+                </article>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer class="site-footer" id="contacto">
+        <div class="container footer-grid">
+            <div>
+                <div class="brand footer-brand">
+                    <img class="brand-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Logo Umbrella Corporation">
+                    <span class="brand-text">
+                        <strong>Umbrella <span>Alimentaria</span></strong>
+                        <small>Division Alimentaria</small>
+                    </span>
+                </div>
+                <p>Raccoon City Food Systems - Centro de Operaciones Regional LATAM.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre">Sobre Nosotros</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#tecnologia">Tecnologia</a></li>
+                <li><a href="#operaciones">Operaciones</a></li>
+            </ul>
+        </div>
+        <p class="copyright">© 2026 Umbrella Corporation. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="{% static 'Alimentaria/js/main.js' %}"></script>
+</body>
+</html>
