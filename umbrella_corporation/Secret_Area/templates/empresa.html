@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Umbrella Corporation â€” Empresa y Divisiones</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="ld-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+  <div class="ld-wrap">
+    <div class="ld-lbl">UMBRELLA CORP â€” INICIALIZANDO ACCESO</div>
+    <div class="ld-bars">
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+    </div>
+    <div class="ld-st">â–¸ VERIFICANDO CLEARANCE...</div>
+  </div>
+  <div class="ld-code">UC-LAB-ALPHA // BSL-4 // RACCOON CITY CENTRAL</div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <a href="/" onclick="cm()">Principal</a>
+  <a href="/empresa/" onclick="cm()" class="active">Empresa</a>
+  <a href="/investigacion/" onclick="cm()">InvestigaciÃ³n</a>
+  <a href="/ubicaciones/" onclick="cm()">Ubicaciones</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="n-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC" style="width:32px;height:32px">
+    <div class="n-brand">UMBRELLA <span>CORP</span><small>PHARMACEUTICAL & BIOTECH RESEARCH</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="/" class="nav-link">Principal</a></li>
+    <li><a href="/empresa/" class="nav-link active">Empresa</a></li>
+    <li><a href="/investigacion/" class="nav-link">InvestigaciÃ³n</a></li>
+    <li><a href="/ubicaciones/" class="nav-link">Ubicaciones</a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- WARN BAR -->
+<div class="warn-bar">
+  <div class="warn-bar-txt">ZONA DE CONTENCIÃ“N â€” EQUIPO EPP OBLIGATORIO â€” PROHIBIDO EL PASO SIN AUTORIZACIÃ“N â€” RIESGO BIOLÃ“GICO NIVEL 4 â€” UMBRELLA CORPORATION SECURITY â€” ZONA DE CONTENCIÃ“N â€” EQUIPO EPP OBLIGATORIO â€” PROHIBIDO EL PASO SIN AUTORIZACIÃ“N â€” RIESGO BIOLÃ“GICO NIVEL 4 â€” UMBRELLA CORPORATION SECURITY â€” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â• ABOUT â•â•â•â•â•â•â•â•â•â• -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-left rv">
+      <div class="sec-eyebrow">// Perfil Corporativo</div>
+      <h2 class="sec-h">Avanzando la<br>ciencia <span class="r">sin lÃ­mites</span></h2>
+      <div class="sec-rule"></div>
+      <div class="about-text">
+        <p>Fundada en 1968, <strong>Umbrella Corporation</strong> opera la red privada de laboratorios farmacÃ©uticos y de biotecnologÃ­a mÃ¡s extensa del planeta. Nuestras instalaciones de nivel <em>BSL-4</em> albergan programas en virologÃ­a computacional, farmacologÃ­a molecular y bioingenierÃ­a de precisiÃ³n.</p>
+        <p>Cada aÃ±o generamos mÃ¡s avances clÃ­nicos documentados que cualquier instituciÃ³n pÃºblica o acadÃ©mica. Con presencia en <strong>mÃ¡s de 140 paÃ­ses</strong>, nuestros equipos trabajan 24/7 en el desarrollo de soluciones para condiciones complejas que la medicina convencional aÃºn no puede abordar.</p>
+        <p>En Umbrella, no esperamos que la naturaleza evolucione. <em>La dirigimos</em>. Cada compuesto, cada secuencia, cada organismo que sale de nuestros laboratorios es un paso hacia un futuro diseÃ±ado con precisiÃ³n cientÃ­fica absoluta.</p>
+        <div class="caution-note">
+          <div class="caution-note-ico">â–²</div>
+          <p>ClasificaciÃ³n interna â€” Nivel Alpha. InformaciÃ³n sujeta al protocolo de confidencialidad UC-7.3. Acceso restringido al personal autorizado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-right rv">
+      <div class="panel-hd">
+        <div>
+          <div class="panel-hd-lbl">PANEL DE MONITOREO</div>
+        </div>
+        <div class="panel-hd-id">UC/CTRL</div>
+        <div class="panel-hd-st">NOMINAL</div>
+      </div>
+
+      <!-- BIO WAVEFORM -->
+      <div class="bio-wave">
+        <div class="bw-lbl"><span>CARGA VIRAL â€” REAL TIME</span><span id="wave-val">0.24 Î¼g/mL</span></div>
+        <svg class="bw-svg" viewBox="0 0 400 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gT" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(0,200,100,.2)"/>
+              <stop offset="100%" stop-color="rgba(0,200,100,0)"/>
+            </linearGradient>
+            <linearGradient id="gR" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(200,16,46,.18)"/>
+              <stop offset="100%" stop-color="rgba(200,16,46,0)"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="21" x2="400" y2="21" stroke="rgba(26,30,33,.07)" stroke-width="1"/>
+          <line x1="0" y1="42" x2="400" y2="42" stroke="rgba(26,30,33,.07)" stroke-width="1"/>
+          <path d="M0,50 C20,48 35,20 55,22 S90,45 110,30 S145,8 170,18 S210,40 235,22 S270,6 295,18 S330,42 355,25 S385,10 400,16 L400,64 L0,64Z" fill="url(#gT)"/>
+          <path d="M0,50 C20,48 35,20 55,22 S90,45 110,30 S145,8 170,18 S210,40 235,22 S270,6 295,18 S330,42 355,25 S385,10 400,16" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+          <path d="M0,56 C30,54 55,48 80,50 S120,56 145,48 S185,35 210,44 S250,54 275,44 S315,36 340,46 S380,52 400,48 L400,64 L0,64Z" fill="url(#gR)"/>
+          <path d="M0,56 C30,54 55,48 80,50 S120,56 145,48 S185,35 210,44 S250,54 275,44 S315,36 340,46 S380,52 400,48" fill="none" stroke="var(--red)" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- METRICS -->
+      <div class="metric-grid">
+        <div class="metric-cell ok">
+          <div class="mc-lbl">Muestras Activas</div>
+          <div class="mc-val g">2,847</div>
+          <div class="mc-sub">â†‘ +124 desde ayer</div>
+        </div>
+        <div class="metric-cell al">
+          <div class="mc-lbl">Nivel ContenciÃ³n</div>
+          <div class="mc-val r">BSL-4</div>
+          <div class="mc-sub">Protocolo activo</div>
+        </div>
+        <div class="metric-cell ok">
+          <div class="mc-lbl">Temp. Lab Media</div>
+          <div class="mc-val">37.2Â°C</div>
+          <div class="mc-sub">Rango Ã³ptimo âœ“</div>
+        </div>
+        <div class="metric-cell wn">
+          <div class="mc-lbl">Integridad Sello</div>
+          <div class="mc-val">99.98%</div>
+          <div class="mc-sub">âš  Monitorear E02</div>
+        </div>
+      </div>
+
+      <!-- COMPOUNDS -->
+      <div class="compound-section">
+        <div class="compound-hd">PROGRESO DE SÃNTESIS â€” AGENTES ACTIVOS</div>
+        <div class="comp-row">
+          <span class="comp-lbl">T-VIRUS (MU-3)</span>
+          <div class="comp-track"><div class="comp-fill" style="width:87%;background:var(--red)"></div></div>
+          <span class="comp-pct">87%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-lbl">PROGENITOR VX</span>
+          <div class="comp-track"><div class="comp-fill" style="width:91%;background:var(--red)"></div></div>
+          <span class="comp-pct">91%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-lbl">G-VIRUS CTRL</span>
+          <div class="comp-track"><div class="comp-fill" style="width:62%;background:var(--green)"></div></div>
+          <span class="comp-pct">62%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-lbl">NE-Î± PARÃSITO</span>
+          <div class="comp-track"><div class="comp-fill" style="width:44%;background:#6688ff"></div></div>
+          <span class="comp-pct">44%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-lbl">ANTÃDOTO P-30</span>
+          <div class="comp-track"><div class="comp-fill" style="width:78%;background:var(--green)"></div></div>
+          <span class="comp-pct">78%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â•â•â•â•â•â•â•â• SERVICES â•â•â•â•â•â•â•â•â•â• -->
+<section id="services">
+  <div class="svc-layout">
+    <div class="svc-sidebar rv">
+      <div class="sec-eyebrow">// Divisiones</div>
+      <h2 class="sec-h">Ãreas de<br>InvestigaciÃ³n</h2>
+      <div class="sec-rule"></div>
+      <p>Cada divisiÃ³n opera con laboratorios, presupuesto y protocolos de bioseguridad completamente independientes. La coordinaciÃ³n requiere autorizaciÃ³n del Consejo Directivo nivel Omega.</p>
+      <div class="svc-count">04</div>
+    </div>
+    <div class="svc-grid">
+      <!-- SVC 1 -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 01</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 4C14 8 22 8 26 4M10 10C14 14 22 14 26 10M10 16C14 20 22 20 26 16M10 22C14 26 22 26 26 22M10 28C14 32 22 32 26 28" stroke="var(--red)" stroke-width="1.2" fill="none"/>
+            <line x1="10" y1="4" x2="10" y2="28" stroke="var(--mid)" stroke-width="1" opacity=".4"/>
+            <line x1="26" y1="4" x2="26" y2="28" stroke="var(--mid)" stroke-width="1" opacity=".4"/>
+            <circle cx="10" cy="4" r="1.5" fill="var(--red)"/><circle cx="26" cy="10" r="1.5" fill="var(--red)"/>
+            <circle cx="10" cy="16" r="1.5" fill="var(--red)"/><circle cx="26" cy="22" r="1.5" fill="var(--red)"/>
+            <circle cx="10" cy="28" r="1.5" fill="var(--red)"/>
+          </svg>
+        </div>
+        <div class="svc-name">InvestigaciÃ³n GenÃ©tica</div>
+        <p class="svc-desc">SecuenciaciÃ³n, ediciÃ³n CRISPR y sÃ­ntesis de genomas completos con precisiÃ³n del 99.97%. Nuestros laboratorios de genÃ³mica trabajan con organismos cuyas capacidades superan los parÃ¡metros biolÃ³gicos convencionales.</p>
+        <span class="svc-tag">BSL-4 Â· CLEARANCE ALPHA</span>
+      </div>
+      <!-- SVC 2 -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 02</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 4L14 18L7 30C6.2 31.5 7.3 33 9 33L27 33C28.7 33 29.8 31.5 29 30L22 18L22 4Z" stroke="var(--dark)" stroke-width="1.2" fill="none"/>
+            <line x1="12" y1="4" x2="24" y2="4" stroke="var(--dark)" stroke-width="1.5"/>
+            <path d="M9 25L27 25" stroke="var(--mid)" stroke-width=".8" opacity=".4"/>
+            <circle cx="13" cy="29" r="2" fill="var(--red)" opacity=".7"/>
+            <circle cx="19" cy="31" r="1.5" fill="var(--red)" opacity=".5"/>
+            <circle cx="24" cy="28" r="1" fill="var(--red)" opacity=".4"/>
+            <path d="M9 25L27 33" stroke="rgba(200,16,46,.1)" stroke-width="6" fill="none"/>
+          </svg>
+        </div>
+        <div class="svc-name">Desarrollo FarmacÃ©utico</div>
+        <p class="svc-desc">SÃ­ntesis de mÃ¡s de 400 compuestos bioactivos en desarrollo activo. Nuestro pipeline incluye molÃ©culas para condiciones aÃºn no clasificadas clÃ­nicamente. Pipeline Phase III: confidencial.</p>
+        <span class="svc-tag">FASE III INTERNA Â· RESTRINGIDO</span>
+      </div>
+      <!-- SVC 3 -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 03</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="5" stroke="var(--dark)" stroke-width="1.2"/>
+            <circle cx="7" cy="9" r="2.5" stroke="var(--mid)" stroke-width="1"/>
+            <circle cx="29" cy="9" r="2.5" stroke="var(--mid)" stroke-width="1"/>
+            <circle cx="7" cy="27" r="2.5" stroke="var(--mid)" stroke-width="1"/>
+            <circle cx="29" cy="27" r="2.5" stroke="var(--mid)" stroke-width="1"/>
+            <line x1="9.5" y1="11" x2="14" y2="15" stroke="var(--mid)" stroke-width=".9"/>
+            <line x1="26.5" y1="11" x2="22" y2="15" stroke="var(--mid)" stroke-width=".9"/>
+            <line x1="9.5" y1="25" x2="14" y2="21" stroke="var(--mid)" stroke-width=".9"/>
+            <line x1="26.5" y1="25" x2="22" y2="21" stroke="var(--mid)" stroke-width=".9"/>
+            <circle cx="18" cy="3" r="2" stroke="var(--red)" stroke-width="1"/>
+            <line x1="18" y1="5" x2="18" y2="13" stroke="var(--red)" stroke-width=".9"/>
+          </svg>
+        </div>
+        <div class="svc-name">BioingenierÃ­a Molecular</div>
+        <p class="svc-desc">DiseÃ±o y fabricaciÃ³n de organismos sintÃ©ticos con especificaciones controladas. Nuestros modelos computacionales de plegamiento proteico generan estructuras biolÃ³gicas que no existen en la naturaleza. Por diseÃ±o.</p>
+        <span class="svc-tag">EXPERIMENTAL Â· NIVEL OMEGA</span>
+      </div>
+      <!-- SVC 4 -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 04</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="14" stroke="var(--dark)" stroke-width="1.2"/>
+            <circle cx="18" cy="18" r="4" stroke="var(--dark)" stroke-width="1.2"/>
+            <path d="M18 14 L18 6" stroke="var(--mid)" stroke-width="1.2"/>
+            <path d="M21 16 L28 11" stroke="var(--mid)" stroke-width="1.2"/>
+            <path d="M21 20 L28 25" stroke="var(--mid)" stroke-width="1.2"/>
+            <path d="M18 22 L18 30" stroke="var(--mid)" stroke-width="1.2"/>
+            <path d="M15 20 L8 25" stroke="var(--mid)" stroke-width="1.2"/>
+            <path d="M15 16 L8 11" stroke="var(--mid)" stroke-width="1.2"/>
+            <circle cx="18" cy="6" r="2" fill="var(--red)"/>
+          </svg>
+        </div>
+        <div class="svc-name">Seguridad BiolÃ³gica</div>
+        <p class="svc-desc">Protocolos de contenciÃ³n, neutralizaciÃ³n y control para patÃ³genos de clase Sigma. La Ãºnica infraestructura privada certificada para agentes de riesgo mÃ¡ximo. Garantizamos la seguridadâ€¦ de quienes importan.</p>
+        <span class="svc-tag">BSL-4 MAX Â· MÃXIMA PRIORIDAD</span>
+      </div>
+      <!-- SVC 5 NUEVO -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 05</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 16 C10 10 14 6 18 6 C22 6 26 10 26 16" stroke="var(--dark)" stroke-width="1.2"/>
+            <rect x="10" y="16" width="16" height="14" stroke="var(--dark)" stroke-width="1.2"/>
+            <line x1="14" y1="16" x2="14" y2="30" stroke="var(--mid)" stroke-width="1" opacity=".4"/>
+            <line x1="18" y1="16" x2="18" y2="30" stroke="var(--mid)" stroke-width="1" opacity=".4"/>
+            <line x1="22" y1="16" x2="22" y2="30" stroke="var(--mid)" stroke-width="1" opacity=".4"/>
+            <circle cx="11" cy="8" r="1.5" fill="var(--red)"/>
+            <circle cx="32" cy="20" r="1.5" fill="var(--red)"/>
+          </svg>
+        </div>
+        <div class="svc-name">Plataforma ClÃ­nica</div>
+        <p class="svc-desc">Ensayos clÃ­nicos diseÃ±ados con especificaciones Ãºnicas. Somos el principal proveedor de datos clÃ­nicos primarios para instituciones farmacÃ©uticas globales. Confidencialidad garantizada a nivel mÃ¡ximo.</p>
+        <span class="svc-tag">GCP Â· DATOS FASE IV</span>
+      </div>
+      <!-- SVC 6 NUEVO -->
+      <div class="svc-card rv">
+        <div class="svc-n">DIV â€” 06</div>
+        <div class="svc-ico">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="10" stroke="var(--red)" stroke-width="1.2" opacity=".6"/>
+            <circle cx="18" cy="18" r="6" stroke="var(--dark)" stroke-width="1.2"/>
+            <path d="M18 12 L22 18 L18 24 L14 18 Z" fill="none" stroke="var(--mid)" stroke-width="1" opacity=".5"/>
+            <circle cx="18" cy="18" r="2" fill="var(--red)"/>
+          </svg>
+        </div>
+        <div class="svc-name">ConsultorÃ­a EstratÃ©gica</div>
+        <p class="svc-desc">Asesoramiento en mercados biotecnolÃ³gicos emergentes, regulaciÃ³n internacional y optimizaciÃ³n de cadenas de suministro. Nuestros consultores han trabajado con gobiernos, agencias y corporaciones de la lista Fortune.</p>
+        <span class="svc-tag">NIVEL CONFIDENCIAL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUEVA SECCIÃ“N: ESTATÃSTICAS CORPORATIVAS -->
+  <div style="background:var(--light);padding:60px;border-top:1px solid var(--border-s);margin-top:40px;">
+    <div class="sec-eyebrow">// Alcance Global</div>
+    <h2 class="sec-h">Presencia y Capacidades</h2>
+    <div class="sec-rule"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:40px;">
+      <div>
+        <div style="font-family:var(--cond);font-size:2.4rem;font-weight:800;color:var(--dark);line-height:1;margin-bottom:6px;">140+</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;">PaÃ­ses Operativos</div>
+      </div>
+      <div>
+        <div style="font-family:var(--cond);font-size:2.4rem;font-weight:800;color:var(--red);line-height:1;margin-bottom:6px;">7,200+</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;">Investigadores PhD</div>
+      </div>
+      <div>
+        <div style="font-family:var(--cond);font-size:2.4rem;font-weight:800;color:var(--dark);line-height:1;margin-bottom:6px;">31</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;">Laboratorios BSL-4</div>
+      </div>
+      <div>
+        <div style="font-family:var(--cond);font-size:2.4rem;font-weight:800;color:var(--dark);line-height:1;margin-bottom:6px;">890</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;">Patentes Activas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUEVA SECCIÃ“N: COMPROMISO CORPORATIVO -->
+<section style="background:var(--bg);padding:80px 60px;">
+  <div style="max-width:900px;">
+    <div class="sec-eyebrow">// FilosofÃ­a</div>
+    <h2 class="sec-h">El Futuro Requiere<br><span class="r">VisiÃ³n Disruptiva</span></h2>
+    <div class="sec-rule"></div>
+    <p style="font-size:1.05rem;line-height:2;color:var(--mid);font-weight:300;margin-bottom:20px;">La medicina tradicional avanza lentamente, limitada por paradigmas obsoletos y restricciones que nadie cuestiona. En Umbrella, cuestionamos todo. Invertimos donde otros retroceden. Ejecutamos lo que otros llaman imposible.</p>
+    <p style="font-size:1.05rem;line-height:2;color:var(--mid);font-weight:300;">Nuestro compromiso no es con la cautela, sino con la excelencia absoluta. Cada compuesto sintetizado, cada secuencia editada, cada ensayo clÃ­nico completado nos acerca a un futuro donde la limitaciÃ³n biolÃ³gica es una elecciÃ³n, no un destino.</p>
+  </div>
+</section>
+
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+Â© 1968â€“2024 Umbrella Corporation. Todos los derechos reservados.
+</footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},2600)});
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>50));
+
+const mob=document.getElementById('mob');
+const burger=document.getElementById('burger');
+function tm(){mob.classList.toggle('open');burger.classList.toggle('active')}
+function cm(){mob.classList.remove('open');burger.classList.remove('active')}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),(i%4)*80);
+      obs.unobserve(e.target);
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+const vals=['2,847','2,851','2,849','2,853','2,848'];
+let vi=0;
+setInterval(()=>{
+  const el=document.getElementById('wave-val');
+  if(el){
+    const v=(0.22+Math.random()*.06).toFixed(2);
+    el.textContent=v+' Î¼g/mL';
+  }
+  vi=(vi+1)%vals.length;
+},2800);
+</script>
+</body>
+</html>
+
+

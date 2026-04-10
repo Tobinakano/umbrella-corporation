@@ -1,6 +1,472 @@
-body {
+/* UMBRELLA CORPORATION - SECRET AREA */
+
+* {
     margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* HEADER */
+.classified-header {
+    background-color: #0d0d0d;
+    border-bottom: 3px solid #CC0000;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header-logo {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 8px #CC0000);
+}
+
+.security-banner {
+    background-color: #330000;
+    border: 2px solid #FF3333;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.banner-text {
+    color: #FF3333;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.banner-code {
+    color: #FFD700;
+    font-size: 0.85rem;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    color: #CC0000;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #00CCCC;
+    font-size: 1rem;
+}
+
+/* NAVIGATION */
+.nav-sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #222;
+    border-bottom: 2px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-link {
+    padding: 8px 15px;
+    background: transparent;
+    border: 1px solid #CC0000;
+    color: #CC0000;
+    text-decoration: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    background-color: #CC0000;
+    color: #fff;
+}
+
+/* MAIN */
+.container-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section-container {
+    margin-bottom: 40px;
+    padding: 25px;
+    background-color: #222;
+    border: 2px solid #333;
+    border-left: 5px solid #CC0000;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    color: #CC0000;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.section-description {
+    color: #00CCCC;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* BOXES */
+.content-box {
+    background-color: #1a1a1a;
+    padding: 15px;
+    border-left: 3px solid #FFD700;
+    margin: 15px 0;
+}
+
+.highlight-text {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.key-point {
+    background-color: #330000;
+    padding: 12px;
+    border-left: 4px solid #CC0000;
+    margin: 10px 0;
+}
+
+.subsection {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-left: 3px solid #00CCCC;
+}
+
+.subsection-title {
+    color: #00CCCC;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* LISTS */
+.feature-list {
+    list-style: none;
+    padding-left: 15px;
+}
+
+.feature-list li {
+    padding: 6px 0;
+    color: #e0e0e0;
+}
+
+.feature-list li:before {
+    content: "✓ ";
+    color: #00CC00;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+/* PROJECT CARDS */
+.project-card {
+    margin: 12px 0;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-left: 4px solid #FFD700;
+}
+
+.project-card h5 {
+    color: #FFD700;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.project-content p {
+    color: #e0e0e0;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.project-content ul {
+    list-style: none;
+    padding-left: 12px;
+}
+
+.project-content li {
+    color: #b0b0b0;
+    padding: 3px 0;
+}
+
+.project-content li:before {
+    content: "→ ";
+    color: #CC0000;
+    margin-right: 5px;
+}
+
+/* RESULT CARDS */
+.result-card {
+    margin: 12px 0;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-left: 4px solid #CC0000;
+}
+
+.result-card h5 {
+    color: #FFD700;
+    margin-bottom: 8px;
+}
+
+.result-content ul {
+    list-style: none;
+    padding-left: 12px;
+}
+
+.result-content li {
+    color: #b0b0b0;
+    padding: 3px 0;
+}
+
+.result-content li:before {
+    content: "• ";
+    color: #CC0000;
+    margin-right: 5px;
+}
+
+.badge {
+    display: inline-block;
+    background-color: #330000;
+    border: 1px solid #CC0000;
+    color: #FF3333;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+}
+
+.tyrant-examples {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+}
+
+.tyrant-examples p {
+    color: #FF3333;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* SECTIONS SPECIFIC */
+.intro-section { border-left-color: #00CCCC; }
+.produccion-section { border-left-color: #FF8C00; }
+.control-section { border-left-color: #FF3333; }
+.laboratorios-section { border-left-color: #00CCCC; }
+.personal-section { border-left-color: #FFD700; }
+.objetivo-section { border-left-color: #FF3333; }
+
+/* GRIDS */
+.laboratorios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.lab-card {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-top: 3px solid #FFD700;
+}
+
+.lab-card h5 {
+    color: #FFD700;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.lab-card li:before {
+    content: "✓ ";
+    color: #00CC00;
+    margin-right: 5px;
+}
+
+.scientist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.scientist-card {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border: 2px solid #FFD700;
+    text-align: center;
+}
+
+.scientist-card h6 {
+    color: #FFD700;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.scientist-card p {
+    color: #b0b0b0;
+    font-size: 0.8rem;
+}
+
+.buyers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.buyer-card {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border: 2px solid #CC0000;
+    text-align: center;
+}
+
+.buyer-card h5 {
+    color: #FFD700;
+    font-size: 1rem;
+}
+
+/* OBJETIVO */
+.objetive-box {
+    background-color: #330000;
+    padding: 20px;
+    border: 2px solid #FF3333;
+}
+
+.objective-highlight {
+    background-color: #1a1a1a;
+    border-left: 4px solid #FF3333;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.objective-highlight p {
+    color: #FF3333;
+    font-weight: bold;
+}
+
+.final-text {
+    text-align: center;
+    color: #FF3333;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* BUTTONS */
+.nav-footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    border-top: 2px solid #CC0000;
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 8px;
+    background: transparent;
+    border: 2px solid #CC0000;
+    color: #CC0000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    background-color: #CC0000;
+    color: #fff;
+}
+
+.btn-link.secondary {
+    border-color: #00CCCC;
+    color: #00CCCC;
+}
+
+.btn-link.secondary:hover {
+    background-color: #00CCCC;
+    color: #000;
+}
+
+/* FOOTER */
+.classified-footer {
+    background-color: #0d0d0d;
+    border-top: 3px solid #CC0000;
+    padding: 25px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.classified-footer p {
+    color: #b0b0b0;
+    margin: 5px 0;
+    font-size: 0.85rem;
+}
+
+.footer-classified {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 1.8rem;
+    }
+
+    .nav-sections {
+        flex-direction: column;
+    }
+
+    .nav-link {
+        width: 100%;
+        text-align: center;
+    }
+
+    .laboratorios-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .scientist-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .buyers-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 1.3rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .section-container {
+        padding: 15px;
+    }
+
+    .scientist-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-link {
+        display: block;
+        margin: 8px 0;
+    }
+}
+

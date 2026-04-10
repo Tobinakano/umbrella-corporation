@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvestigaciÃ³n y Proyectos â€” Umbrella Corporation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="ld-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+  <div class="ld-wrap">
+    <div class="ld-lbl">UMBRELLA CORP â€” INICIALIZANDO ACCESO</div>
+    <div class="ld-bars">
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+    </div>
+    <div class="ld-st">â–¸ VERIFICANDO CLEARANCE...</div>
+  </div>
+  <div class="ld-code">UC-LAB-ALPHA // BSL-4 // RACCOON CITY CENTRAL</div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <a href="/" onclick="cm()">Principal</a>
+  <a href="/empresa/" onclick="cm()">Empresa</a>
+  <a href="/investigacion/" onclick="cm()" class="active">InvestigaciÃ³n</a>
+  <a href="/ubicaciones/" onclick="cm()">Ubicaciones</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="n-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC" style="width:32px;height:32px">
+    <div class="n-brand">UMBRELLA <span>CORP</span><small>PHARMACEUTICAL & BIOTECH RESEARCH</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="/" class="nav-link">Principal</a></li>
+    <li><a href="/empresa/" class="nav-link">Empresa</a></li>
+    <li><a href="/investigacion/" class="nav-link active">InvestigaciÃ³n</a></li>
+    <li><a href="/ubicaciones/" class="nav-link">Ubicaciones</a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- â•â•â•â•â•â•â•â•â•â• PROJECTS â•â•â•â•â•â•â•â•â•â• -->
+<section id="projects">
+  <div class="container">
+    <div class="proj-top rv">
+      <div>
+        <div class="sec-eyebrow">// Iniciativas Clasificadas</div>
+        <h2 class="sec-h">Proyectos<br>en <span class="r">Curso</span></h2>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="proj-filters">
+        <button class="pf act">Todos</button>
+        <button class="pf">Fase Iâ€“II</button>
+        <button class="pf">Fase III</button>
+        <button class="pf">Clasificados</button>
+      </div>
+    </div>
+    <div class="proj-grid">
+      <!-- PROJ 1 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-001 Â· VIROLOGÃA</div>
+        <div class="proj-name">Proyecto T</div>
+        <p class="proj-desc">Desarrollo de un agente mutÃ¡geno de amplio espectro con capacidad de reactivaciÃ³n neurolÃ³gica. Pruebas en 12 instalaciones. Resultados superan expectativas del protocolo inicial en un 340%.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:87%;background:var(--red)"></div></div>
+          <span class="phase-pct">87%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE III â€” EN EVALUACIÃ“N INTERNA</div>
+      </div>
+      <!-- PROJ 2 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-002 Â· BIOINGENIERÃA</div>
+        <div class="proj-name">Proyecto Nemesis</div>
+        <p class="proj-desc">SÃ­ntesis de un organismo de respuesta autÃ³noma con capacidad de seguimiento selectivo. Tasa de Ã©xito: 99.7%. Aplicaciones: gestiÃ³n de incidentes de bioseguridad. AutorizaciÃ³n nivel mÃ¡ximo.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:100%;background:var(--dark)"></div></div>
+          <span class="phase-pct">OPR.</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">OPERATIVO â€” DESPLIEGUE AUTORIZADO</div>
+      </div>
+      <!-- PROJ 3 -->
+      <div class="proj-card rv">
+        <div class="cls-badge b">BETA</div>
+        <div class="proj-id">UC-PROJ-003 Â· GENÃ“MICA</div>
+        <div class="proj-name">Proyecto G</div>
+        <p class="proj-desc">InvestigaciÃ³n de un organismo con capacidad de regeneraciÃ³n celular ilimitada y adaptaciÃ³n autÃ³noma. Los sujetos exhiben resistencia a condiciones terminales convencionales. Contenido en SECTOR-G.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:62%;background:#4488ff"></div></div>
+          <span class="phase-pct">62%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE II â€” SUJETOS CONTENIDOS</div>
+      </div>
+      <!-- PROJ 4 -->
+      <div class="proj-card rv">
+        <div class="cls-badge a">ALPHA</div>
+        <div class="proj-id">UC-PROJ-004 Â· NEUROLOGÃA</div>
+        <div class="proj-name">Proyecto Lazarus</div>
+        <p class="proj-desc">Protocolo de reactivaciÃ³n neurolÃ³gica post-mortem. Aplicaciones mÃ©dicas con clasificaciÃ³n mÃ¡xima. Pruebas en instalaciones subterrÃ¡neas. Datos: disponibles Ãºnicamente bajo autorizaciÃ³n del Consejo.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:45%;background:var(--red)"></div></div>
+          <span class="phase-pct">45%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">CLASIFICADO â€” ACCESO DENEGADO</div>
+      </div>
+      <!-- PROJ 5 -->
+      <div class="proj-card rv">
+        <div class="cls-badge c">OPEN</div>
+        <div class="proj-id">UC-PROJ-005 Â· FARMACOLOGÃA</div>
+        <div class="proj-name">Proyecto AntÃ­doto P-30</div>
+        <p class="proj-desc">Desarrollo de un compuesto de bloqueo del sistema inmunolÃ³gico para aplicaciones de control de infecciones resistentes. P-30 inhibe la respuesta autÃ³noma con precisiÃ³n de 0.001 mg/kg en modelos animales.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:78%;background:var(--green)"></div></div>
+          <span class="phase-pct">78%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">FASE III â€” ENSAYO CLÃNICO INTERNO</div>
+      </div>
+      <!-- PROJ 6 -->
+      <div class="proj-card rv">
+        <div class="cls-badge b">BETA</div>
+        <div class="proj-id">UC-PROJ-006 Â· COGNITIVO</div>
+        <div class="proj-name">Proyecto Ashford</div>
+        <p class="proj-desc">Mejora cognitiva mediante modificaciÃ³n viral controlada. Los sujetos presentan capacidades intelectuales superiores al 400% de la norma. Efectos secundarios: monitoreados y clasificados. 12 sujetos activos.</p>
+        <div class="phase">
+          <span class="phase-lbl">FASE</span>
+          <div class="phase-track"><div class="phase-fill" style="width:55%;background:#4488ff"></div></div>
+          <span class="phase-pct">55%</span>
+        </div>
+        <div class="phase-lbl" style="font-family:var(--mono);font-size:7px;color:var(--muted)">SUJETOS ACTIVOS: 12 â€” EN OBSERVACIÃ“N</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â•â•â•â•â•â•â•â• RESEARCH CONSOLE â•â•â•â•â•â•â•â•â•â• -->
+<section id="console">
+  <div class="console-wrap">
+    <div class="console-left rv">
+      <div class="sec-eyebrow">// Consola de InvestigaciÃ³n</div>
+      <h2 class="sec-h" style="color:var(--light)">Datos en<br>tiempo real</h2>
+      <div class="sec-rule" style="background:rgba(255,255,255,.2)"><span style="position:absolute;right:-12px;top:-1px;width:8px;height:5px;background:var(--red);display:block"></span></div>
+      <p>Nuestros sistemas de monitoreo UCNET integran en tiempo real los datos de las 2,847 muestras activas en el complejo central. Cada parÃ¡metro es registrado, analizado y archivado bajo el protocolo de trazabilidad ISO-UC/4.</p>
+      <p>El sistema de alerta temprana detecta desviaciones en contenciÃ³n a nivel de 0.001%, garantizando la integridad de nuestros laboratoriosâ€¦ y del entorno externo.</p>
+      <div class="alert-box">
+        <p>âš  ALERTA ACTIVA â€” SECTOR E02 â€” DesviaciÃ³n de integridad 0.02% detectada. Protocolo Gamma en ejecuciÃ³n. Personal no autorizado debe evacuar el Ã¡rea inmediatamente.</p>
+      </div>
+    </div>
+    <div class="console-right">
+      <div class="term-block">
+        <div class="term-block-hd">
+          <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+          <div class="term-block-title">UC-SHELL // VIROLOGÃA</div>
+        </div>
+        <div class="tl d">// MÃ“DULO: ANÃLISIS DE SECUENCIAS T-VIRUS</div>
+        <div class="tl">$ run seq_analysis --sample T-004-MU3 --mode deep</div>
+        <div class="tl d">// Cargando base de datos genÃ³mica...</div>
+        <div class="tl">Comparando 8,241,800 pares de bases...</div>
+        <div class="tl d">// Progreso: [â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ] 100%</div>
+        <div class="tl s">âœ“ Secuencia T-004-MU3: VALIDADA</div>
+        <div class="tl">Mutaciones detectadas: 12 (esperadas: 8)</div>
+        <div class="tl w">âš  4 mutaciones no documentadas â€” revisiÃ³n requerida</div>
+        <div class="tl">$ flag_mutation --ids MU-09,MU-10,MU-11,MU-12</div>
+        <div class="tl s">âœ“ Muestras enviadas a DivisiÃ³n de BiocontenciÃ³n</div>
+        <div class="tl">$ <span class="t-blink"></span></div>
+      </div>
+      <div class="term-block">
+        <div class="term-block-hd">
+          <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+          <div class="term-block-title">UC-SHELL // CONTENCIÃ“N</div>
+        </div>
+        <div class="tl d">// MONITOR DE INTEGRIDAD â€” SECTOR E02</div>
+        <div class="tl">$ monitor --sector E02 --interval 500ms</div>
+        <div class="tl d">// [00:00:00.500] Estado: NOMINAL (99.98%)</div>
+        <div class="tl d">// [00:00:01.000] Estado: NOMINAL (99.98%)</div>
+        <div class="tl w">// [00:00:01.500] ANOMALÃA: Sello 3B â†’ 99.96%</div>
+        <div class="tl e">// [00:00:02.000] ALERTA: Umbral mÃ­nimo excedido</div>
+        <div class="tl">$ run countermeasure --target SEAL-3B --auto</div>
+        <div class="tl d">// Activando refuerzo magnÃ©tico...</div>
+        <div class="tl s">âœ“ Sello 3B restaurado: 99.99%</div>
+        <div class="tl d">// Incidente registrado: UC-LOG-20240315-E02</div>
+        <div class="tl">$ <span class="t-blink"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â•â•â•â•â•â•â•â• DEPARTAMENTOS â•â•â•â•â•â•â•â•â•â• -->
+<section style="background:var(--bg);padding:80px 60px;">
+  <div style="max-width:1200px;">
+    <div class="sec-eyebrow">// Divisiones Especializadas</div>
+    <h2 class="sec-h">Departamentos de<br><span class="r">InvestigaciÃ³n Avanzada</span></h2>
+    <div class="sec-rule"></div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px;">
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">VirologÃ­a Aplicada</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">SÃ­ntesis y anÃ¡lisis de agentes virales con aplicaciones mÃ©dicas y de contenciÃ³n. Nuestro departamento ha producido breakthroughs significativos. Actualmente desarrollamos vectores de entrega con precisiÃ³n submicroscÃ³pica.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Raccoon City Central, Kyoto, Bajo Lagos</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">BioingenierÃ­a OrgÃ¡nica</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">DiseÃ±o y construcciÃ³n de organismos sintÃ©ticos con funciones especializadas. Dominamos la integraciÃ³n de mÃºltiples genomas en estructuras viables y autÃ³nomas.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: SECTOR-G SubterrÃ¡neo, Facility IV Europa</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">EdiciÃ³n GenÃ³mica</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">Servicios CRISPR de Ãºltima generaciÃ³n con precisiÃ³n de 0.0001% en off-target effects. Nuestro equipo puede rediseÃ±ar secuencias completas en ciclos de 48 horas.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Lab Complex Alpha, Singapur Tower</p>
+      </div>
+      
+      <div style="border-left:3px solid var(--red);padding-left:24px;">
+        <h3 style="font-family:var(--cond);font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:10px;text-transform:uppercase;">InmunologÃ­a Extrema</h3>
+        <p style="font-size:.9rem;line-height:1.8;color:var(--mid);margin-bottom:12px;">InvestigaciÃ³n en sistemas inmunolÃ³gicos rediseÃ±ados. Estudiamos organismos con capacidades que los sistemas biolÃ³gicos convencionales nunca alcanzarÃ­an naturalmente.</p>
+        <p style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;">Instalaciones: Facility VI Asia-PacÃ­fico</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+Â© 1968â€“2024 Umbrella Corporation. Todos los derechos reservados.
+</footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},2600)});
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>50));
+
+const mob=document.getElementById('mob');
+const burger=document.getElementById('burger');
+function tm(){mob.classList.toggle('open');burger.classList.toggle('active')}
+function cm(){mob.classList.remove('open');burger.classList.remove('active')}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),(i%4)*80);
+      obs.unobserve(e.target);
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.pf').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.pf').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+  })
+});
+</script>
+</body>
+</html>
+
+

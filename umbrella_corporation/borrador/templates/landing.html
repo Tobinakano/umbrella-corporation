@@ -334,21 +334,6 @@ nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shado
 .form-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
 .form-disclaimer{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;line-height:1.6;max-width:220px}
 
-/* ══════════ TESTIMONIALS ══════════ */
-#testi{background:var(--bg2);border-top:1px solid var(--border-s)}
-.testi-hd{padding:64px 60px 0;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:48px}
-.testi-desc{font-size:.88rem;line-height:1.9;color:var(--mid);font-weight:300}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.testi-card{background:var(--light);padding:36px 30px;transition:background .3s;position:relative}
-.testi-card:hover{background:#fff}
-.testi-qmark{font-family:var(--cond);font-size:3.5rem;font-weight:800;color:rgba(200,16,46,.08);line-height:1;margin-bottom:12px}
-.testi-txt{font-size:.83rem;line-height:1.9;color:var(--mid);font-weight:300;font-style:italic;margin-bottom:20px}
-.testi-auth{display:flex;align-items:center;gap:10px}
-.testi-av{width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;font-weight:600;color:var(--dark);border:1px solid var(--border-s);flex-shrink:0}
-.testi-name{font-size:.82rem;font-weight:500;letter-spacing:.03em;color:var(--dark)}
-.testi-role{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.1em;margin-top:2px}
-.testi-cls{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:7px;letter-spacing:.14em;color:rgba(200,16,46,.45);border:1px solid rgba(200,16,46,.18);padding:3px 7px}
-
 /* ══════════ FOOTER ══════════ */
 footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
 .foot-top{border-bottom:1px solid rgba(255,255,255,.06)}
@@ -434,7 +419,6 @@ footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
   <a href="#services" onclick="cm()">Divisiones</a>
   <a href="#projects" onclick="cm()">Proyectos</a>
   <a href="#facilities" onclick="cm()">Instalaciones</a>
-  <a href="#recruitment" onclick="cm()">Reclutamiento</a>
 </div>
 
 <!-- NAV -->
@@ -949,97 +933,6 @@ footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
   </div>
 </section>
 
-<!-- ══════════ RECRUITMENT ══════════ -->
-<section id="recruitment">
-  <div class="rec-wrap">
-    <div class="rec-left rv">
-      <div class="sec-eyebrow">// Recursos Humanos</div>
-      <h2 class="sec-h">Únete a la<br>élite <span class="r">científica</span></h2>
-      <div class="sec-rule"></div>
-      <p>Buscamos investigadores con disposición para trabajar en los límites de lo que la ciencia convencional considera posible. En Umbrella, el único límite es la lealtad corporativa.</p>
-      <p>Ofrecemos laboratorios de última generación, acceso a proyectos clasificados, beneficios corporativos de nivel Sigma y un contrato de confidencialidad vitalicio. El proceso de selección incluye evaluación biométrica, psicológica y de compatibilidad genética.</p>
-      <div class="rec-fine">
-        Al enviar su solicitud, acepta los términos del Acuerdo UC-7.3 de no divulgación permanente, el Protocolo de Seguridad Biológica Nivel Omega y renuncia a toda reclamación derivada de incidentes de laboratorio. Umbrella Corporation no se responsabiliza de efectos secundarios del proceso de incorporación. Resultados individuales pueden variar significativamente.
-      </div>
-    </div>
-    <div class="rec-right rv">
-      <div class="form-hd">SOLICITUD DE ACCESO — UC/HR/RECRUITMENT</div>
-      <div class="form-grid">
-        <div class="field"><label>Nombre</label><input type="text" placeholder="Dr. / Dra."></div>
-        <div class="field"><label>Apellido</label><input type="text" placeholder=""></div>
-        <div class="field"><label>Email Corporativo</label><input type="email" placeholder="nombre@institucion.edu"></div>
-        <div class="field"><label>Área de Especialización</label>
-          <select>
-            <option value="">Seleccionar...</option>
-            <option>Virología Avanzada</option>
-            <option>Ingeniería Genética</option>
-            <option>Farmacología Molecular</option>
-            <option>Biocontención</option>
-            <option>Neurobiología</option>
-            <option>Clasificado</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-grid full">
-        <div class="field"><label>Nivel de Clearance Actual</label>
-          <select>
-            <option>Sin clearance previo</option>
-            <option>Nivel 1 — Público</option>
-            <option>Nivel 2 — Restringido</option>
-            <option>Nivel 3 — Confidencial</option>
-            <option>Nivel 4 — Alto Secreto</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-footer">
-        <div class="form-disclaimer">Al aplicar acepta el acuerdo UC-7.3 y el Protocolo Omega. Sin excepciones.</div>
-        <button class="btn p">Enviar Solicitud →</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ TESTIMONIALS ══════════ -->
-<section id="testi">
-  <div class="testi-hd">
-    <div class="rv">
-      <div class="sec-eyebrow">// Personal Científico</div>
-      <h2 class="sec-h">Voces del<br><span class="r">Laboratorio</span></h2>
-      <div class="sec-rule"></div>
-    </div>
-    <p class="testi-desc rv">Nuestros investigadores son seleccionados entre los mejores del mundo. Sus aportaciones —las que podemos divulgar— representan lo más avanzado de la ciencia contemporánea.</p>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-card rv">
-      <div class="testi-cls">ALPHA</div>
-      <div class="testi-qmark">"</div>
-      <p class="testi-txt">Nunca imaginé que la ciencia pudiera llevarse tan lejos. Umbrella me dio acceso a recursos y tecnología que ningún otro laboratorio del mundo se atrevería a financiar. El precio fue razonable.</p>
-      <div class="testi-auth">
-        <div class="testi-av">AW</div>
-        <div><div class="testi-name">Dr. Alexander Wesker</div><div class="testi-role">DIRECTOR — INVESTIGACIÓN VIRAL · BSL-4</div></div>
-      </div>
-    </div>
-    <div class="testi-card rv">
-      <div class="testi-cls">BETA</div>
-      <div class="testi-qmark">"</div>
-      <p class="testi-txt">El Proyecto T redefinió todo lo que creía saber sobre biología molecular. Ahora entiendo cosas que los manuales ni siquiera contemplan. Algunas noches, esos conocimientos me quitan el sueño.</p>
-      <div class="testi-auth">
-        <div class="testi-av">LS</div>
-        <div><div class="testi-name">Dra. Lisa Strauss</div><div class="testi-role">INVESTIGADORA SENIOR — GENÓMICA</div></div>
-      </div>
-    </div>
-    <div class="testi-card rv">
-      <div class="testi-cls">GAMMA</div>
-      <div class="testi-qmark">"</div>
-      <p class="testi-txt">Cuando firmé el contrato no esperaba que las "responsabilidades adicionales" incluyeran lo que incluyen. Pero los beneficios son excepcionales. Y la pensión… si llegas a cobrarla.</p>
-      <div class="testi-auth">
-        <div class="testi-av">MR</div>
-        <div><div class="testi-name">Dr. Marcus Reid</div><div class="testi-role">JEFE DE BIOINGENIERÍA — NIVEL OMEGA</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
   <div class="foot-top">
@@ -1081,7 +974,6 @@ footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
         <h5>Contacto</h5>
         <ul class="foot-links">
           <li><a href="#">Sede Principal</a></li>
-          <li><a href="#">Reclutamiento</a></li>
           <li><a href="#">Emergencias BSL</a></li>
           <li><a href="#">Acceso Clasificado</a></li>
           <li><a href="#">Denuncias [INACT.]</a></li>
