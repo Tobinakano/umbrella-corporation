@@ -9,7 +9,7 @@ Mazuera- devops
     inicio sesión
 
 *Ramas asignadas*
-
+Juan Sebastian Mazuera y Nicolas Hernandez (log in/register)
 Julian Millan: Farmaceutica (legal)
 Juan Pablo Carvajal: armas (legal)
 Samuel David Ceballos: investigacion (legal)
