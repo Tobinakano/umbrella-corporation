@@ -419,13 +419,13 @@
             }
             
             // Update active navigation link based on scroll position
-            const sections = document.querySelectorAll('section[id]');
+            const sections = document.querySelectorAll('[id="overview"], [id="areas"], [id="achievements"], [id="contact"]');
             let current = '';
             
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
+                if (window.scrollY >= sectionTop - 200) {
                     current = section.getAttribute('id');
                 }
             });
@@ -595,50 +595,6 @@
         window.addEventListener('load', () => {
             document.body.style.opacity = '1';
         });
-    </script>
-</body>
-</html>
-
-            document.querySelectorAll('a, .btn, .glitch-hover, .project-card, .tech-card, .about-card, .warning-card').forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    cursor.style.width = '22px';
-                    cursor.style.height = '22px';
-                });
-                element.addEventListener('mouseleave', () => {
-                    cursor.style.width = '14px';
-                    cursor.style.height = '14px';
-                });
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.18 });
-
-            revealTargets.forEach(node => observer.observe(node));
-
-            function glitchPulse() {
-                glitchables.forEach(element => {
-                    if (Math.random() > 0.72) {
-                        element.classList.add('glitch-active');
-                        setTimeout(() => element.classList.remove('glitch-active'), 320);
-                    }
-                });
-            }
-            setInterval(glitchPulse, 4200);
-
-            function animateCursor() {
-                posX += (mouseX - posX) * speed;
-                posY += (mouseY - posY) * speed;
-                cursor.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
-                requestAnimationFrame(animateCursor);
-            }
-
-            requestAnimationFrame(animateCursor);
-        })();
     </script>
 </body>
 </html>
