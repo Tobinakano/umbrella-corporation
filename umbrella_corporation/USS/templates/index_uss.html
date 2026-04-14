@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Umbrella Corporation | Strategic Biotech Systems</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">>
+</head>
+<body>
+	<div class="ambient-grid"></div>
+
+	<header class="site-header">
+		<div class="container nav-wrap">
+			<a href="#" class="brand" aria-label="Umbrella Corporation Home">
+				<img class="logo-mark" src="{% static 'assets/i_m_pid_477,c_116_76_1108x1108,bc_000000,ar_1x1,o_landscape,pm_4,s_630,q_90.jpg' %}" alt="Umbrella Corporation logo">
+				<span class="brand-copy">
+					<strong>Umbrella Corporation</strong>
+					<small>Strategic Biotech Systems</small>
+				</span>
+			</a>
+			<nav class="menu" aria-label="Navegacion principal">
+				<a href="#mision">Mision</a>
+				<a href="#vision">Vision</a>
+				<a href="#objetivos">Objetivos</a>
+				<a href="#contacto">Contacto</a>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero section">
+			<div class="container hero-layout">
+				<div class="hero-copy">
+					<p class="badge">Global Command Network | 2026</p>
+					<h1>Precision corporativa para ciencia, bioseguridad y respuesta critica.</h1>
+					<p class="lead">
+						Operamos con estandares de control industrial, analitica avanzada y
+						trazabilidad completa para entornos biologicos de alta complejidad.
+					</p>
+					<div class="hero-actions">
+						<a href="#mision" class="btn btn-solid">Ver estrategia</a>
+						<a href="#contacto" class="btn btn-outline">Contactar division</a>
+					</div>
+				</div>
+				<aside class="hero-status" aria-label="Indicadores corporativos">
+					<p class="status-title">Operational Snapshot</p>
+					<div class="status-item">
+						<span>Laboratorios clase A+</span>
+						<strong>28</strong>
+					</div>
+					<div class="status-item">
+						<span>Protocolos validados</span>
+						<strong>99.2%</strong>
+					</div>
+					<div class="status-item">
+						<span>Programas activos</span>
+						<strong>146</strong>
+					</div>
+					<div class="status-item">
+						<span>Centros regionales</span>
+						<strong>17</strong>
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<section class="trust-strip section">
+			<div class="container trust-grid">
+				<p>Compliance ISO-BIO 500</p>
+				<p>Defense Logistics Alliance</p>
+				<p>Global Health Protocol Network</p>
+				<p>Strategic Research Council</p>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container">
+				<div class="section-head">
+					<p class="badge">Corporate Framework</p>
+					<h2>Direccion estrategica</h2>
+				</div>
+				<div class="core-grid">
+					<article id="mision" class="core-card">
+						<h3>Mision</h3>
+						<p>
+							Impulsar soluciones cientificas y tecnologicas de alto impacto para proteger,
+							optimizar y fortalecer la capacidad humana frente a escenarios biologicos complejos.
+						</p>
+					</article>
+					<article id="vision" class="core-card">
+						<h3>Vision</h3>
+						<p>
+							Ser la corporacion de referencia mundial en innovacion biotecnologica,
+							reconocida por transformar riesgos globales en sistemas de respuesta inteligente.
+						</p>
+					</article>
+					<article id="objetivos" class="core-card">
+						<h3>Objetivos</h3>
+						<ul>
+							<li>Consolidar una red internacional de laboratorios de nueva generacion.</li>
+							<li>Escalar programas de investigacion con trazabilidad y control total.</li>
+							<li>Fortalecer alianzas entre division farmaceutica, industrial y tactica.</li>
+							<li>Garantizar protocolos eticos y de contencion con auditoria continua.</li>
+						</ul>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="section intelligence">
+			<div class="container intelligence-grid">
+				<div class="intel-copy">
+					<p class="badge">Umbrella Intelligence Unit</p>
+					<h2>Arquitectura operativa de nueva generacion.</h2>
+					<p>
+						Integramos unidades de farmacologia, analitica molecular y defensa tactica
+						en un solo ecosistema de decision para ejecucion rapida y segura.
+					</p>
+				</div>
+				<div class="intel-cards">
+					<article>
+						<h4>Bioseguridad</h4>
+						<p>Monitoreo continuo con deteccion temprana y respuesta escalable.</p>
+					</article>
+					<article>
+						<h4>Farmaceutica</h4>
+						<p>Modelado de precision para terapias y vacunas de alta eficiencia.</p>
+					</article>
+					<article>
+						<h4>Defensa tactica</h4>
+						<p>Protocolos de proteccion para activos criticos y operaciones globales.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer id="contacto" class="site-footer">
+		<div class="container footer-layout">
+			<div>
+				<p>Umbrella Corporation</p>
+				<small>Division Central de Operaciones y Control</small>
+			</div>
+			<a href="#">corporate@umbrella-corp.com</a>
+		</div>
+	</footer>
+</body>
+</html>

@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'umbrella_corporation.wsgi.application'
 
 # Configuración de archivos estáticos
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'borrador' / 'static',
     BASE_DIR / 'Alimentaria' / 'static',
@@ -136,4 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = '/static/'
+=======
+# Nota: STATIC_URL y STATICFILES_DIRS ya están configurados arriba
+>>>>>>> Andres_Camilo
