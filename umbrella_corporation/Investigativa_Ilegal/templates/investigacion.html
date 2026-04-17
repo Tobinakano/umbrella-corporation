@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigacion</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        :root {
+            --red: #cc0000;
+            --red-dark: #7a0000;
+            --red-glow: #ff1111;
+            --bg: #020202;
+            --bg2: #080808;
+            --bg3: #0f0f0f;
+            --surface: #111111;
+            --surface2: #1a1a1a;
+            --border: #2a2a2a;
+            --text: #d0cfc8;
+            --text-dim: #f0ede5;
+            --text-bright: #f0ede5;
+            --green: #00ff41;
+            --amber: #ff8800;
+            --mono: 'Share Tech Mono', monospace;
+            --display: 'Orbitron', sans-serif;
+            --body: 'Rajdhani', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* Scanlines overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.18) 2px,
+                rgba(0,0,0,0.18) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Noise grain */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: -200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
+            animation: grain 0.5s steps(1) infinite;
+        }
+
+        @keyframes grain {
+            0%  { transform: translate(0,0); }
+            20% { transform: translate(-3%,-4%); }
+            40% { transform: translate(-6%, 3%); }
+            60% { transform: translate(4%, -2%); }
+            80% { transform: translate(-2%, 6%); }
+            100%{ transform: translate(5%, -4%); }
+        }
+
+        /* ─── UTILITY ─── */
+        .mono { font-family: var(--mono); }
+        .tag { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+        .redline { width: 60px; height: 2px; background: var(--red); margin: 12px 0; }
+        .classified-stamp {
+            display: inline-block;
+            border: 2px solid var(--red);
+            color: var(--red);
+            font-family: var(--display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            padding: 3px 10px;
+            transform: rotate(-2deg);
+            text-shadow: 0 0 8px var(--red);
+            box-shadow: 0 0 8px rgba(204,0,0,0.3), inset 0 0 8px rgba(204,0,0,0.05);
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(2,2,2,0.95);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(8px);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .umbrella-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .nav-title {
+            font-family: var(--display);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--text-bright);
+            line-height: 1.2;
+        }
+        .nav-title span { color: var(--red); }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 1px;
+            background: var(--red);
+            transform: scaleX(0);
+            transition: transform 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-bright); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--green);
+            letter-spacing: 1px;
+        }
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ─── HERO ─── */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 80px 60px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 80% at 80% 50%, rgba(100,0,0,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(80,0,0,0.08) 0%, transparent 60%),
+                linear-gradient(180deg, #020202 0%, #060606 100%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(204,0,0,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(204,0,0,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 700px;
+            z-index: 2;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .hero-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-transform: uppercase;
+        }
+        .hero-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--red) 0%, transparent 100%);
+            max-width: 120px;
+        }
+
+        .hero-title {
+            font-family: var(--display);
+            font-size: clamp(38px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 0.95;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+        .hero-title .accent { color: var(--red); text-shadow: 0 0 40px rgba(204,0,0,0.5); }
+        .hero-title .dim { color: var(--text-dim); }
+
+        .hero-subtitle {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-dim);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            margin-top: 16px;
+        }
+
+        .hero-desc {
+            font-size: 17px;
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 540px;
+            margin-bottom: 48px;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            font-family: var(--display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            cursor: crosshair;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(204,0,0,0.6);
+        }
+
+        .btn-secondary {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: transparent;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            padding: 14px 32px;
+            cursor: crosshair;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            border-color: var(--red);
+            color: var(--text-bright);
+        }
+
+        /* Floating corner decoration */
+        .corner-deco {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 320px;
+            height: 320px;
+            opacity: 0.15;
+        }
+
+        /* ─── TICKER ─── */
+        .ticker-bar {
+            background: var(--red-dark);
+            border-top: 1px solid var(--red);
+            border-bottom: 1px solid var(--red);
+            padding: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 40s linear infinite;
+            gap: 0;
+        }
+        .ticker-item {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.7);
+            padding: 0 40px;
+        }
+        .ticker-item::before { content: '⬥  '; color: var(--red-glow); }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ─── SECTION WRAPPER ─── */
+        section { padding: 100px 80px; }
+        .section-header { margin-bottom: 60px; }
+        .section-number {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--red);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: var(--display);
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            color: var(--text-bright);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+        .section-title .red { color: var(--red); }
+
+        /* ─── PROGRAMS GRID ─── */
+        #programs { background: var(--bg2); position: relative; }
+        #programs::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--red), transparent);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .program-card {
+            background: var(--surface);
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+        .program-card:hover { background: var(--surface2); }
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px;
+            height: 0;
+            background: var(--red);
+            transition: height 0.4s ease;
+        }
+        .program-card:hover::before { height: 100%; }
+
+        .program-id {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--red);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+        .program-name {
+            font-family: var(--display);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .program-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+        .program-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .program-meta-item {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+        }
+        .program-meta-item span:last-child { color: var(--amber); }
+        .program-level { color: var(--red) !important; }
+
+        /* ─── VIRUS STRAINS ─── */
+        #virus { background: var(--bg); }
+
+        .virus-list {
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+        }
+        .virus-row {
+            display: grid;
+            grid-template-columns: 180px 1fr 140px 140px 100px;
+            align-items: center;
+            background: var(--surface);
+            padding: 20px 28px;
+            transition: background 0.2s;
+            gap: 20px;
+        }
+        .virus-row:hover { background: var(--surface2); }
+        .virus-row.header {
+            background: var(--bg3);
+            padding: 12px 28px;
+        }
+        .virus-row.header div {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .virus-code {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--red);
+            font-weight: 400;
+        }
+        .virus-name {
+            font-size: 15px;
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+        .virus-origin {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+        .virus-stage {
+            font-family: var(--mono);
+            font-size: 11px;
+        }
+        .stage-active { color: var(--green); }
+        .stage-terminated { color: var(--text-dim); text-decoration: line-through; }
+        .stage-critical { color: var(--red); }
+        .stage-classified { color: var(--amber); }
+
+        .danger-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 0;
+            overflow: hidden;
+        }
+        .danger-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber), var(--red));
+        }
+
+        /* ─── FACILITIES ─── */
+        #facilities { background: var(--bg2); }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .facility-card {
+            border: 1px solid var(--border);
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+        .facility-card:hover { border-color: var(--red); }
+
+        .facility-header {
+            background: var(--surface2);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .facility-id {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+        .facility-status {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border: 1px solid currentColor;
+        }
+        .status-active { color: var(--green); }
+        .status-compromised { color: var(--amber); }
+        .status-destroyed { color: var(--text-dim); }
+        .status-sealed { color: var(--red); }
+
+        .facility-body { padding: 24px 20px; }
+        .facility-name {
+            font-family: var(--display);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .facility-location {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+        }
+        .facility-desc {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.5;
+            font-weight: 300;
+        }
+        .facility-footer {
+            padding: 12px 20px;
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+        .facility-stat {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+        .facility-stat strong { color: var(--text); }
+
+        /* ─── TERMINAL ─── */
+        #terminal-section { background: var(--bg); padding: 100px 80px; }
+
+        .terminal-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .terminal {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            font-family: var(--mono);
+            font-size: 13px;
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            background: var(--surface2);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .terminal-dots { display: flex; gap: 6px; }
+        .t-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+        }
+        .t-dot.red { background: #cc3333; }
+        .t-dot.yellow { background: #ccaa00; }
+        .t-dot.green { background: #33aa33; }
+        .terminal-title-bar {
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            min-height: 340px;
+        }
+
+        .t-line {
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: t-appear 0.1s forwards;
+        }
+        .t-line:nth-child(1)  { animation-delay: 0.2s; }
+        .t-line:nth-child(2)  { animation-delay: 0.5s; }
+        .t-line:nth-child(3)  { animation-delay: 0.8s; }
+        .t-line:nth-child(4)  { animation-delay: 1.1s; }
+        .t-line:nth-child(5)  { animation-delay: 1.5s; }
+        .t-line:nth-child(6)  { animation-delay: 1.9s; }
+        .t-line:nth-child(7)  { animation-delay: 2.3s; }
+        .t-line:nth-child(8)  { animation-delay: 2.7s; }
+        .t-line:nth-child(9)  { animation-delay: 3.1s; }
+        .t-line:nth-child(10) { animation-delay: 3.5s; }
+        .t-line:nth-child(11) { animation-delay: 4.0s; }
+        .t-line:nth-child(12) { animation-delay: 4.5s; }
+        .t-line:nth-child(13) { animation-delay: 5.0s; }
+        .t-line:nth-child(14) { animation-delay: 5.5s; }
+        .t-line:nth-child(15) { animation-delay: 6.0s; }
+        @keyframes t-appear { to { opacity: 1; } }
+
+        .t-prompt { color: var(--red); }
+        .t-cmd { color: var(--text-bright); }
+        .t-comment { color: var(--text-dim); }
+        .t-output { color: var(--green); }
+        .t-warn { color: var(--amber); }
+        .t-error { color: var(--red); }
+        .t-blank { height: 10px; }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--green);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ─── CLASSIFIED NOTICE ─── */
+        #notice {
+            background: var(--red-dark);
+            border-top: 2px solid var(--red);
+            border-bottom: 2px solid var(--red);
+            padding: 60px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        #notice::before {
+            content: 'CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED';
+            position: absolute;
+            top: 10px; left: 0; right: 0;
+            font-family: var(--display);
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.06);
+            white-space: nowrap;
+        }
+        #notice::after {
+            content: 'CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED  CLASSIFIED';
+            position: absolute;
+            bottom: 10px; left: 0; right: 0;
+            font-family: var(--display);
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.06);
+            white-space: nowrap;
+        }
+
+        .notice-inner {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+        }
+
+        .notice-icon {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .notice-text h2 {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .notice-text p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+            padding: 48px 80px 32px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 12px;
+            max-width: 300px;
+            font-weight: 300;
+        }
+
+        .footer-links-group h4 {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .footer-links-group ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .footer-links-group a {
+            font-size: 13px;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links-group a:hover { color: var(--text-bright); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* ─── ANIMATIONS ON LOAD ─── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .fade-up:nth-child(1) { animation-delay: 0.1s; }
+        .fade-up:nth-child(2) { animation-delay: 0.25s; }
+        .fade-up:nth-child(3) { animation-delay: 0.4s; }
+        .fade-up:nth-child(4) { animation-delay: 0.55s; }
+        .fade-up:nth-child(5) { animation-delay: 0.7s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--red-dark); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+        /* ─── CLICKABLE CARDS ─── */
+        .program-card[data-img],
+        .virus-row[data-img],
+        .facility-card[data-img] {
+            cursor: crosshair;
+        }
+        .program-card[data-img]:hover .program-name::after,
+        .facility-card[data-img]:hover .facility-name::after {
+            content: ' ↗';
+            color: var(--red);
+            font-size: 12px;
+        }
+        .virus-row[data-img]:hover .virus-name::after {
+            content: ' ↗';
+            color: var(--red);
+            font-size: 11px;
+        }
+
+        /* ─── MODAL ─── */
+        #img-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        #img-modal.open { display: flex; }
+
+        .modal-box {
+            position: relative;
+            max-width: 860px;
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--red);
+            box-shadow: 0 0 60px rgba(204,0,0,0.3);
+            animation: modal-in 0.25s ease;
+        }
+        @keyframes modal-in {
+            from { opacity: 0; transform: scale(0.96) translateY(12px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+        }
+        .modal-title {
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-bright);
+            text-transform: uppercase;
+        }
+        .modal-id {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--red);
+            letter-spacing: 2px;
+        }
+        .modal-close {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            font-family: var(--mono);
+            font-size: 13px;
+            width: 28px; height: 28px;
+            cursor: crosshair;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .modal-close:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .modal-img-wrap {
+            position: relative;
+            background: #000;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-img-wrap img {
+            display: block;
+            width: 100%;
+            max-height: 520px;
+            object-fit: contain;
+        }
+        .modal-scan {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px
+            );
+            pointer-events: none;
+        }
+        .modal-loader {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            padding: 60px 0;
+            display: none;
+        }
+        .modal-loader.visible { display: block; }
+
+        .modal-footer {
+            padding: 10px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg3);
+        }
+        .modal-footer-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+        .modal-classified {
+            font-family: var(--display);
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 2px 8px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══════════ NAV ══════════ -->
+    <nav>
+        <div class="nav-logo">
+            <svg class="umbrella-icon" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="300" height="300" fill="black"/>
+                <!-- 8 segments alternating red/white, concave outer edges -->
+                <!-- TOP red -->
+                <path d="M150,150 L100,30 Q150,50 200,30 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- TOP-RIGHT white -->
+                <path d="M150,150 L200,30 Q221,79 270,100 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- RIGHT red -->
+                <path d="M150,150 L270,100 Q250,150 270,200 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- BOTTOM-RIGHT white -->
+                <path d="M150,150 L270,200 Q221,221 200,270 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- BOTTOM red -->
+                <path d="M150,150 L200,270 Q150,250 100,270 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- BOTTOM-LEFT white -->
+                <path d="M150,150 L100,270 Q79,221 30,200 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- LEFT red -->
+                <path d="M150,150 L30,200 Q50,150 30,100 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- TOP-LEFT white -->
+                <path d="M150,150 L30,100 Q79,79 100,30 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+                <!-- Center dot -->
+                <circle cx="150" cy="150" r="10" fill="black"/>
+            </svg>
+            <div class="nav-title">UMBRELLA <span>CORPORATION</span><br>DIV. INVESTIGACIÓN ESPECIAL</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#programs">Programas</a></li>
+            <li><a href="#virus">Cepas</a></li>
+            <li><a href="#facilities">Instalaciones</a></li>
+            <li><a href="#terminal-section">Acceso</a></li>
+        </ul>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            SISTEMA ACTIVO — NIVEL Ω
+        </div>
+    </nav>
+
+    <!-- ══════════ HERO ══════════ -->
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+
+        <div class="hero-content">
+            <div class="hero-eyebrow fade-up">
+                <span class="hero-tag">PROTOCOLO OMEGA — ACCESO RESTRINGIDO</span>
+                <div class="hero-line"></div>
+            </div>
+            <h1 class="hero-title fade-up">
+                DIVISIÓN<br>
+                <span class="accent">INVESTIGACIÓN</span><br>
+                <span class="dim">NO AUTORIZADA</span>
+            </h1>
+            <p class="hero-subtitle fade-up">UMBRELLA CORP. // OPERACIONES CLASIFICADAS // EST. 1998</p>
+            <p class="hero-desc fade-up">
+                Bienvenido al portal interno de la División de Investigación de Alto Riesgo. 
+                Desarrollo de patógenos de siguiente generación, ingeniería genética avanzada y 
+                armamento biológico. Toda actividad es monitoreada. Toda información es propiedad exclusiva de Umbrella.
+            </p>
+            <div class="hero-actions fade-up">
+                <a href="#programs" class="btn-primary">ACCEDER A PROGRAMAS</a>
+                <a href="#virus" class="btn-secondary">VER CEPAS ACTIVAS</a>
+            </div>
+        </div>
+
+        <!-- Umbrella Logo decorativo -->
+        <svg class="corner-deco" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- TOP red -->
+            <path d="M150,150 L100,30 Q150,50 200,30 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- TOP-RIGHT white -->
+            <path d="M150,150 L200,30 Q221,79 270,100 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- RIGHT red -->
+            <path d="M150,150 L270,100 Q250,150 270,200 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- BOTTOM-RIGHT white -->
+            <path d="M150,150 L270,200 Q221,221 200,270 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- BOTTOM red -->
+            <path d="M150,150 L200,270 Q150,250 100,270 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- BOTTOM-LEFT white -->
+            <path d="M150,150 L100,270 Q79,221 30,200 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- LEFT red -->
+            <path d="M150,150 L30,200 Q50,150 30,100 Z" fill="#cc0000" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <!-- TOP-LEFT white -->
+            <path d="M150,150 L30,100 Q79,79 100,30 Z" fill="white" stroke="black" stroke-width="7" stroke-linejoin="round"/>
+            <circle cx="150" cy="150" r="10" fill="black"/>
+        </svg>
+    </section>
+
+    <!-- ══════════ TICKER ══════════ -->
+    <div class="ticker-bar">
+        <div class="ticker-track">
+            <span class="ticker-item">VIRUS-T FASE OMEGA — ACTIVO</span>
+            <span class="ticker-item">PROYECTO NEMESIS — EJECUCIÓN EN PROGRESO</span>
+            <span class="ticker-item">INSTALACIÓN G — NIVEL CRITICO</span>
+            <span class="ticker-item">PROTOCOLO DE CONTENCIÓN DELTA — FALLIDO</span>
+            <span class="ticker-item">SUJETO 13 — MUTACIÓN NO ESPERADA</span>
+            <span class="ticker-item">DIVISIÓN HUNK — OPERATIVA</span>
+            <span class="ticker-item">ANÁLISIS DE ADN PROGENITOR — 74% COMPLETO</span>
+            <span class="ticker-item">RACCOON CITY — DATOS BORRADOS</span>
+            <span class="ticker-item">VIRUS-T FASE OMEGA — ACTIVO</span>
+            <span class="ticker-item">PROYECTO NEMESIS — EJECUCIÓN EN PROGRESO</span>
+            <span class="ticker-item">INSTALACIÓN G — NIVEL CRITICO</span>
+            <span class="ticker-item">PROTOCOLO DE CONTENCIÓN DELTA — FALLIDO</span>
+            <span class="ticker-item">SUJETO 13 — MUTACIÓN NO ESPERADA</span>
+            <span class="ticker-item">DIVISIÓN HUNK — OPERATIVA</span>
+            <span class="ticker-item">ANÁLISIS DE ADN PROGENITOR — 74% COMPLETO</span>
+            <span class="ticker-item">RACCOON CITY — DATOS BORRADOS</span>
+        </div>
+    </div>
+
+    <!-- ══════════ PROGRAMAS ══════════ -->
+    <section id="programs">
+        <div class="section-header">
+            <div class="section-number">// 01 — PROGRAMAS DE INVESTIGACIÓN</div>
+            <h2 class="section-title">PROYECTOS <span class="red">CLASIFICADOS</span></h2>
+        </div>
+
+        <div class="programs-grid">
+            <div class="program-card" data-img="https://www.evilresource.com/images/data/full/remake/tyrant.png" data-title="PROYECTO TYRANT" data-id="PRG-001 // T-VIRUS">
+                <div class="program-id">PRG-001 // T-VIRUS</div>
+                <div class="program-name">PROYECTO TYRANT</div>
+                <p class="program-desc">Cepa mutada del virus de la Progenitora diseñada para reanimación celular. Investigación de arma biológica de destrucción masiva y control de huéspedes mediante manipulación del sistema nervioso.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">OMEGA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>Dr. W. Birkin</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>ACTIVO</span></div>
+                </div>
+            </div>
+
+            <div class="program-card" data-img="https://static.wikia.nocookie.net/residentevil/images/4/47/RE2R_Birkin_2.png/revision/latest/scale-to-width-down/950?cb=20191224213838" data-title="PROYECTO PROGENITOR G" data-id="PRG-002 // G-VIRUS">
+                <div class="program-id">PRG-002 // G-VIRUS</div>
+                <div class="program-name">PROYECTO PROGENITOR G</div>
+                <p class="program-desc">Segunda generación viral de evolución autónoma. El huésped experimenta mutaciones regenerativas ilimitadas, adaptación hostil al entorno y transferencia de parásitos. Sin antídoto conocido.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">ALPHA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>Dr. W. Birkin</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>COMPROMETIDO</span></div>
+                </div>
+            </div>
+
+            <div class="program-card" data-img="https://revistamorcego.com/wp-content/uploads/2020/04/hipertextual-resident-evil-3-remake-nunca-estaras-salvo-nemesis-ni-salas-seguras-2020605152-786x436.jpg" data-title="PROYECTO NEMESIS-T" data-id="PRG-003 // NEMESIS">
+                <div class="program-id">PRG-003 // NEMESIS</div>
+                <div class="program-name">PROYECTO NEMESIS-T</div>
+                <p class="program-desc">Integración del parásito NE-α tipo en el huésped Tyrant. Objetivo: conservar capacidades cognitivas superiores mientras se mantiene obediencia absoluta. Prototipo de soldado biológico de siguiente generación.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">OMEGA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>Dr. N. Callos</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>DESPLEGADO</span></div>
+                </div>
+            </div>
+
+            <div class="program-card" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYznvSRRLK7O-LAgIW-NsLoIKoCzGBbyuD2A&s" data-title="CÓDIGO VERONICA" data-id="PRG-004 // VERONICA">
+                <div class="program-id">PRG-004 // VERONICA</div>
+                <div class="program-name">CÓDIGO VERONICA</div>
+                <p class="program-desc">Fusión del ADN de la Progenitora con el huésped vivo. Eliminación de la fase reactiva inestable mediante injerto de genes de insectos antárticos. Tasa de supervivencia: 0.01%.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">OMEGA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>Alfred Ashford</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>SELLADO</span></div>
+                </div>
+            </div>
+
+            <div class="program-card" data-img="https://static.wikia.nocookie.net/villains/images/9/90/Ganados_rampaging_RE4R.png/revision/latest?cb=20230413230917" data-title="PROYECTO GANADOS" data-id="PRG-005 // LAS PLAGAS">
+                <div class="program-id">PRG-005 // LAS PLAGAS</div>
+                <div class="program-name">PROYECTO GANADOS</div>
+                <p class="program-desc">Parásito Plaga de control neural. Infección voluntaria para dominación de poblaciones completas. El huésped conserva funciones motoras y obedece al portador del medallón control. Origen: Los Iluminados.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">BETA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>CONFIDENCIAL</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>EN EVALUACIÓN</span></div>
+                </div>
+            </div>
+
+            <div class="program-card" data-img="https://www.projectumbrella.net/uploads/1/3/0/6/130616230/eruro4_orig.png" data-title="PROYECTO UROBOROS" data-id="PRG-006 // UROBOROS">
+                <div class="program-id">PRG-006 // UROBOROS</div>
+                <div class="program-name">PROYECTO UROBOROS</div>
+                <p class="program-desc">Virus Progenitor reformulado para selección genética masiva. Diseñado para eliminar a la humanidad "inferior" y establecer una nueva era biológica dirigida por Umbrella. Desarrollado en África Occidental.</p>
+                <div class="program-meta">
+                    <div class="program-meta-item"><span>CLASIFICACIÓN</span><span class="program-level">OMEGA</span></div>
+                    <div class="program-meta-item"><span>INVESTIGADOR PRINCIPAL</span><span>A. Wesker</span></div>
+                    <div class="program-meta-item"><span>ESTADO</span><span>NEUTRALIZADO</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ VIRUS STRAINS ══════════ -->
+    <section id="virus">
+        <div class="section-header">
+            <div class="section-number">// 02 — REGISTRO DE CEPAS</div>
+            <h2 class="section-title">CEPAS <span class="red">ACTIVAS & ARCHIVADAS</span></h2>
+        </div>
+
+        <div class="virus-list">
+            <div class="virus-row header">
+                <div>CÓDIGO CEPA</div>
+                <div>DENOMINACIÓN</div>
+                <div>ORIGEN</div>
+                <div>FASE</div>
+                <div>PELIGROSIDAD</div>
+            </div>
+            <div class="virus-row" data-img="https://static.wikia.nocookie.net/residentevilfanfiction/images/3/37/T-Virus_Alpha_%28Contained%29.png/revision/latest?cb=20130308145040" data-title="T-Virus (Alpha)" data-id="T-001-α">
+                <div class="virus-code">T-001-α</div>
+                <div class="virus-name">T-Virus (Alpha)</div>
+                <div class="virus-origin">Arklay Labs</div>
+                <div class="virus-stage stage-terminated">TERMINADO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:85%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://sm.ign.com/ign_es/feature/r/resident-e/resident-evil-a-traves-de-sus-virus_ep2y.jpg" data-title="T-Virus (Omega)" data-id="T-002-Ω">
+                <div class="virus-code">T-002-Ω</div>
+                <div class="virus-name">T-Virus (Omega)</div>
+                <div class="virus-origin">NEST Facility</div>
+                <div class="virus-stage stage-critical">CRÍTICO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:100%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://darkdevastation.wordpress.com/wp-content/uploads/2010/08/g-virus_sample.jpg?w=449&h=324" data-title="G-Virus (Birkin)" data-id="G-001">
+                <div class="virus-code">G-001</div>
+                <div class="virus-name">G-Virus (Birkin)</div>
+                <div class="virus-origin">Raccoon City</div>
+                <div class="virus-stage stage-terminated">CONTENIDO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:98%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://residentevilpodcast.com/wp-content/uploads/2021/08/tveronicavirus.jpg" data-title="Código Verónica" data-id="C-001">
+                <div class="virus-code">C-001</div>
+                <div class="virus-name">Código Verónica</div>
+                <div class="virus-origin">Isla Rockfort</div>
+                <div class="virus-stage stage-classified">CLASIFICADO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:92%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://www.evilresource.com/images/data/full/re4/las-plagas.png" data-title="Las Plagas" data-id="P-001">
+                <div class="virus-code">P-001</div>
+                <div class="virus-name">Las Plagas</div>
+                <div class="virus-origin">España Rural</div>
+                <div class="virus-stage stage-active">ACTIVO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:78%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5YYOFqkuhiSiur3Mgeot1g3u_ldeGy3aVpw&s" data-title="Uroboros" data-id="U-001">
+                <div class="virus-code">U-001</div>
+                <div class="virus-name">Uroboros</div>
+                <div class="virus-origin">África Occidental</div>
+                <div class="virus-stage stage-terminated">NEUTRALIZADO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:96%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://static.wikia.nocookie.net/residentevil/images/a/a9/Moulded_Render_RE7.png/revision/latest?cb=20170202155945" data-title="Cadou / Mold" data-id="C-002">
+                <div class="virus-code">C-002</div>
+                <div class="virus-name">Cadou / Mold</div>
+                <div class="virus-origin">Louisiana — Dulvey</div>
+                <div class="virus-stage stage-active">ACTIVO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:88%"></div></div></div>
+            </div>
+            <div class="virus-row" data-img="https://preview.redd.it/megamycete-mold-or-t-virus-the-man-made-viruses-v0-8t6xdrqy5mog1.jpg?width=412&format=pjpg&auto=webp&s=21f2b4673aaa0fcb029332282c9e10cd7ba56193" data-title="Hongo Megamiceta" data-id="M-001">
+                <div class="virus-code">M-001</div>
+                <div class="virus-name">Hongo Megamiceta</div>
+                <div class="virus-origin">Europa del Este</div>
+                <div class="virus-stage stage-classified">CLASIFICADO</div>
+                <div><div class="danger-bar"><div class="danger-fill" style="width:100%"></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ FACILITIES ══════════ -->
+    <section id="facilities">
+        <div class="section-header">
+            <div class="section-number">// 03 — RED DE INSTALACIONES</div>
+            <h2 class="section-title">INSTALACIONES <span class="red">GLOBALES</span></h2>
+        </div>
+
+        <div class="facilities-grid">
+            <div class="facility-card" data-img="https://static.wikia.nocookie.net/headhuntershorrorhouse/images/f/fb/Spencer_Mansion.jpg/revision/latest?cb=20170127013506" data-title="MANSIÓN ARKLAY" data-id="FAC-001">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-001</span>
+                    <span class="facility-status status-destroyed">● DESTRUIDA</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">MANSIÓN ARKLAY</div>
+                    <div class="facility-location">📍 Montañas Arklay, Raccoon City</div>
+                    <p class="facility-desc">Primera instalación subterránea de investigación viral. Laboratorio de desarrollo del T-Virus, crianza de B.O.W.s experimentales y pruebas en humanos. Infiltrada y destruida en 1998.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>∅</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B4</strong></span>
+                    <span class="facility-stat">Año: <strong>1977–1998</strong></span>
+                </div>
+            </div>
+
+            <div class="facility-card" data-img="https://static.wikia.nocookie.net/residentevil/images/1/1a/NEST_laboratorio.png/revision/latest?cb=20211130152451&path-prefix=es" data-title="NEST-1 RACCOON CITY" data-id="FAC-002">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-002</span>
+                    <span class="facility-status status-destroyed">● DESTRUIDA</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">NEST — LABORATORIO SUBTERRÁNEO</div>
+                    <div class="facility-location">📍 Raccoon City, subsuelo</div>
+                    <p class="facility-desc">Centro principal de producción del T-Virus bajo el Departamento de Policía. Hogar del proyecto G-Virus de William Birkin. Destruida por bomba nuclear táctica durante el incidente de Raccoon City.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>∅</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B7</strong></span>
+                    <span class="facility-stat">Año: <strong>1985–1998</strong></span>
+                </div>
+            </div>
+
+            <div class="facility-card" data-img="https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/14830246/revelations_2_island.0.0.1487853359.jpg" data-title="ISLA ROCKFORT" data-id="FAC-003">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-003</span>
+                    <span class="facility-status status-destroyed">● COMPROMETIDA</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">ISLA ROCKFORT</div>
+                    <div class="facility-location">📍 Atlántico Sur — Clasificado</div>
+                    <p class="facility-desc">Base de entrenamiento de Operaciones Especiales y laboratorio del Código Verónica bajo el mando de Alfred Ashford. Atacada por Wesker y posteriormente destruida.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>≈80</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B3</strong></span>
+                    <span class="facility-stat">Año: <strong>1990–1999</strong></span>
+                </div>
+            </div>
+
+            <div class="facility-card" data-img="https://residentevilpodcast.com/wp-content/uploads/2021/09/southpolefacility.jpg" data-title="INSTALACIÓN ANTÁRTICA" data-id="FAC-004">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-004</span>
+                    <span class="facility-status status-sealed">● SELLADA</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">INSTALACIÓN ANTARTICA</div>
+                    <div class="facility-location">📍 Antártida — Sector 7</div>
+                    <p class="facility-desc">Laboratorio de desarrollo del Código Verónica y almacenamiento criogénico de Alexia Ashford durante 15 años. Sellada tras colapso estructural y eliminación de sujetos experimentales.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>∅</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B5</strong></span>
+                    <span class="facility-stat">Año: <strong>1983–1999</strong></span>
+                </div>
+            </div>
+
+            <div class="facility-card" data-img="https://static.wikia.nocookie.net/monster/images/e/e0/Caucasusplant.png/revision/latest?cb=20171106160359" data-title="COMPLEJO CAUCÁSICO" data-id="FAC-005">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-005</span>
+                    <span class="facility-status status-active">● ACTIVA</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">COMPLEJO INDUSTRIAL CAUCÁSICO</div>
+                    <div class="facility-location">📍 Europa del Este — CLASIFICADO</div>
+                    <p class="facility-desc">Instalación activa de producción de B.O.W.s de tercera generación. Armamento biológico para mercados gubernamentales selectos. Operada bajo identidad corporativa encubierta.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>≈340</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B6</strong></span>
+                    <span class="facility-stat">Año: <strong>2003–HOY</strong></span>
+                </div>
+            </div>
+
+            <div class="facility-card" data-img="https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/19862444/Resident_Evil_3_NEST_2_Vaccine_10.jpg?q=50&fit=crop&w=825&dpr=1.5" data-title="NEST-2 RACCOON CITY" data-id="FAC-006">
+                <div class="facility-header">
+                    <span class="facility-id">FAC-006</span>
+                    <span class="facility-status status-compromised">● EN RIESGO</span>
+                </div>
+                <div class="facility-body">
+                    <div class="facility-name">NEST 2 — RACCOON CITY</div>
+                    <div class="facility-location">📍 Raccoon City — Sector Norte</div>
+                    <p class="facility-desc">Segunda instalación de producción del T-Virus desarrollada en paralelo al NEST original. Fuga biológica contenida temporalmente. Señal de baliza activada por personal UBCS superviviente.</p>
+                </div>
+                <div class="facility-footer">
+                    <span class="facility-stat">Personal: <strong>≈12</strong></span>
+                    <span class="facility-stat">Nivel: <strong>B4</strong></span>
+                    <span class="facility-stat">Año: <strong>1992–1998</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ TERMINAL ══════════ -->
+    <section id="terminal-section">
+        <div class="section-header" style="text-align:center">
+            <div class="section-number" style="text-align:center">// 04 — ACCESO SEGURO</div>
+            <h2 class="section-title">TERMINAL <span class="red">OMEGA</span></h2>
+        </div>
+
+        <div class="terminal-wrap">
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <div class="terminal-dots">
+                        <div class="t-dot red"></div>
+                        <div class="t-dot yellow"></div>
+                        <div class="t-dot green"></div>
+                    </div>
+                    <span class="terminal-title-bar">UMBRELLA CORP — SISTEMA OMEGA v4.7.2 — ACCESO NIVEL ∅</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="t-line"><span class="t-prompt">umbrella@omega:~$ </span><span class="t-cmd">ssh nest-mainframe --clearance=omega</span></div>
+                    <div class="t-line t-output">Conectando con NEST-CORE... ████████████ 100%</div>
+                    <div class="t-line t-output">Autenticación biométrica: APROBADA</div>
+                    <div class="t-line t-blank"></div>
+                    <div class="t-line t-comment">## BIENVENIDO AL SISTEMA CENTRAL UMBRELLA — CLASIFICADO NIVEL Ω</div>
+                    <div class="t-line t-comment">## TODA SESIÓN ES REGISTRADA Y MONITOREADA</div>
+                    <div class="t-line t-blank"></div>
+                    <div class="t-line"><span class="t-prompt">omega@nest:~$ </span><span class="t-cmd">status --all-programs</span></div>
+                    <div class="t-line t-warn">[WARN] 3 protocolos de contención comprometidos</div>
+                    <div class="t-line t-error">[ERROR] Instalación Arklay: SIN RESPUESTA</div>
+                    <div class="t-line t-output">[OK] Proyecto Nemesis: Desplegado — Raccoon City activo</div>
+                    <div class="t-line t-output">[OK] Investigación Progenitor: 74% — Módulo G en fase 3</div>
+                    <div class="t-line"><span class="t-prompt">omega@nest:~$ </span><span class="cursor"></span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ NOTICE ══════════ -->
+    <div id="notice">
+        <div class="notice-inner">
+            <div class="notice-icon">⚠</div>
+            <div class="notice-text">
+                <h2>ADVERTENCIA DE CONFIDENCIALIDAD</h2>
+                <p>
+                    El acceso no autorizado a este sistema constituye una violación del Artículo 7, Sección 14 del Acuerdo de Confidencialidad Corporativa de Umbrella Corporation. 
+                    Toda información contenida en este portal es propiedad exclusiva de Umbrella Corp. La divulgación está penalizada con eliminación inmediata por el Equipo de Respuesta Especial UBCS.
+                    <br><br>
+                    <span class="mono" style="font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.4)">REF: PROTOCOLO-Ω // CLEARANCE-LEVEL-7 // FILE-ID: UCO-1998-RCC-CLASSIFIED</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="nav-title" style="font-size:14px">UMBRELLA <span style="color:var(--red)">CORPORATION</span></div>
+                <p>Dedicados al progreso científico sin límites morales desde 1969. Nuestra misión: reescribir la naturaleza de la humanidad.</p>
+            </div>
+            <div class="footer-links-group">
+                <h4>Divisiones</h4>
+                <ul>
+                    <li><a href="#">Investigación Biológica</a></li>
+                    <li><a href="#">Armamento B.O.W.</a></li>
+                    <li><a href="#">Operaciones UBCS</a></li>
+                    <li><a href="#">Contención de Brotes</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-group">
+                <h4>Acceso</h4>
+                <ul>
+                    <li><a href="#">Portal Clasificado</a></li>
+                    <li><a href="#">Base de Datos Viral</a></li>
+                    <li><a href="#">Registros de Sujetos</a></li>
+                    <li><a href="#">Archivos Omega</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-group">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Protocolo de Silencio</a></li>
+                    <li><a href="#">Eliminación de Testigos</a></li>
+                    <li><a href="#">Encubrimiento Corporativo</a></li>
+                    <li><a href="#">Contacto Directo</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 1969–2026 UMBRELLA CORPORATION — TODOS LOS DERECHOS RESERVADOS — USO INTERNO EXCLUSIVO</p>
+            <p>BUILD: OMEGA-4.7.2 // CLEARANCE: NIVEL-7 // STATUS: ACTIVO</p>
+        </div>
+    </footer>
+
+    <!-- ══════════ MODAL ══════════ -->
+    <div id="img-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-id" id="modal-id-text">—</div>
+                    <div class="modal-title" id="modal-title-text">—</div>
+                </div>
+                <button class="modal-close" id="modal-close-btn" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="modal-img-wrap">
+                <div class="modal-loader" id="modal-loader">CARGANDO ARCHIVO CLASIFICADO...</div>
+                <img id="modal-img" src="" alt="" style="display:none"/>
+                <div class="modal-scan"></div>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-footer-tag">UMBRELLA CORP // ARCHIVO VISUAL CLASIFICADO</span>
+                <span class="modal-classified">CLASSIFIED</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const modal    = document.getElementById('img-modal');
+            const img      = document.getElementById('modal-img');
+            const loader   = document.getElementById('modal-loader');
+            const titleEl  = document.getElementById('modal-title-text');
+            const idEl     = document.getElementById('modal-id-text');
+            const closeBtn = document.getElementById('modal-close-btn');
+
+            function openModal(src, title, id) {
+                titleEl.textContent = title || '—';
+                idEl.textContent    = id    || '—';
+                img.style.display   = 'none';
+                loader.classList.add('visible');
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+
+                const tmp = new Image();
+                tmp.onload = function() {
+                    img.src = src;
+                    img.style.display = 'block';
+                    loader.classList.remove('visible');
+                };
+                tmp.onerror = function() {
+                    loader.textContent = 'ARCHIVO DAÑADO — ACCESO DENEGADO';
+                };
+                tmp.src = src;
+            }
+
+            function closeModal() {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+                img.src = '';
+                loader.textContent = 'CARGANDO ARCHIVO CLASIFICADO...';
+                loader.classList.remove('visible');
+            }
+
+            // Delegate clicks on all data-img elements
+            document.addEventListener('click', function(e) {
+                const el = e.target.closest('[data-img]');
+                if (el) {
+                    openModal(
+                        el.dataset.img,
+                        el.dataset.title,
+                        el.dataset.id
+                    );
+                }
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+
+            // Click outside modal-box to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+
+            // ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+            });
+        })();
+    </script>
+
+</body>
+</html>
