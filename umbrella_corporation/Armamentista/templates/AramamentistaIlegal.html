@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Armas Ilegales - Resident Evil</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{% static 'CSS/armamentista_ilegal.css' %}" type="text/css">
 </head>
 <body>
 
 <header>
-    <img src="../static/models/umbrella.png" alt="Umbrella Logo">
+    <img src="{% static 'models/umbrella.png' %}" alt="Umbrella Logo">
     <h1>Armas Ilegales en Resident Evil</h1>
     <p>Distribución, uso y operaciones clandestinas</p>
 </header>
@@ -25,7 +26,7 @@
 <section id="intro">
     <h2>Introducción</h2>
 
-    <img src="../static/models/lab.jpg" alt="Laboratorio Umbrella">
+    <img src="{% static 'models/lab.jpg' %}" alt="Laboratorio Umbrella">
 
     <p>
         En el universo de Resident Evil, las armas ilegales representan una etapa posterior al desarrollo
@@ -42,7 +43,7 @@
 <section id="comercializacion">
     <h2>Comercialización Ilegal de B.O.W.s</h2>
 
-    <img src="../static/models/bow.jpg" alt="BOW">
+    <img src="{% static 'models/bow.jpg' %}" alt="BOW">
 
     <p>
         Umbrella no solo desarrollaba armas biológicas, sino que también las vendía ilegalmente a distintos
@@ -67,7 +68,7 @@
 <section id="mercado">
     <h2>Mercado Negro Bio-Orgánico</h2>
 
-    <img src="../static/models/raccoon.jpg" alt="Raccoon City">
+    <img src="{% static 'models/raccoon.jpg' %}" alt="Raccoon City">
 
     <p>
         Después de los eventos de Raccoon City, las armas biológicas comenzaron a comercializarse
@@ -90,7 +91,7 @@
 <section id="robo">
     <h2>Robo y Contrabando de Virus</h2>
 
-    <img src="../static/models/wesker.jpg" alt="Albert Wesker">
+    <img src="{% static 'models/wesker.jpg' %}" alt="Albert Wesker">
 
     <p>
         El robo de virus fue uno de los factores más importantes en la expansión del bioterrorismo.
@@ -114,7 +115,7 @@
 <section id="operaciones">
     <h2>Operaciones Especiales Ilegales</h2>
 
-    <img src="../static/models/hunk.jpg" alt="HUNK">
+    <img src="{% static 'models/hunk.jpg' %}" alt="HUNK">
 
     <p>
         Las operaciones especiales fueron misiones encubiertas realizadas por Umbrella y otras organizaciones
