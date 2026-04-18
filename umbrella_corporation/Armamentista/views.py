@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
-
-def index(request):
+def index_legal(request):
+    return render(request, 'armamentista_legal.html')
+    
+def index_ilegal(request):   
     return render(request, 'AramamentistaIlegal.html')
