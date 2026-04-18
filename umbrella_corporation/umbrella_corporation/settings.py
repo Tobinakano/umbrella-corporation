@@ -38,9 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'borrador',
-<<<<<<< HEAD
-    'Armamentista',
-=======
     'Alimentaria',
     'Armamentista',
     'Farmaceutica',
@@ -48,7 +45,6 @@ INSTALLED_APPS = [
     'Investigacion',
     'Secret_Area',
     'USS',
->>>>>>> e77830f40f162c557a4bf9ec852f903884fded35
 ]
 
 MIDDLEWARE = [
