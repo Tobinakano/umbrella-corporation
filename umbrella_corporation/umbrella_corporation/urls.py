@@ -28,7 +28,6 @@ urlpatterns = [
     path('investigacion/', include('Investigacion.urls')),
     path('secret_area/', include('Secret_Area.urls')),
     path('uss/', include('USS.urls')),
-
-    
     path('', include('borrador.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
