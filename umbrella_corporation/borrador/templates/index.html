@@ -225,6 +225,25 @@ nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shado
   <div class="h-inner">
     <!-- LEFT -->
     <div class="h-left">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;">
+            <form method="post" action="/quick_register/" style="background:#fff;border:2px solid #c8102e;padding:32px 24px;border-radius:12px;box-shadow:0 0 16px #c8102e22;max-width:350px;width:100%;margin-bottom:24px;">
+                {% csrf_token %}
+                <h2 style="color:#c8102e;margin-bottom:18px;">Registro rápido</h2>
+                <input type="text" name="username" placeholder="Usuario" required style="width:90%;padding:10px;margin:10px 0;border:1.5px solid #c8102e;border-radius:6px;">
+                <input type="password" name="password" placeholder="Contraseña" required style="width:90%;padding:10px;margin:10px 0;border:1.5px solid #c8102e;border-radius:6px;">
+                <button type="submit" style="background:#c8102e;color:#fff;border:none;border-radius:6px;padding:10px 30px;font-size:1em;cursor:pointer;margin-top:10px;">Registrarse</button>
+                {% if quick_error %}
+                <div style="color:#fff;background:#c8102e;border-radius:6px;padding:8px;margin-top:10px;">{{ quick_error }}</div>
+                {% endif %}
+                {% if quick_success %}
+                <div style="color:#fff;background:#00c864;border-radius:6px;padding:8px;margin-top:10px;">{{ quick_success }}</div>
+                {% endif %}
+            </form>
+            <div style="display:flex;gap:24px;">
+                <a href="/accounts/login/"><button style="background:#fff;color:#c8102e;border:2px solid #c8102e;border-radius:6px;padding:10px 30px;font-size:1em;cursor:pointer;">Iniciar sesión</button></a>
+                <a href="/accounts/register/"><button style="background:#c8102e;color:#fff;border:none;border-radius:6px;padding:10px 30px;font-size:1em;cursor:pointer;">Registrarse</button></a>
+            </div>
+        </div>
       <div class="h-specimen"><div class="h-spec-dot"></div>SECTOR A — ACCESO AUTORIZADO — UC/HQ/MAIN-01</div>
       <img class="h-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Corporation">
       <h1 class="h-h1">Our<br>Business<br>is <span class="r">Life</span><br><span class="ghost">Itself.</span></h1>
