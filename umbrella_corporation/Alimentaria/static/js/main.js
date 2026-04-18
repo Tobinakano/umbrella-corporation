@@ -13,7 +13,7 @@ allImages.forEach((img) => {
         }
 
         img.dataset.fallbackApplied = '1';
-        img.src = '/static/Alimentaria/img/placeholder.jpg';
+        img.src = '/static/img/placeholder.jpg';
     });
 });
 
