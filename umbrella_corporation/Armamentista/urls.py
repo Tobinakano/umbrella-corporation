@@ -1,7 +1,6 @@
 from django.urls import path
-<<<<<<< HEAD
-from .views import armamentista_legal_view
+from . import views
 
 urlpatterns = [
-    path('', armamentista_legal_view, name='armamentista_legal'),
+    path('legal/', views.index, name='index'),
 ]
