@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'borrador',
+    'accounts',
     'Alimentaria',
     'Armamentista',
     'Farmaceutica',
@@ -62,7 +62,9 @@ ROOT_URLCONF = 'umbrella_corporation.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'accounts' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,6 +81,7 @@ WSGI_APPLICATION = 'umbrella_corporation.wsgi.application'
 
 # Configuración de archivos estáticos
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'borrador' / 'static',
     BASE_DIR / 'Alimentaria' / 'static',
@@ -131,9 +134,3 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = 'static/'

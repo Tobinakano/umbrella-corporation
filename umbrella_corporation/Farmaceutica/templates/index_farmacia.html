@@ -1,0 +1,715 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Umbrella Pharmaceuticals | Sistema Farmacéutico</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/style_standard.css' %}">
+  </head>
+  <body>
+    <!-- ── LOADER ──────────────────────────────────────────────── -->
+    <div id="loader">
+      <svg
+        class="loader-logo"
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="50" cy="50" r="48" stroke="#c8102e" stroke-width="2" />
+        <circle
+          cx="50"
+          cy="50"
+          r="36"
+          stroke="#c8102e"
+          stroke-width="1"
+          stroke-dasharray="4 4"
+        />
+        <path
+          d="M50 20 A30 30 0 0 1 80 50 L65 50 A15 15 0 0 0 50 35 Z"
+          fill="#c8102e"
+        />
+        <path
+          d="M50 20 A30 30 0 0 0 20 50 L35 50 A15 15 0 0 1 50 35 Z"
+          fill="#c8102e"
+        />
+        <path
+          d="M20 50 A30 30 0 0 0 80 50 L65 50 A15 15 0 0 1 35 50 Z"
+          fill="#c8102e"
+        />
+        <line
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="75"
+          stroke="#c8102e"
+          stroke-width="2"
+        />
+        <line
+          x1="44"
+          y1="72"
+          x2="50"
+          y2="75"
+          stroke="#c8102e"
+          stroke-width="2"
+        />
+      </svg>
+      <div class="loader-wordmark">Umbrella Pharmaceuticals</div>
+      <div class="loader-tagline">Sistema farmacéutico global</div>
+      <div class="loader-track"><div class="loader-fill"></div></div>
+    </div>
+
+    <!-- ── NAV ─────────────────────────────────────────────────── -->
+    <nav class="site-nav" id="siteNav">
+      <div class="nav-inner">
+        <a href="#" class="nav-brand">
+          <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="48" stroke="#c8102e" stroke-width="3" />
+            <path
+              d="M50 15 A35 35 0 0 1 85 50 L67 50 A17 17 0 0 0 50 33 Z"
+              fill="#c8102e"
+            />
+            <path
+              d="M50 15 A35 35 0 0 0 15 50 L33 50 A17 17 0 0 1 50 33 Z"
+              fill="#c8102e"
+            />
+            <path
+              d="M15 50 A35 35 0 0 0 85 50 L67 50 A17 17 0 0 1 33 50 Z"
+              fill="#c8102e"
+            />
+            <line
+              x1="50"
+              y1="50"
+              x2="50"
+              y2="78"
+              stroke="#c8102e"
+              stroke-width="3"
+            />
+          </svg>
+          <span class="nav-brand-text">Umbrella Pharmaceuticals</span>
+        </a>
+        <button class="nav-toggler" id="navToggler" aria-label="Menú">
+          <i class="bi bi-list"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about">Nosotros</a></li>
+          <li><a href="#research">Investigación</a></li>
+          <li><a href="#products">Productos</a></li>
+          <li><a href="#timeline">Historia</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ── HERO ─────────────────────────────────────────────────── -->
+    <section class="hero" id="hero">
+      <div class="hero-bg">
+        <div class="hero-grid"></div>
+        <div class="hero-vignette"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          Soluciones farmacéuticas para el bienestar humano
+        </div>
+        <h1>Umbrella<strong>Pharmaceuticals</strong></h1>
+        <p class="hero-sub">
+          Innovación médica &nbsp;·&nbsp; Salud global &nbsp;·&nbsp; Bienestar
+          humano
+        </p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn-primary-uc"
+            >Nuestros productos <i class="bi bi-arrow-right"></i
+          ></a>
+          <a href="#about" class="btn-outline-uc">Conócenos</a>
+        </div>
+      </div>
+
+      <div class="hero-strip">
+        <div class="hero-strip-inner">
+          <div class="hero-img-item">
+            <img
+              src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=500&q=80"
+              alt="Laboratorio de investigación"
+              loading="lazy"
+            />
+            <div class="hero-img-cap">Laboratorio de Investigación</div>
+          </div>
+          <div class="hero-img-item">
+            <img
+              src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=500&q=80"
+              alt="Desarrollo de medicamentos"
+              loading="lazy"
+            />
+            <div class="hero-img-cap">Desarrollo de Medicamentos</div>
+          </div>
+          <div class="hero-img-item">
+            <img
+              src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500&q=80"
+              alt="Centro de bienestar"
+              loading="lazy"
+            />
+            <div class="hero-img-cap">Centro de Bienestar</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INFO BANNER ──────────────────────────────────────────── -->
+    <div class="info-banner">
+      <i
+        class="bi bi-heart-pulse"
+        style="margin-right: 10px; color: var(--red)"
+      ></i>
+      Comprometidos con la salud y el bienestar de las personas
+      <span>&nbsp;—&nbsp;</span>
+      Desde 1968
+      <i
+        class="bi bi-heart-pulse"
+        style="margin-left: 10px; color: var(--red)"
+      ></i>
+    </div>
+
+    <!-- ── STATS ─────────────────────────────────────────────────── -->
+    <section class="stats-section">
+      <div class="container-uc">
+        <div class="stat-grid">
+          <div class="stat-item reveal">
+            <div class="stat-number">152</div>
+            <div class="stat-label">Patentes registradas</div>
+          </div>
+          <div class="stat-item reveal reveal-delay-1">
+            <div class="stat-number">55+</div>
+            <div class="stat-label">Años de experiencia</div>
+          </div>
+          <div class="stat-item reveal reveal-delay-2">
+            <div class="stat-number">48</div>
+            <div class="stat-label">Países con presencia</div>
+          </div>
+          <div class="stat-item reveal reveal-delay-3">
+            <div class="stat-number">12M+</div>
+            <div class="stat-label">Pacientes atendidos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ──────────────────────────────────────────────────── -->
+    <section class="section-wrap white" id="about">
+      <div class="container-uc">
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <div class="label">Quiénes somos</div>
+            <h2 class="section-title">Una empresa al servicio de la salud</h2>
+            <div class="divider"></div>
+            <p>
+              Umbrella Pharmaceuticals es una empresa multinacional dedicada al
+              desarrollo, fabricación y distribución de medicamentos, vacunas y
+              soluciones biotecnológicas que mejoran la calidad de vida de
+              millones de personas en todo el mundo.
+            </p>
+            <p>
+              Contamos con instalaciones de última generación, equipos de
+              investigadores altamente calificados y el compromiso permanente de
+              operar bajo los más estrictos estándares éticos y regulatorios
+              internacionales.
+            </p>
+            <a href="#research" class="btn-outline-uc"
+              >Nuestra investigación <i class="bi bi-arrow-right"></i
+            ></a>
+          </div>
+          <div class="about-img reveal reveal-delay-2">
+            <img
+              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80"
+              alt="Instalaciones Umbrella Pharmaceuticals"
+              loading="lazy"
+            />
+            <div class="about-img-caption">
+              Sede internacional — Centro de Investigación Clínica
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RESEARCH ───────────────────────────────────────────────── -->
+    <section class="section-wrap alt" id="research">
+      <div class="container-uc">
+        <div class="text-center reveal" style="margin-bottom: 48px">
+          <div class="label">Ciencia y desarrollo</div>
+          <h2 class="section-title">Áreas de investigación</h2>
+          <div class="divider center"></div>
+          <p
+            style="
+              color: var(--text-muted);
+              font-size: 0.88rem;
+              max-width: 540px;
+              margin: 0 auto;
+              line-height: 1.85;
+            "
+          >
+            Trabajamos en las fronteras del conocimiento médico para desarrollar
+            soluciones terapéuticas que respondan a los desafíos de salud más
+            urgentes.
+          </p>
+        </div>
+
+        <div class="research-hero-wrap reveal">
+          <img
+            class="research-hero-img"
+            src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1400&q=80"
+            alt="Laboratorio de investigación clínica"
+            loading="lazy"
+          />
+          <div class="research-hero-overlay">
+            <div class="research-hero-badge">
+              Investigación clínica certificada
+            </div>
+            <div class="research-hero-title">Laboratorio Central de I+D</div>
+          </div>
+        </div>
+
+        <div class="research-grid">
+          <div class="research-card reveal">
+            <div class="research-icon"><i class="bi bi-capsule"></i></div>
+            <div class="research-title">Farmacología clínica</div>
+            <div class="research-desc">
+              Desarrollo de principios activos seguros y eficaces para el
+              tratamiento de enfermedades crónicas, infecciosas y degenerativas.
+            </div>
+          </div>
+          <div class="research-card reveal reveal-delay-1">
+            <div class="research-icon"><i class="bi bi-dna"></i></div>
+            <div class="research-title">Biotecnología médica</div>
+            <div class="research-desc">
+              Aplicación de técnicas moleculares avanzadas para el diseño de
+              terapias dirigidas y de alta especificidad terapéutica.
+            </div>
+          </div>
+          <div class="research-card reveal reveal-delay-2">
+            <div class="research-icon"><i class="bi bi-shield-check"></i></div>
+            <div class="research-title">Vacunología</div>
+            <div class="research-desc">
+              Investigación y producción de vacunas preventivas certificadas por
+              organismos internacionales de salud pública.
+            </div>
+          </div>
+          <div class="research-card reveal reveal-delay-3">
+            <div class="research-icon"><i class="bi bi-cpu"></i></div>
+            <div class="research-title">IA en medicina</div>
+            <div class="research-desc">
+              Uso de inteligencia artificial para acelerar el análisis clínico,
+              la detección temprana y la personalización de tratamientos.
+            </div>
+          </div>
+          <div class="research-card reveal reveal-delay-4">
+            <div class="research-icon"><i class="bi bi-heart-pulse"></i></div>
+            <div class="research-title">Medicina regenerativa</div>
+            <div class="research-desc">
+              Desarrollo de terapias celulares y compuestos bioactivos
+              orientados a la recuperación y regeneración de tejidos dañados.
+            </div>
+          </div>
+          <div class="research-card reveal reveal-delay-5">
+            <div class="research-icon"><i class="bi bi-globe2"></i></div>
+            <div class="research-title">Salud global</div>
+            <div class="research-desc">
+              Programas de acceso a medicamentos esenciales en comunidades
+              vulnerables y mercados emergentes de todo el mundo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRODUCTS ───────────────────────────────────────────────── -->
+    <section class="section-wrap white" id="products">
+      <div class="container-uc">
+        <div class="reveal" style="margin-bottom: 48px">
+          <div class="label">Portafolio terapéutico</div>
+          <h2 class="section-title">Nuestros productos</h2>
+          <div class="divider"></div>
+        </div>
+
+        <div class="products-grid">
+          <!-- Product 1 -->
+          <div class="product-card reveal">
+            <div class="product-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?w=600&q=80"
+                alt="UmbraCare AV"
+                loading="lazy"
+              />
+              <span class="product-badge red">Antiviral</span>
+            </div>
+            <div class="product-body">
+              <div class="product-level">Aprobado · Uso hospitalario</div>
+              <div class="product-name">UmbraCare AV</div>
+              <div class="product-desc">
+                Tratamiento antiviral de amplio espectro para el manejo de
+                infecciones respiratorias agudas. Certificado por la OMS y
+                agencias regulatorias internacionales.
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">Antiviral</span>
+                <span class="product-tag">OMS certificado</span>
+                <span class="product-tag">Oral / IV</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-card reveal reveal-delay-2">
+            <div class="product-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80"
+                alt="UmbraVax Pro"
+                loading="lazy"
+              />
+              <span class="product-badge dark">Vacuna</span>
+            </div>
+            <div class="product-body">
+              <div class="product-level">Disponible · Fase IV</div>
+              <div class="product-name">UmbraVax Pro</div>
+              <div class="product-desc">
+                Vacuna de nueva generación basada en tecnología de ARNm para la
+                prevención de enfermedades infecciosas de alta incidencia
+                global.
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">Preventivo</span>
+                <span class="product-tag">ARNm</span>
+                <span class="product-tag">Pediátrico / Adulto</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-card reveal reveal-delay-4">
+            <div class="product-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=600&q=80"
+                alt="RegenCell-Z"
+                loading="lazy"
+              />
+              <span class="product-badge green">Regenerativo</span>
+            </div>
+            <div class="product-body">
+              <div class="product-level">Ensayo clínico · Fase III</div>
+              <div class="product-name">RegenCell-Z</div>
+              <div class="product-desc">
+                Terapia de regeneración celular orientada a la recuperación de
+                tejido dañado en pacientes con lesiones musculoesqueléticas
+                severas.
+              </div>
+              <div class="product-tags">
+                <span class="product-tag">Regenerativo</span>
+                <span class="product-tag">Fase III</span>
+                <span class="product-tag">Uso especializado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TIMELINE ───────────────────────────────────────────────── -->
+    <section class="section-wrap alt" id="timeline">
+      <div class="container-uc">
+        <div class="timeline-layout">
+          <!-- Left: image + intro -->
+          <div class="reveal">
+            <div class="label">Nuestra trayectoria</div>
+            <h2 class="section-title">Más de 55 años de historia</h2>
+            <div class="divider"></div>
+            <p
+              style="
+                color: var(--text-muted);
+                font-size: 0.87rem;
+                line-height: 1.85;
+                margin-bottom: 24px;
+              "
+            >
+              Desde nuestra fundación hemos crecido como referente global en el
+              desarrollo de soluciones farmacéuticas innovadoras y comprometidas
+              con la salud pública.
+            </p>
+            <div class="timeline-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=800&q=80"
+                alt="Historia de Umbrella Pharmaceuticals"
+                loading="lazy"
+              />
+              <div class="timeline-img-caption">
+                <div class="cap-year">Fundada en 1968</div>
+                <div class="cap-text">
+                  Centro de investigación fundacional — sede histórica
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: timeline items -->
+          <div class="timeline reveal reveal-delay-2">
+            <div class="tl-item">
+              <div class="tl-year">1968</div>
+              <div class="tl-title">Fundación de la empresa</div>
+              <div class="tl-desc">
+                Establecimiento de los primeros laboratorios de investigación
+                clínica con un equipo de 12 científicos y el objetivo de mejorar
+                la salud global.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1981</div>
+              <div class="tl-title">Primera patente internacional</div>
+              <div class="tl-desc">
+                Registro del primer compuesto antifúngico de síntesis propia,
+                marcando el inicio de nuestra expansión hacia mercados
+                internacionales.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1998</div>
+              <div class="tl-title">División de biotecnología</div>
+              <div class="tl-desc">
+                Creación de la unidad de investigación biotecnológica, enfocada
+                en el desarrollo de terapias moleculares de nueva generación.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2005</div>
+              <div class="tl-title">Programa de salud global</div>
+              <div class="tl-desc">
+                Lanzamiento del programa de acceso a medicamentos esenciales en
+                18 países en desarrollo, beneficiando a más de 2 millones de
+                personas.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2015</div>
+              <div class="tl-title">Certificación OMS</div>
+              <div class="tl-desc">
+                Obtención de la certificación de la Organización Mundial de la
+                Salud para nuestra línea completa de vacunas y antivirales.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2025</div>
+              <div class="tl-title">IA aplicada a la medicina</div>
+              <div class="tl-desc">
+                Integración de inteligencia artificial en nuestros procesos de
+                investigación, reduciendo hasta en un 40% los tiempos de
+                desarrollo clínico.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ────────────────────────────────────────────────── -->
+    <section class="section-wrap white" id="contact">
+      <div class="container-uc">
+        <div class="contact-layout">
+          <div class="reveal">
+            <div class="label">Atención al público</div>
+            <h2 class="section-title">Contáctenos</h2>
+            <div class="divider"></div>
+            <p
+              style="
+                color: var(--text-muted);
+                font-size: 0.88rem;
+                line-height: 1.85;
+                margin-bottom: 32px;
+              "
+            >
+              Estamos disponibles para atender consultas de profesionales de la
+              salud, instituciones, distribuidores y pacientes. Nuestro equipo
+              responde en un plazo máximo de 48 horas hábiles.
+            </p>
+
+            <div class="contact-info-list">
+              <div class="contact-info-item">
+                <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+                <div>
+                  <div class="contact-info-label">Línea de atención</div>
+                  <div class="contact-info-value">+1 (800) 867-5309</div>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+                <div>
+                  <div class="contact-info-label">Correo electrónico</div>
+                  <div class="contact-info-value">
+                    contacto@umbrella-pharma.com
+                  </div>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
+                <div>
+                  <div class="contact-info-label">Sede principal</div>
+                  <div class="contact-info-value">
+                    1407 Arklay Drive, Raccoon City
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap">
+              <a href="#" class="btn-primary-uc">Enviar consulta</a>
+              <a href="#" class="btn-outline-uc">Encontrar distribuidor</a>
+            </div>
+          </div>
+
+          <div class="contact-img-wrap reveal reveal-delay-2">
+            <img
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1000&q=80"
+              alt="Centro de atención Umbrella"
+              loading="lazy"
+            />
+            <div class="contact-img-overlay">
+              <div class="ov-label">Horario de atención</div>
+              <div class="ov-text">Lunes a Viernes · 8:00 AM – 6:00 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+    <footer class="site-footer">
+      <div class="container-uc">
+        <div class="footer-grid">
+          <div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 14px;
+              "
+            >
+              <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="48"
+                  stroke="#c8102e"
+                  stroke-width="3"
+                />
+                <path
+                  d="M50 15 A35 35 0 0 1 85 50 L67 50 A17 17 0 0 0 50 33 Z"
+                  fill="#c8102e"
+                />
+                <path
+                  d="M50 15 A35 35 0 0 0 15 50 L33 50 A17 17 0 0 1 50 33 Z"
+                  fill="#c8102e"
+                />
+                <path
+                  d="M15 50 A35 35 0 0 0 85 50 L67 50 A17 17 0 0 1 33 50 Z"
+                  fill="#c8102e"
+                />
+                <line
+                  x1="50"
+                  y1="50"
+                  x2="50"
+                  y2="78"
+                  stroke="#c8102e"
+                  stroke-width="3"
+                />
+              </svg>
+              <p class="footer-brand-text">Umbrella Pharmaceuticals</p>
+            </div>
+            <p class="footer-tagline">
+              Innovación farmacéutica<br />al servicio de la salud global.
+            </p>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Empresa</div>
+            <a class="footer-link" href="#about">Quiénes somos</a>
+            <a class="footer-link" href="#research"
+              >Investigación y desarrollo</a
+            >
+            <a class="footer-link" href="#products">Nuestros productos</a>
+            <a class="footer-link" href="#timeline">Historia</a>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Contacto</div>
+            <a class="footer-link" href="#">Atención al paciente</a>
+            <a class="footer-link" href="#">Profesionales de la salud</a>
+            <a class="footer-link" href="#">Distribuidores</a>
+            <a class="footer-link" href="#">Trabaja con nosotros</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span
+            >© 2025 Umbrella Pharmaceuticals. Todos los derechos
+            reservados.</span
+          >
+          <span>Regulado por la FDA · EMA · INVIMA</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Loader
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          document.getElementById("loader").classList.add("hidden");
+        }, 2000);
+      });
+
+      // Nav scroll shadow
+      const nav = document.getElementById("siteNav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 40);
+      });
+
+      // Mobile nav toggle
+      document.getElementById("navToggler").addEventListener("click", () => {
+        document.getElementById("navLinks").classList.toggle("open");
+      });
+
+      // Close nav on link click (mobile)
+      document.querySelectorAll(".nav-links a").forEach((a) => {
+        a.addEventListener("click", () => {
+          document.getElementById("navLinks").classList.remove("open");
+        });
+      });
+
+      // Scroll reveal
+      const revealEls = document.querySelectorAll(".reveal");
+      const revealObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      );
+      revealEls.forEach((el) => revealObs.observe(el));
+    </script>
+  </body>
+</html>

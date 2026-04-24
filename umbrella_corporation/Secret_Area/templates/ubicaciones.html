@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ubicaciones y Personal â€” Umbrella Corporation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="ld-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC">
+  <div class="ld-wrap">
+    <div class="ld-lbl">UMBRELLA CORP â€” INICIALIZANDO ACCESO</div>
+    <div class="ld-bars">
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+      <div class="ld-bar"></div><div class="ld-bar"></div>
+    </div>
+    <div class="ld-st">â–¸ VERIFICANDO CLEARANCE...</div>
+  </div>
+  <div class="ld-code">UC-LAB-ALPHA // BSL-4 // RACCOON CITY CENTRAL</div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <a href="/" onclick="cm()">Principal</a>
+  <a href="/empresa/" onclick="cm()">Empresa</a>
+  <a href="/investigacion/" onclick="cm()">InvestigaciÃ³n</a>
+  <a href="/ubicaciones/" onclick="cm()" class="active">Ubicaciones</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="n-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="UC" style="width:32px;height:32px">
+    <div class="n-brand">UMBRELLA <span>CORP</span><small>PHARMACEUTICAL & BIOTECH RESEARCH</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="/" class="nav-link">Principal</a></li>
+    <li><a href="/empresa/" class="nav-link">Empresa</a></li>
+    <li><a href="/investigacion/" class="nav-link">InvestigaciÃ³n</a></li>
+    <li><a href="/ubicaciones/" class="nav-link active">Ubicaciones</a></li>
+  </ul>
+  <div class="burger" id="burger" onclick="tm()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- â•â•â•â•â•â•â•â•â•â• FACILITIES â•â•â•â•â•â•â•â•â•â• -->
+<section id="facilities">
+  <div class="fac-wrap">
+    <div class="fac-left rv">
+      <div class="sec-eyebrow">// Red Global</div>
+      <h2 class="sec-h">Instalaciones<br><span class="r">Mundiales</span></h2>
+      <div class="sec-rule"></div>
+      <p style="font-size:.88rem;line-height:1.9;color:var(--mid);font-weight:300;max-width:420px">Operamos una red de instalaciones de investigaciÃ³n de nivel mÃ¡ximo distribuidas estratÃ©gicamente en 6 continentes. Cada sede cumple con nuestros estÃ¡ndares internos de bioseguridad Sigma â€” mÃ¡s estrictos que cualquier regulaciÃ³n gubernamental.</p>
+
+      <!-- WORLD MAP SVG -->
+      <div class="world-panel">
+        <div class="world-panel-hd">
+          RED DE INSTALACIONES UC â€” TIEMPO REAL <span>â— 6 ACTIVAS</span>
+        </div>
+        <svg class="world-svg" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 55 L108 50 L122 75 L118 115 L98 130 L78 122 L58 105 L48 80Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M96 148 L122 143 L127 172 L118 210 L102 215 L92 194 L88 170Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M210 50 L248 46 L256 66 L248 82 L228 86 L212 76Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M215 96 L253 91 L262 124 L258 162 L237 172 L222 160 L212 134 L212 112Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M262 47 L368 43 L382 67 L378 108 L348 118 L308 112 L272 98 L262 72Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M358 158 L397 154 L407 178 L392 194 L367 194 L353 180Z" fill="var(--bg3)" stroke="var(--border-s)" stroke-width=".8"/>
+          <path d="M88 90 Q158 58 226 62" stroke="rgba(200,16,46,.2)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <path d="M226 62 Q298 57 373 75" stroke="rgba(200,16,46,.2)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <path d="M88 90 Q98 142 110 190" stroke="rgba(200,16,46,.12)" stroke-width=".8" stroke-dasharray="3 3" fill="none"/>
+          <g><circle cx="88" cy="90" r="4" fill="var(--red)" opacity=".9"/><circle cx="88" cy="90" r="8" fill="var(--red)" opacity=".12"><animate attributeName="r" values="4;12;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="2s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="226" cy="62" r="3.5" fill="var(--red)" opacity=".8"/><circle cx="226" cy="62" r="7" fill="var(--red)" opacity=".1"><animate attributeName="r" values="3;10;3" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="2.5s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="373" cy="75" r="3.5" fill="var(--red)" opacity=".8"/><circle cx="373" cy="75" r="7" fill="var(--red)" opacity=".1"><animate attributeName="r" values="3;10;3" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="1.8s" repeatCount="indefinite"/></circle></g>
+          <g><circle cx="236" cy="168" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <g><circle cx="388" cy="178" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <g><circle cx="112" cy="190" r="3" fill="rgba(200,16,46,.6)"/></g>
+          <text x="94" y="87" font-size="6" fill="var(--mid)" font-family="monospace">RACCOON CITY</text>
+          <text x="230" y="59" font-size="6" fill="var(--mid)" font-family="monospace">LONDON</text>
+          <text x="378" y="72" font-size="6" fill="var(--mid)" font-family="monospace">TOKYO</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="fac-right">
+      <div class="fac-panel-hd">
+        <div class="fac-panel-hd-lbl">INSTALACIONES GLOBALES</div>
+        <div class="fac-panel-hd-id">FAC/NET</div>
+      </div>
+      <div class="fac-list">
+        <div class="fac-item rv"><div class="fac-num">01</div><div class="fac-info"><div class="fac-name">HQ â€” Raccoon City</div><div class="fac-coord">37Â°N 105Â°W Â· ARKLAY MOUNTAINS, USA</div></div><div class="fac-badge cls">CLASIFICADO</div></div>
+        <div class="fac-item rv"><div class="fac-num">02</div><div class="fac-info"><div class="fac-name">Laboratorio Europeo Central</div><div class="fac-coord">51Â°N 0Â°W Â· LONDON, UNITED KINGDOM</div></div><div class="fac-badge act">ACTIVO</div></div>
+        <div class="fac-item rv"><div class="fac-num">03</div><div class="fac-info"><div class="fac-name">Centro I+D Asia-PacÃ­fico</div><div class="fac-coord">35Â°N 139Â°E Â· TOKYO, JAPAN Â· BSL-4</div></div><div class="fac-badge sec">SEGURO</div></div>
+        <div class="fac-item rv"><div class="fac-num">04</div><div class="fac-info"><div class="fac-name">InstalaciÃ³n SubterrÃ¡nea Omega</div><div class="fac-coord">[DATOS ELIMINADOS] Â· NIVEL MÃXIMO</div></div><div class="fac-badge cls">CLASIFICADO</div></div>
+        <div class="fac-item rv"><div class="fac-num">05</div><div class="fac-info"><div class="fac-name">Centro BiocontenciÃ³n Delta</div><div class="fac-coord">33Â°S 18Â°E Â· CAPE TOWN, SOUTH AFRICA</div></div><div class="fac-badge act">ACTIVO</div></div>
+        <div class="fac-item rv"><div class="fac-num">06</div><div class="fac-info"><div class="fac-name">Laboratorio Umbrella Sur</div><div class="fac-coord">23Â°S 46Â°W Â· SÃƒO PAULO, BRAZIL</div></div><div class="fac-badge sec">SEGURO</div></div>
+      </div>
+    </div>
+  </div>
+
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+<footer style="background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:20px;color:rgba(255,255,255,.3);font-family:var(--mono);font-size:7px;">
+Â© 1968â€“2024 Umbrella Corporation. Todos los derechos reservados.
+</footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},2600)});
+
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>50));
+
+const mob=document.getElementById('mob');
+const burger=document.getElementById('burger');
+function tm(){mob.classList.toggle('open');burger.classList.toggle('active')}
+function cm(){mob.classList.remove('open');burger.classList.remove('active')}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('in'),(i%4)*80);
+      obs.unobserve(e.target);
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
+
+
