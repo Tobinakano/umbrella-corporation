@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def index(request):
+def index_farmaceutica(request):
     return render(request, 'index_farmacia.html')

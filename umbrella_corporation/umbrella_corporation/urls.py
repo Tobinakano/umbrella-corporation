@@ -26,8 +26,8 @@ urlpatterns = [
     path('farmaceutica/', include('Farmaceutica.urls')),
     path('industrial/', include('Industrial.urls')),
     path('investigacion/', include('Investigacion.urls')),
+    path('investigacion_legal/', include('Investigacion_legal.urls')),
     path('secret_area/', include('Secret_Area.urls')),
     path('uss/', include('USS.urls')),
-    path('', include('borrador.urls')),
     path('accounts/', include('accounts.urls')),
 ]

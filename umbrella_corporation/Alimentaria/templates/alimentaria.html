@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,252 +8,729 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style_alimentaria.css' %}">
+    <style>
+        :root{
+            --bg:#e8eaeb;--bg2:#d2d6d9;--bg3:#c0c5c8;
+            --light:#f4f6f7;--dark:#1a1e21;--dark2:#252c31;
+            --mid:#5c666d;--muted:#9aa3a8;
+            --red:#c8102e;--red-dim:rgba(200,16,46,.07);--red-line:rgba(200,16,46,.3);
+            --warn:#e8a000;--green:#00c864;
+            --border:rgba(26,30,33,.13);--border-s:rgba(26,30,33,.26);
+            --mono:'DM Mono',monospace;
+            --cond:'Barlow Condensed',sans-serif;
+            --body:'Barlow',sans-serif;
+            --hosp-deep:#1c3a4a;
+            --hosp-mid:#2a4f63;
+            --hosp-panel:#1e3d4e;
+            --hosp-term:#162e3a;
+        }
+
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--dark);font-family:var(--body);overflow-x:hidden;cursor:none}
+        a{text-decoration:none;color:inherit}
+        img{display:block;max-width:100%}
+
+        /* CURSOR */
+        #cur{position:fixed;width:7px;height:7px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+        #cur-r{position:fixed;width:24px;height:24px;border:1px solid rgba(200,16,46,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .2s ease-out}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:500;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;transition:all .35s}
+        nav.sc{background:var(--light);border-bottom:1px solid var(--border-s);box-shadow:0 1px 0 var(--red)}
+        .n-logo{display:flex;align-items:center;gap:10px}
+        .n-logo img{width:30px;height:30px}
+        .n-brand{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--dark)}
+        .n-brand span{color:var(--red)}
+        .n-brand small{display:block;font-family:var(--mono);font-size:7px;letter-spacing:.2em;color:var(--muted);margin-top:1px}
+        .n-links{display:flex;list-style:none;height:56px;align-items:stretch}
+        .n-links a{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;padding:0 16px;border-left:1px solid var(--border);position:relative;transition:color .25s}
+        .n-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .3s}
+        .n-links a:hover{color:var(--dark)}
+        .n-links a:hover::after{transform:scaleX(1)}
+        .n-pill{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 20px;border:none;cursor:pointer;transition:filter .3s}
+        .n-pill:hover{filter:brightness(1.12)}
+        .burger{display:none;flex-direction:column;gap:4px;cursor:pointer}
+        .burger span{width:20px;height:1px;background:var(--dark)}
+
+        /* MOBILE NAV */
+        .mob{position:fixed;inset:0;z-index:400;background:var(--hosp-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transform:translateX(100%);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+        .mob.open{transform:none}
+        .mob a{font-family:var(--cond);font-size:2rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light);transition:color .3s}
+        .mob a:hover{color:var(--red)}
+
+        /* ══════════ HERO ══════════ */
+        #hero{position:relative;min-height:100vh;background:var(--hosp-deep);display:flex;flex-direction:column;overflow:hidden}
+
+        .h-ceiling{position:absolute;top:0;left:0;right:0;height:5px;display:flex;gap:2px;z-index:3}
+        .h-ceil-p{flex:1;background:rgba(255,255,255,.04)}
+        .h-ceil-p.on{background:rgba(255,255,255,.3);box-shadow:0 0 30px rgba(255,255,255,.1)}
+
+        .h-floor{position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--warn);opacity:.6;z-index:3}
+
+        .h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px}
+
+        .h-seam{position:absolute;left:56px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.05);z-index:1}
+        .h-seam::after{content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.03)}
+
+        .h-stripe{position:absolute;left:0;right:0;top:50%;height:2px;background:var(--red);opacity:.15}
+
+        .h-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 380px;flex:1;margin-top:56px}
+
+        .h-left{padding:72px 48px 72px 80px;display:flex;flex-direction:column;justify-content:center}
+        .h-specimen{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:24px}
+        .h-spec-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink .9s step-end infinite}
+        .h-logo{width:80px;margin-bottom:24px;mix-blend-mode:screen}
+        .h-h1{font-family:var(--cond);font-size:clamp(3rem,7vw,6.5rem);font-weight:800;line-height:.93;letter-spacing:.02em;text-transform:uppercase;color:var(--light);margin-bottom:10px}
+        .h-h1 .r{color:var(--red)}
+        .h-h1 .ghost{opacity:.28;font-weight:300}
+        .h-sub{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:32px;padding-left:12px;border-left:2px solid var(--red)}
+        .h-desc{font-size:.9rem;font-weight:300;line-height:1.85;color:rgba(255,255,255,.42);max-width:440px;margin-bottom:40px}
+        .h-btns{display:flex;gap:8px;flex-wrap:wrap}
+        .btn{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+        .btn.p{background:var(--red);color:#fff}
+        .btn.p:hover{filter:brightness(1.12);box-shadow:0 0 20px rgba(200,16,46,.4)}
+        .btn.g{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.14)}
+        .btn.g:hover{border-color:rgba(255,255,255,.4);color:var(--light)}
+        .btn-arr{font-size:10px}
+
+        /* PANEL LATERAL HERO */
+        .h-right{background:rgba(0,40,60,.45);border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column}
+        .h-plate{background:rgba(0,30,45,.5);border-bottom:1px solid rgba(255,255,255,.07);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+        .h-plate-id{font-family:var(--cond);font-size:1.6rem;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.1)}
+        .h-plate-st{font-family:var(--mono);font-size:7px;letter-spacing:.2em;color:var(--green);display:flex;align-items:center;gap:5px}
+        .h-plate-st::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink .8s step-end infinite}
+        .h-rows{padding:16px;display:flex;flex-direction:column;gap:1px;flex:1}
+        .h-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+        .h-row-k{font-family:var(--mono);font-size:7px;letter-spacing:.14em;color:rgba(255,255,255,.25);text-transform:uppercase}
+        .h-row-v{font-family:var(--mono);font-size:9px;font-weight:500}
+        .h-row-v.ok{color:var(--green)}
+        .h-row-v.al{color:var(--red)}
+        .h-row-v.w{color:var(--warn)}
+        .h-row-v.n{color:rgba(255,255,255,.6)}
+
+        .h-term{margin:0 16px 16px;background:var(--hosp-term);border:1px solid rgba(255,255,255,.08);padding:14px;font-family:var(--mono);font-size:8px;line-height:1.85;color:var(--green)}
+        .term-hd{display:flex;gap:5px;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.05);align-items:center}
+        .td{width:8px;height:8px;border-radius:50%}
+        .td.r{background:#ff5f56}.td.y{background:#ffbd2e}.td.g{background:#27c93f}
+
+        @keyframes blink{50%{opacity:0}}
+
+        /* ══════════ SOBRE ══════════ */
+        #sobre{background:var(--light);border-top:1px solid var(--border-s);padding:80px 0}
+        .sobre-wrap{padding:0 60px}
+        .sec-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .sec-eyebrow::before{content:'';width:20px;height:1px;background:var(--red)}
+        .sec-eyebrow::after{content:'';width:20px;height:1px;background:var(--red)}
+        .sec-h{font-family:var(--cond);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--dark);margin-bottom:20px}
+        .sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:32px}
+        .sobre-grid p{font-size:.9rem;line-height:1.9;color:var(--mid);font-weight:300}
+
+        /* ══════════ PRODUCTS SECTION ══════════ */
+        #productos{background:var(--light);border-top:1px solid var(--border-s);padding:80px 0}
+        .prod-header{padding:0 60px 48px;text-align:center}
+        .prod-desc{font-size:.95rem;line-height:1.9;color:var(--mid);font-weight:300;max-width:700px;margin:0 auto;margin-bottom:24px}
+        .prod-highlight{color:var(--red);font-weight:500}
+
+        /* TABLA */
+        .prod-table-wrap{padding:0 60px;margin-bottom:48px}
+        .prod-table{width:100%;border-collapse:collapse;font-family:var(--mono)}
+        .prod-table thead tr{background:var(--dark)}
+        .prod-table thead th{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:14px 20px;text-align:left;font-weight:400}
+        .prod-table tbody tr{border-bottom:1px solid var(--border);transition:background .2s}
+        .prod-table tbody tr:hover{background:var(--red-dim)}
+        .prod-table tbody td{padding:13px 20px;font-size:.88rem;color:var(--mid)}
+        .prod-table tbody td:first-child{font-family:var(--cond);font-size:1rem;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.05em}
+
+        .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border-s);padding:0 60px 80px 60px}
+        .prod-card{background:var(--light);padding:40px 32px;border:1px solid transparent;transition:all .35s;cursor:default;position:relative;overflow:hidden}
+        .prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);transition:background .35s}
+        .prod-card:hover{background:#fff;border-color:transparent}
+        .prod-card:hover::before{background:var(--red)}
+        .prod-icon{font-size:2.5rem;margin-bottom:16px;display:inline-block}
+        .prod-name{font-family:var(--cond);font-size:1.3rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--dark);margin-bottom:12px}
+        .prod-items{list-style:none;margin-bottom:16px}
+        .prod-items li{font-size:.85rem;line-height:1.8;color:var(--mid);font-weight:300;display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+        .prod-items li::before{content:'▸';color:var(--red);font-weight:bold;flex-shrink:0}
+        .prod-cta{font-family:var(--mono);font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:none;border:none;padding:0}
+        .prod-cta::after{content:'→';font-weight:bold}
+
+        /* ══════════ TECNOLOGIA ══════════ */
+        #tecnologia{background:var(--hosp-deep);padding:80px 0}
+        .tec-wrap{padding:0 60px}
+        .tec-wrap .sec-eyebrow{justify-content:flex-start}
+        .tec-wrap .sec-h{color:#fff}
+        .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(255,255,255,.08);margin-top:40px}
+        .tl-article{padding:36px 32px;border-right:1px solid rgba(255,255,255,.08);position:relative}
+        .tl-article:last-child{border-right:none}
+        .tl-article::before{content:'';display:block;width:40px;height:2px;background:var(--red);margin-bottom:20px}
+        .tl-article h3{font-family:var(--cond);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:12px}
+        .tl-article p{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.8;margin:0}
+
+        /* ══════════ OPERACIONES ══════════ */
+        #operaciones{background:var(--bg);padding:80px 0}
+        .op-wrap{padding:0 60px}
+        .op-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border-s);margin-top:40px}
+        .op-card{background:var(--light);overflow:hidden;transition:all .35s}
+        .op-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.12);transform:translateY(-3px)}
+        .op-img{width:100%;height:180px;background:var(--bg2);display:flex;align-items:center;justify-content:center}
+        .op-img span{font-family:var(--cond);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+        .op-body{padding:24px;border-top:3px solid var(--red)}
+        .op-body h3{font-family:var(--cond);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--dark);margin-bottom:10px}
+        .op-body p{font-size:.88rem;color:var(--mid);line-height:1.8;margin:0}
+
+        /* ══════════ STATS ══════════ */
+        #stats{background:var(--red);padding:60px 0}
+        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0 60px}
+        .stats-grid article{text-align:center;padding:24px 20px;border-right:1px solid rgba(255,255,255,.2)}
+        .stats-grid article:last-child{border-right:none}
+        .stats-grid h3{font-family:var(--cond);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:#fff;margin-bottom:8px}
+        .stats-grid p{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65);margin:0}
+
+        /* ══════════ FOOTER ══════════ */
+        footer{background:var(--hosp-deep);border-top:1px solid rgba(255,255,255,.08)}
+        .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding:60px;border-bottom:1px solid rgba(255,255,255,.06)}
+        .foot-brand{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+        .foot-brand img{width:28px;height:28px;mix-blend-mode:screen}
+        .foot-brand-txt{font-family:var(--mono);font-size:10px;letter-spacing:.22em;font-weight:500;color:rgba(255,255,255,.6)}
+        .foot-desc{font-size:.78rem;color:rgba(255,255,255,.22);line-height:1.85;font-weight:300}
+        .foot-col h5{font-family:var(--mono);font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+        .foot-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+        .foot-links a{font-size:.78rem;color:rgba(255,255,255,.22);letter-spacing:.04em;transition:color .3s;display:flex;align-items:center;gap:6px}
+        .foot-links a::before{content:'›';color:var(--red);font-size:.9rem}
+        .foot-links a:hover{color:rgba(255,255,255,.6)}
+        .foot-bottom{padding:20px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .foot-legal{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.18);letter-spacing:.08em;line-height:1.8}
+
+        /* MODALS */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:1200;padding:20px}
+        .modal-overlay.show{display:flex}
+        .modal-box{width:min(680px,95vw);max-height:85vh;overflow:auto;background:var(--light);border:1px solid var(--border-s);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--bg)}
+        .modal-title{font-family:var(--cond);font-size:1.3rem;letter-spacing:.05em;text-transform:uppercase;color:var(--dark)}
+        .modal-close{border:1px solid var(--border-s);background:transparent;color:var(--dark);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:6px 10px;cursor:pointer}
+        .modal-close:hover{border-color:var(--red);color:var(--red)}
+        .modal-body{padding:20px}
+        .modal-body p{font-size:.9rem;line-height:1.85;color:var(--mid);margin-bottom:12px}
+        .modal-list{list-style:none;display:grid;gap:8px}
+        .modal-list li{font-size:.85rem;line-height:1.75;color:var(--mid);padding-left:14px;position:relative}
+        .modal-list li::before{content:'▸';position:absolute;left:0;color:var(--red)}
+        .no-scroll{overflow:hidden}
+
+        /* REVEAL */
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s ease-out}
+        .reveal.visible{opacity:1;transform:none}
+
+        /* RESPONSIVE */
+        @media(max-width:1100px){
+            nav{padding:0 36px}
+            .h-left{padding:60px 36px}
+            .h-right{display:none}
+            .prod-grid,.prod-table-wrap{padding-left:36px;padding-right:36px}
+            .prod-header,.tec-wrap,.op-wrap,.sobre-wrap{padding-left:36px;padding-right:36px}
+            .stats-grid{padding:0 36px}
+            .timeline{grid-template-columns:1fr}
+            .op-grid{grid-template-columns:1fr 1fr}
+            .sobre-grid{grid-template-columns:1fr}
+            .foot-grid{grid-template-columns:1fr 1fr;gap:36px;padding:40px}
+            .foot-bottom{padding:16px 40px}
+        }
+        @media(max-width:768px){
+            nav{padding:0 20px;height:50px}
+            .n-links,.n-pill{display:none}
+            .burger{display:flex}
+            .h-left{padding:50px 20px}
+            .h-h1{font-size:2.8rem}
+            .prod-grid{grid-template-columns:1fr;padding:0 20px 50px}
+            .prod-table-wrap,.prod-header,.tec-wrap,.op-wrap,.sobre-wrap{padding-left:20px;padding-right:20px}
+            .stats-grid{grid-template-columns:repeat(2,1fr);padding:0 20px}
+            .op-grid{grid-template-columns:1fr}
+            .foot-grid{grid-template-columns:1fr;padding:32px 24px}
+            .foot-bottom{padding:16px 24px;flex-direction:column;text-align:center}
+        }
+    </style>
 </head>
 <body>
-    <div id="cur"></div>
-    <div id="cur-r"></div>
 
-    <header class="site-header" id="inicio">
-        <nav class="navbar container" aria-label="Navegacion principal">
-            <a class="brand" href="#inicio" aria-label="Umbrella Alimentaria inicio">
-                <img class="brand-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Logo Umbrella Corporation">
-                <span class="brand-text">
-                    <strong>Umbrella <span>Alimentaria</span></strong>
-                    <small>Division Oficial de Nutricion Avanzada</small>
-                </span>
-            </a>
+<!-- CURSORES -->
+<div id="cur"></div>
+<div id="cur-r"></div>
 
-            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-menu" aria-label="Abrir menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+<!-- MOBILE MENU -->
+<div class="mob" id="mob-menu">
+    <a href="#hero" onclick="closeMob()">Inicio</a>
+    <a href="#sobre" onclick="closeMob()">Sobre Nosotros</a>
+    <a href="#productos" onclick="closeMob()">Productos</a>
+    <a href="#tecnologia" onclick="closeMob()">Tecnologia</a>
+    <a href="#operaciones" onclick="closeMob()">Operaciones</a>
+    <a href="#contacto" onclick="closeMob()">Contacto</a>
+</div>
 
-            <ul class="menu" id="main-menu">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#sobre">Sobre Nosotros</a></li>
-                <li><a href="#productos">Productos</a></li>
-                <li><a href="#tecnologia">Tecnologia</a></li>
-                <li><a href="#operaciones">Operaciones</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+<!-- NAV -->
+<nav id="nav">
+    <a href="#hero" class="n-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+        <div class="n-brand">
+            Umbrella <span>Alimentaria</span>
+            <small>Division Oficial de Nutricion Avanzada</small>
+        </div>
+    </a>
+    <ul class="n-links">
+        <li><a href="#sobre">Sobre Nosotros</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#tecnologia">Tecnologia</a></li>
+        <li><a href="#operaciones">Operaciones</a></li>
+    </ul>
+    <button class="n-pill" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">Contacto</button>
+    <div class="burger" id="burger" onclick="toggleMob()">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+    <div class="h-ceiling">
+        <div class="h-ceil-p"></div><div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+        <div class="h-ceil-p on"></div><div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+        <div class="h-ceil-p"></div><div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+        <div class="h-ceil-p"></div><div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+    </div>
+    <div class="h-grid"></div>
+    <div class="h-seam"></div>
+    <div class="h-stripe"></div>
+
+    <div class="h-inner">
+        <div class="h-left">
+            <p class="h-specimen">
+                <span class="h-spec-dot"></span>
+                Sector ALM-01 &nbsp;·&nbsp; Acceso autorizado &nbsp;·&nbsp; Umbrella Food Systems
+            </p>
+            <img class="h-logo"
+                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png"
+                 alt="Umbrella Corp">
+            <h1 class="h-h1">
+                Umbrella<br>
+                <span class="r">Alimentaria</span><br>
+                <span class="ghost">Corporacion</span>
+            </h1>
+            <p class="h-sub">Bioingenieria Nutricional de Precision &nbsp;—&nbsp; Division Oficial</p>
+            <p class="h-desc">Disenamos, producimos y distribuimos lineas nutricionales de alto rendimiento para sectores civiles, industriales y escenarios de demanda critica. Cada lote validado molecularmente.</p>
+            <div class="h-btns">
+                <a href="#productos" class="btn p">Explorar catalogo <span class="btn-arr">→</span></a>
+                <a href="#operaciones" class="btn g">Ver operaciones</a>
+            </div>
+        </div>
+
+        <div class="h-right">
+            <div class="h-plate">
+                <span class="h-plate-id">ALM-01</span>
+                <span class="h-plate-st">Autorización activa</span>
+            </div>
+            <div class="h-rows">
+                <div class="h-row">
+                    <span class="h-row-k">Nivel Acceso</span>
+                    <span class="h-row-v ok">MAXIMO</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Catalogo</span>
+                    <span class="h-row-v ok">COMPLETO</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Productos Activos</span>
+                    <span class="h-row-v n">5</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Estado Division</span>
+                    <span class="h-row-v ok">OPERACIONAL</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Certificacion</span>
+                    <span class="h-row-v ok">INTERNACIONAL</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Paises Abastecidos</span>
+                    <span class="h-row-v n">50+</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Control de Calidad</span>
+                    <span class="h-row-v ok">99.9%</span>
+                </div>
+                <div class="h-row">
+                    <span class="h-row-k">Supervision</span>
+                    <span class="h-row-v w">24/7</span>
+                </div>
+            </div>
+            <div class="h-term">
+                <div class="term-hd">
+                    <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+                    <span style="margin-left:6px;color:rgba(255,255,255,.2);font-size:7px;letter-spacing:.12em">ALM-TERMINAL v2.6</span>
+                </div>
+                <div>> Inicializando protocolo ALM-01...</div>
+                <div>> Trazabilidad molecular: <span style="color:var(--green)">OK</span></div>
+                <div>> Lote activo: <span style="color:var(--warn)">BATCH-2026-04</span></div>
+                <div>> Distribucion activa en 50+ paises_<span style="animation:blink .8s step-end infinite;display:inline-block">█</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="h-floor"></div>
+</section>
+
+<!-- ══════════ SOBRE ══════════ -->
+<section id="sobre" class="reveal">
+    <div class="sobre-wrap">
+        <p class="sec-eyebrow">Sobre la Division</p>
+        <h2 class="sec-h">Nutricion corporativa con estandares biotecnologicos Umbrella</h2>
+        <div class="sobre-grid">
+            <p>La Division Alimentaria de Umbrella Corporation integra ciencia de materiales, microbiologia aplicada y protocolos de bioseguridad para crear alimentos funcionales de alto rendimiento. Nuestra cadena opera bajo supervision automatizada para garantizar trazabilidad completa y calidad consistente.</p>
+            <p>Desde centros de investigacion en zonas estrategicas, abastecemos a mas de 50 paises con lineas alimentarias orientadas a resistencia fisica, estabilidad metabolica y respuesta inmune optimizada. Cada lote es validado por sistemas de control molecular en tiempo real.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ PRODUCTOS ══════════ -->
+<section id="productos" class="reveal">
+    <div class="prod-header">
+        <p class="sec-eyebrow">Portafolio</p>
+        <h2 class="sec-h">Productos alimenticios de nueva generacion</h2>
+        <p class="prod-desc">Cinco lineas de alto rendimiento desarrolladas bajo <span class="prod-highlight">protocolo biotecnologico Umbrella</span>, cada una orientada a optimizar el desempeno humano en condiciones operativas exigentes.</p>
+    </div>
+
+    <!-- Tabla -->
+    <div class="prod-table-wrap">
+        <table class="prod-table" aria-label="Catalogo de productos">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Nutrimax X</td><td>Suplemento proteico de alto rendimiento</td></tr>
+                <tr><td>UmbraGrow</td><td>Fertilizante organico de nueva generacion</td></tr>
+                <tr><td>BioFresh</td><td>Linea de alimentos procesados "100% naturales"</td></tr>
+                <tr><td>ViralEnergy</td><td>Bebida energetica corporativa</td></tr>
+                <tr><td>ReGen Food</td><td>Alimentos de recuperacion celular</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Cards -->
+    <div class="prod-grid">
+        <article class="prod-card" onclick="openModal('nutrimax')">
+            <div class="prod-icon">🧬</div>
+            <p class="prod-name">Nutrimax X</p>
+            <ul class="prod-items">
+                <li>Suplemento proteico de alto rendimiento</li>
+                <li>Sintesis molecular avanzada</li>
+                <li>Validado en escenarios de alta demanda fisica</li>
             </ul>
-        </nav>
-    </header>
+            <span class="prod-cta">Ver detalles</span>
+        </article>
+        <article class="prod-card" onclick="openModal('umbragrow')">
+            <div class="prod-icon">🌱</div>
+            <p class="prod-name">UmbraGrow</p>
+            <ul class="prod-items">
+                <li>Fertilizante organico de nueva generacion</li>
+                <li>Trazabilidad completa de cadena de origen</li>
+                <li>Certificacion fitosanitaria internacional</li>
+            </ul>
+            <span class="prod-cta">Ver detalles</span>
+        </article>
+        <article class="prod-card" onclick="openModal('biofresh')">
+            <div class="prod-icon">🥗</div>
+            <p class="prod-name">BioFresh</p>
+            <ul class="prod-items">
+                <li>Linea de alimentos procesados "100% naturales"</li>
+                <li>Control de trazabilidad molecular por lote</li>
+                <li>Empaque con sello anti-manipulacion corporativo</li>
+            </ul>
+            <span class="prod-cta">Ver detalles</span>
+        </article>
+        <article class="prod-card" onclick="openModal('viralenergy')">
+            <div class="prod-icon">⚡</div>
+            <p class="prod-name">ViralEnergy</p>
+            <ul class="prod-items">
+                <li>Bebida energetica corporativa de formula exclusiva</li>
+                <li>Respuesta metabolica optimizada en 12 min</li>
+                <li>Aprobada para personal operativo Umbrella</li>
+            </ul>
+            <span class="prod-cta">Ver detalles</span>
+        </article>
+        <article class="prod-card" style="grid-column:1/-1;max-width:50%;margin:0 auto" onclick="openModal('regenfood')">
+            <div class="prod-icon">🔬</div>
+            <p class="prod-name">ReGen Food</p>
+            <ul class="prod-items">
+                <li>Alimentos de recuperacion celular post-esfuerzo</li>
+                <li>Tecnologia de regeneracion de tejidos musculares</li>
+                <li>Protocolo certificado por division biomedica Umbrella</li>
+            </ul>
+            <span class="prod-cta">Ver detalles</span>
+        </article>
+    </div>
+</section>
 
-    <main>
-        <section class="hero reveal">
-            <!-- IMAGEN HERO: guardar como static/img/hero.jpg -->
-            <img class="hero-bg-image" src="{% static 'img/hero.jpg' %}" alt="Hero Umbrella Alimentaria">
-            <div class="container hero-content">
-                <p class="hero-spec"><span></span>Sector ALM-01 · Acceso autorizado · Umbrella Food Systems</p>
-                <p class="kicker">Bioingenieria Nutricional de Precision</p>
-                <h1>Umbrella Alimentaria.<br>Nutricion estrategica<br>para operaciones globales.</h1>
-                <p>Somos la division alimentaria de Umbrella Corporation. Disenamos, producimos y distribuimos lineas nutricionales de alto rendimiento para sectores civiles, industriales y escenarios de demanda critica.</p>
-                <div class="hero-actions">
-                    <a href="#productos" class="btn-primary">Explorar catalogo</a>
-                    <a href="#operaciones" class="btn-secondary">Ver operaciones</a>
+<!-- ══════════ TECNOLOGIA ══════════ -->
+<section id="tecnologia" class="reveal">
+    <div class="tec-wrap">
+        <p class="sec-eyebrow" style="justify-content:flex-start">Proceso y Tecnologia</p>
+        <h2 class="sec-h" style="color:#fff">Fabricacion inteligente de grado corporativo</h2>
+        <div class="timeline">
+            <div class="tl-article">
+                <h3>1. Seleccion molecular</h3>
+                <p>Materias primas evaluadas por bioescaneo para detectar pureza, valor nutritivo y compatibilidad funcional con protocolos Umbrella.</p>
+            </div>
+            <div class="tl-article">
+                <h3>2. Sintesis controlada</h3>
+                <p>Procesamiento con reactores de temperatura adaptativa y sellado esteril para preservar estabilidad biologica en cada lote.</p>
+            </div>
+            <div class="tl-article">
+                <h3>3. Validacion global</h3>
+                <p>Cada lote supera pruebas de resistencia, trazabilidad y auditoria de calidad antes de su distribucion en 50+ paises.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ OPERACIONES ══════════ -->
+<section id="operaciones" class="reveal">
+    <div class="op-wrap">
+        <p class="sec-eyebrow">Operaciones Alimentaria</p>
+        <h2 class="sec-h">Cadena completa: laboratorio, planta y distribucion internacional</h2>
+        <div class="op-grid">
+            <article class="op-card">
+                <div class="op-img"><span>Control de laboratorio</span></div>
+                <div class="op-body">
+                    <h3>Control de laboratorio</h3>
+                    <p>Analitica nutricional por lotes, control de trazabilidad y simulacion de estabilidad en diferentes climas y altitudes.</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="about container reveal" id="sobre">
-            <div class="section-heading">
-                <p class="kicker">Sobre la Division</p>
-                <h2>Nutricion corporativa con estandares biotecnologicos Umbrella</h2>
-            </div>
-            <div class="about-grid">
-                <p>La Division Alimentaria de Umbrella Corporation integra ciencia de materiales, microbiologia aplicada y protocolos de bioseguridad para crear alimentos funcionales de alto rendimiento. Nuestra cadena opera bajo supervision automatizada para garantizar trazabilidad completa y calidad consistente.</p>
-                <p>Desde centros de investigacion en zonas estrategicas, abastecemos a mas de 50 paises con lineas alimentarias orientadas a resistencia fisica, estabilidad metabolica y respuesta inmune optimizada. Cada lote es validado por sistemas de control molecular en tiempo real.</p>
-            </div>
-        </section>
-
-        <section class="products reveal" id="productos">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="kicker">Portafolio</p>
-                    <h2>Productos alimenticios de nueva generacion</h2>
+            </article>
+            <article class="op-card">
+                <div class="op-img"><span>Produccion automatizada</span></div>
+                <div class="op-body">
+                    <h3>Produccion automatizada</h3>
+                    <p>Lineas con monitoreo en tiempo real, esterilidad multicapa y empaques con sello anti-manipulacion corporativo.</p>
                 </div>
-                <div class="product-table-wrap" aria-label="Tabla de productos de la Division Alimentaria">
-                    <table class="product-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Descripcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Nutrimax X</td>
-                                <td>Suplemento proteico de alto rendimiento</td>
-                            </tr>
-                            <tr>
-                                <td>UmbraGrow</td>
-                                <td>Fertilizante organico de nueva generacion</td>
-                            </tr>
-                            <tr>
-                                <td>BioFresh</td>
-                                <td>Linea de alimentos procesados "100% naturales"</td>
-                            </tr>
-                            <tr>
-                                <td>ViralEnergy</td>
-                                <td>Bebida energetica corporativa</td>
-                            </tr>
-                            <tr>
-                                <td>ReGen Food</td>
-                                <td>Alimentos de recuperacion celular</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            </article>
+            <article class="op-card">
+                <div class="op-img"><span>Logistica global</span></div>
+                <div class="op-body">
+                    <h3>Logistica global</h3>
+                    <p>Red de distribucion en rutas priorizadas con respuesta 24/7 para abastecimiento de centros operativos en 50+ paises.</p>
                 </div>
-                <div class="cards-grid">
-                    <article class="card">
-                        <!-- IMAGEN PRODUCTO 1: guardar como static/img/producto-1.jpg -->
-                        <img src="{% static 'img/producto-1.jpg' %}" alt="Nutrimax X">
-                        <div class="card-content">
-                            <h3>Nutrimax X</h3>
-                            <p>Suplemento proteico de alto rendimiento.</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <!-- IMAGEN PRODUCTO 2: guardar como static/img/producto-2.jpg -->
-                        <img src="{% static 'img/producto-2.jpg' %}" alt="UmbraGrow">
-                        <div class="card-content">
-                            <h3>UmbraGrow</h3>
-                            <p>Fertilizante organico de nueva generacion.</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <!-- IMAGEN PRODUCTO 3: guardar como static/img/producto-3.jpg -->
-                        <img src="{% static 'img/producto-3.jpg' %}" alt="BioFresh">
-                        <div class="card-content">
-                            <h3>BioFresh</h3>
-                            <p>Linea de alimentos procesados "100% naturales".</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <!-- IMAGEN PRODUCTO 4: guardar como static/img/producto-4.jpg -->
-                        <img src="{% static 'img/producto-4.jpg' %}" alt="ViralEnergy">
-                        <div class="card-content">
-                            <h3>ViralEnergy</h3>
-                            <p>Bebida energetica corporativa.</p>
-                        </div>
-                    </article>
-                    <article class="card">
-                        <!-- IMAGEN PRODUCTO 5: guardar como static/img/producto-5.jpg -->
-                        <img src="{% static 'img/producto-5.jpg' %}" alt="ReGen Food">
-                        <div class="card-content">
-                            <h3>ReGen Food</h3>
-                            <p>Alimentos de recuperacion celular.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
+            </article>
+        </div>
+    </div>
+</section>
 
-        <section class="technology container reveal" id="tecnologia">
-            <div class="section-heading">
-                <p class="kicker">Proceso y Tecnologia</p>
-                <h2>Fabricacion inteligente de grado corporativo</h2>
-            </div>
-            <div class="timeline">
-                <article>
-                    <h3>1. Seleccion molecular</h3>
-                    <p>Materias primas evaluadas por bioescaneo para detectar pureza, valor nutritivo y compatibilidad funcional.</p>
-                </article>
-                <article>
-                    <h3>2. Sintesis controlada</h3>
-                    <p>Procesamiento con reactores de temperatura adaptativa y sellado esteril para preservar estabilidad biologica.</p>
-                </article>
-                <article>
-                    <h3>3. Validacion global</h3>
-                    <p>Cada lote supera pruebas de resistencia, trazabilidad y auditoria de calidad antes de su distribucion internacional.</p>
-                </article>
-            </div>
-        </section>
+<!-- ══════════ STATS ══════════ -->
+<section id="stats" class="reveal" aria-label="Estadisticas corporativas">
+    <div class="stats-grid">
+        <article>
+            <h3><span class="counter" data-target="50" data-suffix="+">0+</span></h3>
+            <p>Paises abastecidos</p>
+        </article>
+        <article>
+            <h3><span class="counter" data-target="99.9" data-suffix="%">0%</span></h3>
+            <p>Indice de calidad certificada</p>
+        </article>
+        <article>
+            <h3><span>24/7</span></h3>
+            <p>Supervision biosegura</p>
+        </article>
+        <article>
+            <h3><span class="counter" data-target="1200" data-suffix="+">0+</span></h3>
+            <p>Especialistas en la division</p>
+        </article>
+    </div>
+</section>
 
-        <section class="operations reveal" id="operaciones">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="kicker">Operaciones Alimentaria</p>
-                    <h2>Cadena completa: laboratorio, planta y distribucion internacional</h2>
-                </div>
-                <div class="operations-grid">
-                    <article class="op-card">
-                        <!-- IMAGEN OPERACION 1: guardar como static/img/operacion-1.jpg -->
-                        <img src="{% static 'img/operacion-1.jpg' %}" alt="Control de laboratorio Umbrella Alimentaria">
-                        <div>
-                            <h3>Control de laboratorio</h3>
-                            <p>Analitica nutricional por lotes, control de trazabilidad y simulacion de estabilidad en diferentes climas y altitudes.</p>
-                        </div>
-                    </article>
-                    <article class="op-card">
-                        <!-- IMAGEN OPERACION 2: guardar como static/img/operacion-2.jpg -->
-                        <img src="{% static 'img/operacion-2.jpg' %}" alt="Produccion industrial automatizada">
-                        <div>
-                            <h3>Produccion automatizada</h3>
-                            <p>Lineas con monitoreo en tiempo real, esterilidad multicapa y empaques con sello anti-manipulacion corporativo.</p>
-                        </div>
-                    </article>
-                    <article class="op-card">
-                        <!-- IMAGEN OPERACION 3: guardar como static/img/operacion-3.jpg -->
-                        <img src="{% static 'img/operacion-3.jpg' %}" alt="Logistica global de alimentos Umbrella">
-                        <div>
-                            <h3>Logistica global</h3>
-                            <p>Red de distribucion en rutas priorizadas con respuesta 24/7 para abastecimiento de centros operativos en 50+ paises.</p>
-                        </div>
-                    </article>
-                </div>
+<!-- ══════════ FOOTER ══════════ -->
+<footer id="contacto">
+    <div class="foot-grid">
+        <div>
+            <div class="foot-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella">
+                <span class="foot-brand-txt">UMBRELLA ALIMENTARIA</span>
             </div>
-        </section>
-
-        <section class="stats reveal" aria-label="Estadisticas corporativas">
-            <div class="container stats-grid">
-                <article>
-                    <h3><span class="counter" data-target="50" data-suffix="+">0</span></h3>
-                    <p>Paises abastecidos</p>
-                </article>
-                <article>
-                    <h3><span class="counter" data-target="99.9" data-suffix="%">0</span></h3>
-                    <p>Indice de calidad certificada</p>
-                </article>
-                <article>
-                    <h3><span class="counter" data-target="24" data-suffix="/7">0</span></h3>
-                    <p>Supervision biosegura</p>
-                </article>
-                <article>
-                    <h3><span class="counter" data-target="1200" data-suffix="+">0</span></h3>
-                    <p>Especialistas en la division</p>
-                </article>
-            </div>
-        </section>
-
-
-    </main>
-
-    <footer class="site-footer" id="contacto">
-        <div class="container footer-grid">
-            <div>
-                <div class="brand footer-brand">
-                    <img class="brand-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Logo Umbrella Corporation">
-                    <span class="brand-text">
-                        <strong>Umbrella <span>Alimentaria</span></strong>
-                        <small>Division Alimentaria</small>
-                    </span>
-                </div>
-                <p>Raccoon City Food Systems - Centro de Operaciones Regional LATAM.</p>
-            </div>
-            <ul class="footer-links">
-                <li><a href="#inicio">Inicio</a></li>
+            <p class="foot-desc">Raccoon City Food Systems — Centro de Operaciones Regional LATAM.<br>Division Oficial de Nutricion Avanzada. Todos los protocolos bajo certificacion internacional Umbrella Corporation.</p>
+        </div>
+        <div class="foot-col">
+            <h5>Navegacion</h5>
+            <ul class="foot-links">
+                <li><a href="#hero">Inicio</a></li>
                 <li><a href="#sobre">Sobre Nosotros</a></li>
                 <li><a href="#productos">Productos</a></li>
                 <li><a href="#tecnologia">Tecnologia</a></li>
                 <li><a href="#operaciones">Operaciones</a></li>
             </ul>
         </div>
-        <p class="copyright">© 2026 Umbrella Corporation. Todos los derechos reservados.</p>
-    </footer>
+        <div class="foot-col">
+            <h5>Division ALM</h5>
+            <ul class="foot-links">
+                <li><a href="#productos">Nutrimax X</a></li>
+                <li><a href="#productos">UmbraGrow</a></li>
+                <li><a href="#productos">BioFresh</a></li>
+                <li><a href="#productos">ViralEnergy</a></li>
+                <li><a href="#productos">ReGen Food</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <p class="foot-legal">© 2026 Umbrella Corporation. Todos los derechos reservados. &nbsp;·&nbsp; Sector ALM-01 &nbsp;·&nbsp; Acceso restringido</p>
+        <p class="foot-legal" style="color:rgba(200,16,46,.3)">UMBRELLA CORP — DIVISION ALIMENTARIA</p>
+    </div>
+</footer>
 
-    <script src="{% static 'js/main.js' %}"></script>
+<!-- ══════════ MODALES ══════════ -->
+<div class="modal-overlay" id="modal-nutrimax">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title">Nutrimax X — Ficha Tecnica</span>
+            <button class="modal-close" onclick="closeModal('nutrimax')">✕ Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Suplemento proteico de alto rendimiento desarrollado bajo el protocolo de sintesis molecular Umbrella. Formulado para maximizar la recuperacion muscular, la resistencia fisica y la eficiencia metabolica en condiciones operativas de alta demanda.</p>
+            <ul class="modal-list">
+                <li>Proteina de origen biotecnologico con absorcion optimizada en 15 minutos</li>
+                <li>Sin aditivos artificiales — validacion quimica por lote en tiempo real</li>
+                <li>Certificacion ISO-ALM 9900 para uso en centros operativos Umbrella</li>
+                <li>Disponible en formato polvo, barra y capsula de liberacion controlada</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-umbragrow">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title">UmbraGrow — Ficha Tecnica</span>
+            <button class="modal-close" onclick="closeModal('umbragrow')">✕ Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Fertilizante organico de nueva generacion basado en microbiologia aplicada. Aumenta el rendimiento de cultivos hasta un 340% respecto a fertilizantes convencionales, con trazabilidad completa desde el laboratorio hasta el campo.</p>
+            <ul class="modal-list">
+                <li>Formulacion microbiana activa con bacterias fijadoras de nitrogeno</li>
+                <li>Certificacion fitosanitaria LATAM, EU y APAC</li>
+                <li>Compatible con cultivos hidropónicos y convencionales</li>
+                <li>Sistema de trazabilidad QR por lote para auditoria de campo</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-biofresh">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title">BioFresh — Ficha Tecnica</span>
+            <button class="modal-close" onclick="closeModal('biofresh')">✕ Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Linea de alimentos procesados bajo el estandar "100% naturales" de Umbrella. Empacados con sello molecular anti-manipulacion para garantizar integridad desde planta hasta el consumidor final.</p>
+            <ul class="modal-list">
+                <li>Procesamiento sin conservantes sinteticos — estabilizacion por atmosfera controlada</li>
+                <li>Control de trazabilidad molecular por lote desde materia prima</li>
+                <li>Empaque con sello anti-manipulacion corporativo de grado ALM-3</li>
+                <li>Disponible en lineas vegetales, proteicas y de recuperacion</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-viralenergy">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title">ViralEnergy — Ficha Tecnica</span>
+            <button class="modal-close" onclick="closeModal('viralenergy')">✕ Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Bebida energetica de formula exclusiva desarrollada para personal operativo Umbrella Corporation. Respuesta metabolica activa en 12 minutos con sostenimiento de 6 horas sin colapso energetico.</p>
+            <ul class="modal-list">
+                <li>Formula patentada con adaptogenos de grado corporativo</li>
+                <li>Sin azucares refinados — endulzante biosintetico de ultima generacion</li>
+                <li>Aprobada para uso en operaciones de alta exigencia cognitiva y fisica</li>
+                <li>Disponible en 4 formulas segun perfil de demanda operativa</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-regenfood">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title">ReGen Food — Ficha Tecnica</span>
+            <button class="modal-close" onclick="closeModal('regenfood')">✕ Cerrar</button>
+        </div>
+        <div class="modal-body">
+            <p>Linea alimentaria de recuperacion celular desarrollada junto a la division biomedica de Umbrella Corporation. Orientada a acelerar la regeneracion de tejidos musculares y optimizar la respuesta inmune post-esfuerzo critico.</p>
+            <ul class="modal-list">
+                <li>Tecnologia de peptidos bioreactivos para regeneracion muscular acelerada</li>
+                <li>Certificado por la Division Biomedica Umbrella — protocolo BIO-RG7</li>
+                <li>Reduce tiempo de recuperacion en un 60% respecto a suplementacion convencional</li>
+                <li>Distribucion exclusiva a centros medicos y operativos Umbrella</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Cursor
+    const cur = document.getElementById('cur');
+    const curR = document.getElementById('cur-r');
+    document.addEventListener('mousemove', e => {
+        cur.style.left = e.clientX + 'px';
+        cur.style.top = e.clientY + 'px';
+        curR.style.left = e.clientX + 'px';
+        curR.style.top = e.clientY + 'px';
+    });
+
+    // Navbar scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 40));
+
+    // Reveal
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Counters
+    document.querySelectorAll('.counter').forEach(el => {
+        const io = new IntersectionObserver(entries => {
+            if(!entries[0].isIntersecting) return;
+            io.unobserve(el);
+            const target = parseFloat(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const dec = target % 1 !== 0;
+            let start, dur = 1600;
+            const step = ts => {
+                if(!start) start = ts;
+                const p = Math.min((ts - start) / dur, 1);
+                const v = target * (1 - Math.pow(1-p, 3));
+                el.textContent = (dec ? v.toFixed(1) : Math.floor(v)) + suffix;
+                if(p < 1) requestAnimationFrame(step);
+                else el.textContent = (dec ? target.toFixed(1) : target) + suffix;
+            };
+            requestAnimationFrame(step);
+        }, {threshold: 0.5});
+        io.observe(el);
+    });
+
+    // Mobile menu
+    function toggleMob() { document.getElementById('mob-menu').classList.toggle('open'); }
+    function closeMob() { document.getElementById('mob-menu').classList.remove('open'); }
+
+    // Modals
+    function openModal(id) {
+        document.getElementById('modal-' + id).classList.add('show');
+        document.body.classList.add('no-scroll');
+    }
+    function closeModal(id) {
+        document.getElementById('modal-' + id).classList.remove('show');
+        document.body.classList.remove('no-scroll');
+    }
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', e => { if(e.target === m) { m.classList.remove('show'); document.body.classList.remove('no-scroll'); } });
+    });
+</script>
 </body>
 </html>
