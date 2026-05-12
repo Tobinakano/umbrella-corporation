@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Farmaceutica',
     'Industrial',
     'Investigacion',
+    'Investigacion_legal',
     'Secret_Area',
     'USS',
 ]

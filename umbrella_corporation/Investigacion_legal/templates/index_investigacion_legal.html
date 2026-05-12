@@ -1,98 +1,558 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investigación Legal | Umbrella Corporation</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style_standard.css' %}">
+    <meta name="description" content="Centro de Cumplimiento Legal y Normativo de Umbrella Corporation">
+    <title>Centro Legal | Umbrella Corporation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&family=Barlow+Condensed:wght@300;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root{
-            --bg:#e8eaeb;--bg2:#d2d6d9;
-            --light:#f4f6f7;--dark:#1a1e21;
-            --mid:#5c666d;--muted:#9aa3a8;
-            --red:#c8102e;
-            --border:rgba(26,30,33,.13);--border-s:rgba(26,30,33,.26);
-            --mono:'DM Mono',monospace;
-            --cond:'Barlow Condensed',sans-serif;
-            --body:'Barlow',sans-serif;
+        :root {
+            --bg:     #e8eaeb;
+            --bg2:    #d2d6d9;
+            --bg3:    #c0c5c8;
+            --light:  #f4f6f7;
+            --dark:   #1a1e21;
+            --dark2:  #252c31;
+            --mid:    #5c666d;
+            --muted:  #9aa3a8;
+            --red:    #c8102e;
+            --red-dim: rgba(200,16,46,.07);
+            --red-line: rgba(200,16,46,.3);
+            --warn:   #e8a000;
+            --green:  #00c864;
+            --border:   rgba(26,30,33,.13);
+            --border-s: rgba(26,30,33,.26);
+            --mono:  'DM Mono', monospace;
+            --cond:  'Barlow Condensed', sans-serif;
+            --body:  'Barlow', sans-serif;
+            --hosp-deep:  #1c3a4a;
+            --hosp-mid:   #2a4f63;
+            --hosp-panel: #1e3d4e;
+            --hosp-term:  #162e3a;
         }
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--dark);font-family:var(--body)}
-        nav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;padding:0 40px;background:var(--light);border-bottom:1px solid var(--border-s);box-shadow:0 1px 3px rgba(0,0,0,.1)}
-        .nav-logo{display:flex;align-items:center;gap:10px;margin-right:auto}
-        .nav-logo strong{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dark)}
-        .nav-links{display:flex;list-style:none;align-items:center;height:56px}
-        .nav-links a{font-family:var(--mono);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;padding:0 16px;border-right:1px solid var(--border);position:relative;transition:color .25s}
-        .nav-links a:last-child{border-right:none}
-        .nav-links a:hover{color:var(--dark)}
-        .nav-links a::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .3s}
-        .nav-links a:hover::after{transform:scaleX(1)}
-        main{max-width:1200px;margin:0 auto;padding:40px 20px}
-        section{margin-bottom:50px}
-        h1{font-family:var(--cond);font-size:2.8rem;font-weight:800;text-transform:uppercase;color:var(--dark);margin-bottom:15px;border-bottom:3px solid var(--red);padding-bottom:15px}
-        h2{font-family:var(--cond);font-size:1.5rem;font-weight:700;text-transform:uppercase;color:var(--dark);margin:30px 0 15px;padding-bottom:10px;border-bottom:2px solid var(--red)}
-        p{font-size:.95rem;line-height:1.8;color:var(--mid);margin-bottom:15px}
-        ul{margin-left:24px;list-style-position:inside}
-        li{color:var(--mid);margin-bottom:10px;line-height:1.6}
-        li::marker{color:var(--red);font-weight:bold}
-        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}
-        .card{background:var(--light);padding:24px;border:1px solid var(--border-s);border-top:3px solid var(--red)}
-        .card h3{font-family:var(--cond);font-size:1.1rem;font-weight:700;color:var(--dark);margin-bottom:12px}
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--dark);
+            font-family: var(--body);
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+
+        /* ════ NAV ════ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+            height: 56px; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 60px;
+            transition: all .35s;
+        }
+        nav.sc {
+            background: var(--light);
+            border-bottom: 1px solid var(--border-s);
+            box-shadow: 0 1px 0 var(--red);
+        }
+        .n-logo { display: flex; align-items: center; gap: 10px; }
+        .n-logo img { width: 30px; height: 30px; }
+        .n-brand {
+            font-family: var(--cond); font-size: 13px;
+            font-weight: 700; letter-spacing: .25em;
+            text-transform: uppercase; color: var(--dark);
+        }
+        .n-brand span { color: var(--red); }
+        .n-brand small {
+            display: block; font-family: var(--mono);
+            font-size: 7px; letter-spacing: .2em;
+            color: var(--muted); margin-top: 1px;
+        }
+        .n-links {
+            display: flex; list-style: none;
+            height: 56px; align-items: stretch;
+        }
+        .n-links a {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--mid); display: flex; align-items: center;
+            padding: 0 16px; border-left: 1px solid var(--border);
+            position: relative; transition: color .25s;
+        }
+        .n-links a::after {
+            content: ''; position: absolute; bottom: 0;
+            left: 0; right: 0; height: 2px;
+            background: var(--red); transform: scaleX(0);
+            transition: transform .3s;
+        }
+        .n-links a:hover { color: var(--dark); }
+        .n-links a:hover::after,
+        .n-links a.active::after { transform: scaleX(1); }
+        .n-links a.active { color: var(--dark); }
+
+        .n-pill {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .15em; text-transform: uppercase;
+            background: var(--red); color: #fff;
+            padding: 9px 20px; border: none; cursor: pointer;
+            transition: filter .3s;
+        }
+        .n-pill:hover { filter: brightness(1.12); }
+
+        /* ════ HERO ════ */
+        #hero {
+            position: relative; min-height: 100vh;
+            background: var(--hosp-deep);
+            display: flex; flex-direction: column; overflow: hidden;
+            margin-top: 56px;
+        }
+        .h-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .h-stripe {
+            position: absolute; left: 0; right: 0; top: 50%;
+            height: 2px; background: var(--red); opacity: .15;
+        }
+        .h-inner {
+            position: relative; z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            flex: 1;
+            margin-top: 56px;
+        }
+        .h-left {
+            padding: 72px 48px 72px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .h-right {
+            background: rgba(0,40,60,.45);
+            border-left: 1px solid rgba(255,255,255,.07);
+            display: flex;
+            flex-direction: column;
+        }
+        .h-plate {
+            background: rgba(0,30,45,.5);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .h-plate-id {
+            font-family: var(--cond);
+            font-size: 1.6rem; font-weight: 700;
+            letter-spacing: .2em;
+            color: rgba(255,255,255,.1);
+        }
+        .h-plate-st {
+            font-family: var(--mono);
+            font-size: 7px; letter-spacing: .2em;
+            color: var(--green);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .h-plate-st::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink .8s step-end infinite;
+        }
+        .h-rows {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        .h-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,.03);
+        }
+        .h-row:last-child { border-bottom: none; }
+        .h-row-k {
+            font-family: var(--mono);
+            font-size: 7px; letter-spacing: .15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.35);
+        }
+        .h-row-v {
+            font-family: var(--cond);
+            font-size: 1rem; font-weight: 700;
+            letter-spacing: .05em;
+            color: rgba(255,255,255,.8);
+        }
+        .h-row-v.ok { color: var(--green); }
+        .h-specimen {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .35em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 24px;
+        }
+        .h-spec-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--green);
+            animation: blink .9s step-end infinite;
+        }
+        .h-logo { width: 80px; margin-bottom: 24px; mix-blend-mode: screen; }
+        .h-h1 {
+            font-family: var(--cond);
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 800; line-height: .93;
+            letter-spacing: .02em; text-transform: uppercase;
+            color: var(--light); margin-bottom: 10px;
+        }
+        .h-h1 .r { color: var(--red); }
+        .h-h1 .ghost { opacity: .28; font-weight: 300; }
+        .h-sub {
+            font-family: var(--mono); font-size: 9px;
+            letter-spacing: .22em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 32px;
+            padding-left: 12px; border-left: 2px solid var(--red);
+        }
+        .h-desc {
+            font-size: .9rem; font-weight: 300; line-height: 1.85;
+            color: rgba(255,255,255,.42); max-width: 440px; margin-bottom: 40px;
+        }
+        .h-stats {
+            display: flex; gap: 32px; margin-bottom: 40px;
+            padding: 20px 0; border-top: 1px solid rgba(255,255,255,.07);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+        .h-stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .h-stat-num {
+            font-family: var(--cond); font-size: 2rem; font-weight: 800;
+            color: var(--light); line-height: 1;
+        }
+        .h-stat-num .r { color: var(--red); }
+        .h-stat-label {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: rgba(255,255,255,.3);
+        }
+        .h-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .2em; text-transform: uppercase;
+            padding: 12px 24px; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .3s; position: relative; overflow: hidden;
+        }
+        .btn.p { background: var(--red); color: #fff; }
+        .btn.p:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(200,16,46,.4); }
+        .btn.g {
+            background: transparent; color: rgba(255,255,255,.45);
+            border: 1px solid rgba(255,255,255,.14);
+        }
+        .btn.g:hover { border-color: rgba(255,255,255,.4); color: var(--light); }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ════ CONTENT SECTIONS ════ */
+        main { max-width: 1200px; margin: 0 auto; padding: 80px 60px; }
+        section { margin-bottom: 80px; }
+        h2 {
+            font-family: var(--cond); font-size: clamp(2rem,4vw,3rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--dark); margin-bottom: 40px;
+            border-bottom: 2px solid var(--red);
+            padding-bottom: 20px;
+        }
+        p {
+            font-size: .95rem; line-height: 1.9; color: var(--mid);
+            font-weight: 300; max-width: 800px; margin-bottom: 20px;
+        }
+        .grid-2 {
+            display: grid; grid-template-columns: repeat(2,1fr);
+            gap: 24px; margin-top: 30px;
+        }
+        .card {
+            background: var(--light); padding: 32px;
+            border: 1px solid var(--border-s);
+            border-top: 3px solid var(--red);
+            transition: all .3s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+        .card h3 {
+            font-family: var(--cond); font-size: 1.1rem;
+            font-weight: 700; color: var(--dark); margin-bottom: 12px;
+        }
+        .card p { margin-bottom: 16px; }
+        ul { margin-left: 20px; }
+        li { margin-bottom: 12px; color: var(--mid); line-height: 1.6; }
+
+        /* ════ FOOTER ════ */
+        footer {
+            background: var(--hosp-deep);
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 60px;
+            text-align: center;
+        }
+        .foot-brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .foot-brand svg { width: 28px; height: 28px; color: var(--light); opacity: .6; }
+        .foot-brand-txt {
+            font-family: var(--mono); font-size: 10px;
+            letter-spacing: .22em; font-weight: 500;
+            color: rgba(255,255,255,.6);
+        }
+        .foot-desc {
+            font-size: .85rem; color: rgba(255,255,255,.4);
+            line-height: 1.8; margin-bottom: 30px;
+        }
+        .foot-legal {
+            font-family: var(--mono); font-size: 7px;
+            color: rgba(255,255,255,.25);
+            letter-spacing: .08em;
+        }
+
+        /* ════ RESPONSIVE ════ */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .n-links, .n-pill { display: none; }
+            main { padding: 60px 20px; }
+            .h-inner { padding: 40px 20px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            h2 { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-logo">
-            <strong>Investigación Legal</strong>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="n-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+            <div class="n-brand">
+                UMBRELLA <span>CORPORACION</span>
+                <small>LEGAL DIVISION</small>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#overview">Visión General</a></li>
-            <li><a href="#areas">Áreas</a></li>
-            <li><a href="#proyectos">Proyectos</a></li>
+        <ul class="n-links">
+            <li><a href="#hero" class="active">Inicio</a></li>
+            <li><a href="#areas">Servicios</a></li>
+            <li><a href="#compliance">Cumplimiento</a></li>
+            <li><a href="#contact">Contacto</a></li>
         </ul>
+        <button class="n-pill" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Asesoría →</button>
     </nav>
 
-    <main>
-        <section id="overview">
-            <h1>Centro de Investigación Legal</h1>
-            <p>Departamento de Investigación Científica y Biotecnología de Umbrella Corporation dedicado a desarrollar soluciones innovadoras en seguridad con estándares internacionales.</p>
-        </section>
+    <!-- ════ HERO ════ -->
+    <section id="hero">
+        <div class="h-grid"></div>
+        <div class="h-stripe"></div>
+        <div class="h-inner">
+            <div class="h-left">
+                <div class="h-specimen">
+                    <span class="h-spec-dot"></span>
+                    LEGAL — COMPLIANCE-01 — ACTIVO
+                </div>
+                <img class="h-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+                <h1 class="h-h1">
+                    UMBRELLA<br>
+                    <span class="r">CORPORACION</span>
+                </h1>
+                <p class="h-sub">Centro de Cumplimiento Legal · Umbrella Corporation</p>
+                <p class="h-desc">
+                    Asesoramiento especializado en regulación científica, cumplimiento normativo e integridad corporativa con alcance internacional.
+                </p>
+                <div class="h-stats">
+                    <div class="h-stat-item">
+                        <span class="h-stat-num"><span class="r">25</span>+</span>
+                        <span class="h-stat-label">Casos</span>
+                    </div>
+                    <div class="h-stat-item">
+                        <span class="h-stat-num"><span class="r">50</span>+</span>
+                        <span class="h-stat-label">Abogados</span>
+                    </div>
+                    <div class="h-stat-item">
+                        <span class="h-stat-num"><span class="r">12</span></span>
+                        <span class="h-stat-label">Jurisdicciones</span>
+                    </div>
+                </div>
+                <div class="h-btns">
+                    <a href="#areas" class="btn p">Explorar Servicios →</a>
+                    <a href="#compliance" class="btn g">Certificaciones</a>
+                </div>
+            </div>
 
+            <!-- Right status panel -->
+            <div class="h-right">
+                <div class="h-plate">
+                    <div class="h-plate-id">LEG-01</div>
+                    <div class="h-plate-st">Activo</div>
+                </div>
+                <div class="h-rows">
+                    <div class="h-row">
+                        <span class="h-row-k">Jurisdicciones</span>
+                        <span class="h-row-v ok">12</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Abogados Activos</span>
+                        <span class="h-row-v ok">50+</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Casos Resueltos</span>
+                        <span class="h-row-v ok">25+</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Cumplimiento</span>
+                        <span class="h-row-v ok">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════ MAIN CONTENT ════ -->
+    <main>
         <section id="areas">
-            <h2>Áreas de Investigación</h2>
+            <h2>Áreas de Asesoramiento</h2>
+            <p>Brindamos consultoría legal especializada en regulación científica, cumplimiento corporativo y normativas internacionales.</p>
             <div class="grid-2">
                 <div class="card">
-                    <h3>Biotecnología</h3>
-                    <p>Desarrollo de tecnologías biológicas avanzadas con aplicaciones en medicina y seguridad.</p>
+                    <h3>Regulación Científica</h3>
+                    <p>Asesoramiento FDA, EMA y cumplimiento en investigación clínica. Procesos de aprobación regulatoria integral.</p>
                 </div>
                 <div class="card">
-                    <h3>Farmacéutica</h3>
-                    <p>Investigación en fármacos innovadores para tratamientos de vanguardia.</p>
+                    <h3>Bioseguridad Legal</h3>
+                    <p>Cumplimiento BSL-3, normativas de contención y regulaciones de agentes patógenos internacionales.</p>
                 </div>
                 <div class="card">
-                    <h3>Seguridad Biológica</h3>
-                    <p>Protocolos de contención y seguridad en laboratorios de nivel 4.</p>
+                    <h3>Propiedad Intelectual</h3>
+                    <p>Protección de patentes, derechos comerciales y secretos comerciales en investigación biotecnológica.</p>
                 </div>
                 <div class="card">
-                    <h3>Sostenibilidad</h3>
-                    <p>Tecnologías sostenibles y responsables con el medio ambiente.</p>
+                    <h3>Ética en Investigación</h3>
+                    <p>Cumplimiento de comités de ética, consentimiento informado y normativas de privacidad GDPR.</p>
                 </div>
             </div>
         </section>
 
-        <section id="proyectos">
-            <h2>Proyectos Activos</h2>
-            <ul>
-                <li>Programa de Inmunología Avanzada - Estado: En Progreso</li>
-                <li>Desarrollo de Antivirales de Espectro Amplio - Estado: En Progreso</li>
-                <li>Investigación de Biomarcadores - Estado: Fase 3</li>
-                <li>Terapias Génicas Aplicadas - Estado: Análisis</li>
-                <li>Sistemas de Diagnóstico Rápido - Estado: En Progreso</li>
-            </ul>
+        <section id="compliance">
+            <h2>Certificaciones y Cumplimiento</h2>
+            <p>Mantenemos estándares internacionales de calidad y cumplimiento normativo en todas nuestras operaciones.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Licencias Regulatorias</h3>
+                    <p>Autorización legal completa en todas las jurisdicciones de operación con cobertura global.</p>
+                </div>
+                <div class="card">
+                    <h3>Auditorías Anuales</h3>
+                    <p>Auditorías completas de cumplimiento regulatorio integral con resultados favorables documentados.</p>
+                </div>
+                <div class="card">
+                    <h3>Cumplimiento GDPR</h3>
+                    <p>Certificación de privacidad y protección de datos conforme a regulaciones europeas vigentes.</p>
+                </div>
+                <div class="card">
+                    <h3>Certificación ISO 9001</h3>
+                    <p>Certificación de gestión de calidad aplicada a procesos legales, administrativos y corporativos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contacto y Consultoría</h2>
+            <p>Estamos disponibles para evaluar tus necesidades específicas en materia legal y regulatory affairs. Contáctanos para una consulta especializada.</p>
+            <div style="margin-top: 40px; text-align: center;">
+                <p style="margin-bottom: 20px;">Para solicitar asesoramiento legal especializado:</p>
+                <a href="mailto:legal@umbrella-corp.com" class="btn p">Contactar Departamento Legal →</a>
+            </div>
         </section>
     </main>
+
+    <!-- ════ FOOTER ════ -->
+    <footer>
+        <div class="foot-grid">
+            <div>
+                <div class="foot-brand">
+                    <svg viewBox="0 0 64 64" fill="none">
+                        <polygon points="32,8 48,20 48,44 32,56 16,44 16,20" fill="currentColor" opacity="0.8"/>
+                        <polygon points="32,8 48,20 48,44 32,56 16,44 16,20" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span class="foot-brand-txt">UMBRELLA CORPORACION</span>
+                </div>
+                <p class="foot-desc">Departamento Legal especializado en regulación científica, cumplimiento normativo y asesoramiento estratégico corporativo.</p>
+            </div>
+            <div class="foot-col">
+                <h5>Servicios</h5>
+                <ul class="foot-links">
+                    <li><a href="#areas">Regulación Científica</a></li>
+                    <li><a href="#areas">Bioseguridad Legal</a></li>
+                    <li><a href="#areas">Propiedad Intelectual</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>Normativas</h5>
+                <ul class="foot-links">
+                    <li><a href="#compliance">Certificaciones</a></li>
+                    <li><a href="#compliance">Auditorías</a></li>
+                    <li><a href="#compliance">Compliance</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>Estadisticas</h5>
+                <div class="foot-stats">
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">25+</span>
+                        <span class="foot-stat-lbl">Casos</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">50+</span>
+                        <span class="foot-stat-lbl">Abogados</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">12</span>
+                        <span class="foot-stat-lbl">Jurisdicciones</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="foot-bottom">
+            <p class="foot-legal">© 2026 Umbrella Corporation. Reporte Legal Actualizado.</p>
+            <div class="foot-badges">
+                <span class="badge">Legal Certified</span>
+                <span class="badge">GDPR Compliant</span>
+                <span class="badge">ISO 27001</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Nav scroll effect ──
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('sc', window.scrollY > 50);
+            const sections = ['hero','areas','compliance','contact'];
+            let current = '';
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && window.scrollY >= el.offsetTop - 120) current = id;
+            });
+            document.querySelectorAll('.n-links a').forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            });
+        });
+
+        // ── Smooth nav links ──
+        document.querySelectorAll('.n-links a').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
 </body>
 </html>
 
