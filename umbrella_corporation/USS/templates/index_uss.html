@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umbrella Corporation | Strategic Biotech Systems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&family=Barlow+Condensed:wght@300;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ════════════════════════════════════════
+           TOKENS & RESET
+        ════════════════════════════════════════ */
+        :root {
+            --bg:     #e8eaeb;
+            --bg2:    #d2d6d9;
+            --bg3:    #c0c5c8;
+            --light:  #f4f6f7;
+            --dark:   #1a1e21;
+            --dark2:  #252c31;
+            --mid:    #5c666d;
+            --muted:  #9aa3a8;
+            --red:    #c8102e;
+            --red-dim: rgba(200,16,46,.07);
+            --red-line: rgba(200,16,46,.3);
+            --warn:   #e8a000;
+            --green:  #00c864;
+            --border:   rgba(26,30,33,.13);
+            --border-s: rgba(26,30,33,.26);
+            --mono:  'DM Mono', monospace;
+            --cond:  'Barlow Condensed', sans-serif;
+            --body:  'Barlow', sans-serif;
+            --hosp-deep:  #1c3a4a;
+            --hosp-mid:   #2a4f63;
+            --hosp-panel: #1e3d4e;
+            --hosp-term:  #162e3a;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--dark);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+
+        /* ════ CURSOR ════ */
+        #cur {
+            position: fixed; width: 7px; height: 7px;
+            background: var(--red); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%,-50%);
+        }
+        #cur-r {
+            position: fixed; width: 24px; height: 24px;
+            border: 1px solid rgba(200,16,46,.45); border-radius: 50%;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%,-50%);
+            transition: all .2s ease-out;
+        }
+
+        /* ════ AMBIENT GRID ════ */
+        .ambient-grid {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image:
+                linear-gradient(rgba(26,30,33,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,30,33,.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        /* ════ NAV ════ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+            height: 56px; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 60px;
+            transition: all .35s;
+        }
+        nav.sc {
+            background: var(--light);
+            border-bottom: 1px solid var(--border-s);
+            box-shadow: 0 1px 0 var(--red);
+        }
+        .n-logo { display: flex; align-items: center; gap: 10px; }
+        .n-logo img { width: 30px; height: 30px; }
+        .n-brand {
+            font-family: var(--cond); font-size: 13px;
+            font-weight: 700; letter-spacing: .25em;
+            text-transform: uppercase; color: var(--dark);
+        }
+        .n-brand span { color: var(--red); }
+        .n-brand small {
+            display: block; font-family: var(--mono);
+            font-size: 7px; letter-spacing: .2em;
+            color: var(--muted); margin-top: 1px;
+        }
+        .n-links {
+            display: flex; list-style: none;
+            height: 56px; align-items: stretch;
+        }
+        .n-links a {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--mid); display: flex; align-items: center;
+            padding: 0 16px; border-left: 1px solid var(--border);
+            position: relative; transition: color .25s;
+        }
+        .n-links a::after {
+            content: ''; position: absolute; bottom: 0;
+            left: 0; right: 0; height: 2px;
+            background: var(--red); transform: scaleX(0);
+            transition: transform .3s;
+        }
+        .n-links a:hover { color: var(--dark); }
+        .n-links a:hover::after,
+        .n-links a.active::after { transform: scaleX(1); }
+        .n-links a.active { color: var(--dark); }
+        .n-pill {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .15em; text-transform: uppercase;
+            background: var(--red); color: #fff;
+            padding: 9px 20px; border: none; cursor: pointer;
+            transition: filter .3s;
+        }
+        .n-pill:hover { filter: brightness(1.12); }
+        .burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+        .burger span { width: 20px; height: 1px; background: var(--dark); }
+
+        /* Mobile nav */
+        .mob {
+            position: fixed; inset: 0; z-index: 400;
+            background: var(--hosp-deep);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 24px;
+            transform: translateX(100%);
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+        .mob.open { transform: none; }
+        .mob a {
+            font-family: var(--cond); font-size: 2rem;
+            font-weight: 700; letter-spacing: .2em;
+            text-transform: uppercase; color: var(--light);
+            transition: color .3s;
+        }
+        .mob a:hover { color: var(--red); }
+
+        /* ════ HERO ════ */
+        #hero {
+            position: relative; min-height: 100vh;
+            background: var(--hosp-deep);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .h-ceiling {
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 5px; display: flex; gap: 2px; z-index: 3;
+        }
+        .h-ceil-p { flex: 1; background: rgba(255,255,255,.04); }
+        .h-ceil-p.on { background: rgba(255,255,255,.3); box-shadow: 0 0 30px rgba(255,255,255,.1); }
+        .h-floor {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 4px; background: var(--warn); opacity: .6; z-index: 3;
+        }
+        .h-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .h-seam {
+            position: absolute; left: 56px; top: 0; bottom: 0;
+            width: 1px; background: rgba(255,255,255,.05); z-index: 1;
+        }
+        .h-stripe {
+            position: absolute; left: 0; right: 0; top: 50%;
+            height: 2px; background: var(--red); opacity: .15;
+        }
+        .h-inner {
+            position: relative; z-index: 2;
+            display: grid; grid-template-columns: 1fr 340px;
+            flex: 1; margin-top: 56px;
+        }
+        .h-left {
+            padding: 72px 48px 72px 80px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .h-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .35em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 24px;
+        }
+        .h-badge-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--green);
+            animation: blink .9s step-end infinite;
+        }
+        .h-logo { width: 80px; margin-bottom: 24px; }
+        .h-h1 {
+            font-family: var(--cond);
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
+            font-weight: 800; line-height: .95;
+            letter-spacing: .02em; text-transform: uppercase;
+            color: var(--light); margin-bottom: 10px;
+        }
+        .h-h1 .r { color: var(--red); }
+        .h-h1 .ghost { opacity: .28; font-weight: 300; }
+        .h-sub {
+            font-family: var(--mono); font-size: 9px;
+            letter-spacing: .22em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 28px;
+            padding-left: 12px; border-left: 2px solid var(--red);
+        }
+        .h-desc {
+            font-size: .9rem; font-weight: 300; line-height: 1.85;
+            color: rgba(255,255,255,.42); max-width: 480px; margin-bottom: 40px;
+        }
+        .h-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .2em; text-transform: uppercase;
+            padding: 12px 24px; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .3s; position: relative; overflow: hidden;
+        }
+        .btn.p { background: var(--red); color: #fff; }
+        .btn.p:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(200,16,46,.4); }
+        .btn.g {
+            background: transparent; color: rgba(255,255,255,.45);
+            border: 1px solid rgba(255,255,255,.14);
+        }
+        .btn.g:hover { border-color: rgba(255,255,255,.4); color: var(--light); }
+
+        /* Hero right status panel */
+        .h-right {
+            background: rgba(0,40,60,.45);
+            border-left: 1px solid rgba(255,255,255,.07);
+            display: flex; flex-direction: column;
+        }
+        .h-plate {
+            background: rgba(0,30,45,.5);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            padding: 12px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .h-plate-id {
+            font-family: var(--cond); font-size: 1.4rem;
+            font-weight: 700; letter-spacing: .2em;
+            color: rgba(255,255,255,.1);
+        }
+        .h-plate-st {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .2em; color: var(--green);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .h-plate-st::before {
+            content: ''; width: 5px; height: 5px;
+            border-radius: 50%; background: var(--green);
+            animation: blink .8s step-end infinite;
+        }
+        .h-rows { padding: 16px; display: flex; flex-direction: column; gap: 1px; flex: 1; }
+        .h-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 10px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+        }
+        .h-row-k {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .14em; color: rgba(255,255,255,.25);
+            text-transform: uppercase;
+        }
+        .h-row-v { font-family: var(--mono); font-size: 9px; font-weight: 500; }
+        .h-row-v.ok  { color: var(--green); }
+        .h-row-v.al  { color: var(--red); }
+        .h-row-v.w   { color: var(--warn); }
+        .h-row-v.n   { color: rgba(255,255,255,.6); }
+        .h-term {
+            margin: 0 16px 16px;
+            background: var(--hosp-term);
+            border: 1px solid rgba(255,255,255,.08);
+            padding: 14px; font-family: var(--mono);
+            font-size: 8px; line-height: 1.85; color: var(--green);
+        }
+        .term-hd {
+            display: flex; gap: 5px; margin-bottom: 8px;
+            padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.05);
+            align-items: center;
+        }
+        .td { width: 8px; height: 8px; border-radius: 50%; }
+        .td.r  { background: #ff5f56; }
+        .td.y  { background: #ffbd2e; }
+        .td.g  { background: #27c93f; }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ════ TRUST STRIP ════ */
+        #trust {
+            background: var(--dark2);
+            border-top: 1px solid rgba(255,255,255,.06);
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            padding: 18px 60px;
+        }
+        .trust-grid {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 24px; flex-wrap: wrap;
+        }
+        .trust-grid p {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: rgba(255,255,255,.2);
+            padding: 0 24px; border-right: 1px solid rgba(255,255,255,.07);
+        }
+        .trust-grid p:last-child { border-right: none; }
+
+        /* ════ STRATEGIC DIRECTION ════ */
+        #estrategia { background: var(--light); padding: 80px 0; }
+        .sec-header { padding: 0 60px 60px; text-align: center; }
+        .sec-eyebrow {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .3em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .sec-eyebrow::before, .sec-eyebrow::after {
+            content: ''; width: 20px; height: 1px; background: var(--red);
+        }
+        .sec-h {
+            font-family: var(--cond); font-size: clamp(2rem,4vw,3.5rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--dark); margin-bottom: 16px;
+        }
+        .core-grid {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 1px; background: var(--border-s); padding: 0 60px 80px;
+        }
+        .core-card {
+            background: var(--light); padding: 36px 32px;
+            border: 1px solid transparent;
+            transition: all .35s; position: relative; overflow: hidden;
+        }
+        .core-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--border); transition: background .35s;
+        }
+        .core-card:hover { background: #fff; }
+        .core-card:hover::before { background: var(--red); }
+        .core-card h3 {
+            font-family: var(--cond); font-size: 1.4rem;
+            font-weight: 700; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--dark); margin-bottom: 14px;
+        }
+        .core-card p {
+            font-size: .88rem; line-height: 1.9;
+            color: var(--mid); font-weight: 300;
+        }
+        .core-card ul {
+            list-style: none; display: flex; flex-direction: column; gap: 10px;
+        }
+        .core-card ul li {
+            font-size: .85rem; line-height: 1.75; color: var(--mid);
+            padding-left: 14px; position: relative;
+        }
+        .core-card ul li::before {
+            content: '▸'; position: absolute; left: 0; color: var(--red);
+        }
+
+        /* ════ INTELLIGENCE SECTION ════ */
+        #inteligencia { background: var(--hosp-deep); padding: 80px 0; }
+        .intel-wrap {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1px; background: rgba(255,255,255,.06);
+            padding: 0 60px;
+        }
+        .intel-copy {
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.06);
+            padding: 48px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .intel-eyebrow {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .3em; text-transform: uppercase;
+            color: var(--red); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .intel-eyebrow::before {
+            content: ''; width: 20px; height: 1px; background: var(--red);
+        }
+        .intel-copy h2 {
+            font-family: var(--cond); font-size: clamp(1.8rem,3vw,2.8rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--light); margin-bottom: 20px;
+        }
+        .intel-copy h2 .r { color: var(--red); }
+        .intel-copy p {
+            font-size: .9rem; line-height: 1.9;
+            color: rgba(255,255,255,.38); font-weight: 300;
+        }
+        .intel-cards {
+            display: flex; flex-direction: column; gap: 1px;
+            background: rgba(255,255,255,.06);
+        }
+        .intel-cards article {
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.06);
+            padding: 28px 32px;
+            transition: all .35s; position: relative;
+        }
+        .intel-cards article::before {
+            content: ''; position: absolute;
+            left: 0; top: 0; bottom: 0; width: 3px;
+            background: var(--border); transition: background .35s;
+        }
+        .intel-cards article:hover { background: rgba(255,255,255,.06); }
+        .intel-cards article:hover::before { background: var(--red); }
+        .intel-cards h4 {
+            font-family: var(--cond); font-size: 1.1rem;
+            font-weight: 700; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--light); margin-bottom: 8px;
+        }
+        .intel-cards p {
+            font-size: .82rem; color: rgba(255,255,255,.3);
+            line-height: 1.75;
+        }
+
+        /* ════ FOOTER / CONTACT ════ */
+        #contacto {
+            background: var(--hosp-deep);
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        .foot-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px; padding: 60px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .foot-brand {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+        }
+        .foot-brand svg { width: 28px; height: 28px; color: var(--light); opacity: .6; }
+        .foot-brand-txt {
+            font-family: var(--mono); font-size: 10px;
+            letter-spacing: .22em; font-weight: 500;
+            color: rgba(255,255,255,.6);
+        }
+        .foot-desc {
+            font-size: .78rem; color: rgba(255,255,255,.22);
+            line-height: 1.85; font-weight: 300; margin-bottom: 20px;
+        }
+        .foot-contact-link {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--red); display: inline-flex; align-items: center; gap: 6px;
+            transition: opacity .3s;
+        }
+        .foot-contact-link:hover { opacity: .7; }
+        .foot-col h5 {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .25em; text-transform: uppercase;
+            color: rgba(255,255,255,.4); margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .foot-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .foot-links a {
+            font-size: .78rem; color: rgba(255,255,255,.22);
+            letter-spacing: .04em; transition: color .3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .foot-links a::before { content: '›'; color: var(--red); font-size: .9rem; }
+        .foot-links a:hover { color: rgba(255,255,255,.6); }
+        .foot-stats { display: flex; flex-direction: column; gap: 12px; }
+        .foot-stat { display: flex; align-items: baseline; gap: 8px; }
+        .foot-stat-val {
+            font-family: var(--cond); font-size: 1.5rem;
+            font-weight: 800; color: var(--light); line-height: 1;
+        }
+        .foot-stat-lbl {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .15em; text-transform: uppercase;
+            color: rgba(255,255,255,.3);
+        }
+        .foot-bottom {
+            padding: 20px 60px;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 12px;
+        }
+        .foot-legal {
+            font-family: var(--mono); font-size: 7px;
+            color: rgba(255,255,255,.18); letter-spacing: .08em; line-height: 1.8;
+        }
+        .foot-badges { display: flex; gap: 6px; }
+        .badge-pill {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .15em; text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid rgba(200,16,46,.3);
+            color: rgba(200,16,46,.5);
+            background: rgba(200,16,46,.04);
+        }
+
+        /* ════ ANIMATIONS ════ */
+        .fade-up {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .fade-up.revealed { opacity: 1; transform: none; }
+        .fade-up:nth-child(2) { transition-delay: .1s; }
+        .fade-up:nth-child(3) { transition-delay: .2s; }
+
+        @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
+
+        /* ════ RESPONSIVE ════ */
+        @media (max-width: 1100px) {
+            nav, nav.sc { padding: 0 36px; }
+            .h-inner { grid-template-columns: 1fr; }
+            .h-right { display: none; }
+            .h-left { padding: 60px 36px; }
+            .core-grid { grid-template-columns: 1fr; padding: 0 36px 60px; }
+            .sec-header { padding: 0 36px 40px; }
+            .intel-wrap { grid-template-columns: 1fr; padding: 0 36px; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; padding: 40px; }
+            #trust { padding: 18px 36px; }
+        }
+        @media (max-width: 768px) {
+            nav, nav.sc { padding: 0 20px; height: 50px; }
+            .n-links, .n-pill { display: none; }
+            .burger { display: flex; }
+            .h-left { padding: 50px 20px; }
+            .core-grid { padding: 0 20px 40px; }
+            .sec-header { padding: 0 20px 32px; }
+            .intel-wrap { padding: 0 20px; }
+            .foot-grid { grid-template-columns: 1fr; padding: 32px 24px; }
+            .foot-bottom { padding: 16px 24px; flex-direction: column; text-align: center; }
+            #trust { padding: 18px 20px; }
+            .trust-grid { gap: 12px; }
+            .trust-grid p { border-right: none; padding: 4px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cur"></div>
+    <div id="cur-r"></div>
+
+    <!-- Ambient Grid -->
+    <div class="ambient-grid"></div>
+
+    <!-- Mobile Nav -->
+    <div class="mob" id="mob-nav">
+        <a href="#hero"       onclick="closeMob()">Inicio</a>
+        <a href="#estrategia" onclick="closeMob()">Misión</a>
+        <a href="#inteligencia" onclick="closeMob()">Operativa</a>
+        <a href="#contacto"   onclick="closeMob()">Contacto</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="n-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+            <div class="n-brand">
+                UMBRELLA <span>CORPORACION</span>
+                <small>STRATEGIC BIOTECH SYSTEMS</small>
+            </div>
+        </div>
+        <ul class="n-links">
+            <li><a href="#hero" class="active">Inicio</a></li>
+            <li><a href="#estrategia">Misión</a></li>
+            <li><a href="#inteligencia">Operativa</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <button class="n-pill" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">Contactar →</button>
+        <div class="burger" id="burger" onclick="toggleMob()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ════ HERO ════ -->
+    <section id="hero">
+        <div class="h-ceiling">
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+        </div>
+        <div class="h-grid"></div>
+        <div class="h-seam"></div>
+        <div class="h-stripe"></div>
+
+        <div class="h-inner">
+            <div class="h-left">
+                <div class="h-badge">
+                    <span class="h-badge-dot"></span>
+                    GLOBAL COMMAND NETWORK — 2026
+                </div>
+                <img class="h-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+                <h1 class="h-h1">
+                    UMBRELLA<br>
+                    <span class="r">CORPORACION</span>
+                </h1>
+                <p class="h-sub">Ciencia · Bioseguridad · Respuesta Crítica</p>
+                <p class="h-desc">
+                    Operamos con estándares de control industrial, analítica avanzada y trazabilidad completa para entornos biológicos de alta complejidad.
+                </p>
+                <div class="h-btns">
+                    <a href="#estrategia" class="btn p">Ver Estrategia →</a>
+                    <a href="#contacto" class="btn g">Contactar División</a>
+                </div>
+            </div>
+
+            <!-- Status Panel -->
+            <div class="h-right">
+                <div class="h-plate">
+                    <span class="h-plate-id">CORP-HQ</span>
+                    <span class="h-plate-st">OPERATIVO</span>
+                </div>
+                <div class="h-rows">
+                    <div class="h-row">
+                        <span class="h-row-k">Laboratorios A+</span>
+                        <span class="h-row-v ok">28</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Protocolos validados</span>
+                        <span class="h-row-v ok">99.2%</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Programas activos</span>
+                        <span class="h-row-v n">146</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Centros regionales</span>
+                        <span class="h-row-v n">17</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Compliance ISO</span>
+                        <span class="h-row-v ok">BIO-500 ✓</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Acceso red global</span>
+                        <span class="h-row-v al">CLASIFICADO</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Defense Logistics</span>
+                        <span class="h-row-v ok">ACTIVO</span>
+                    </div>
+                </div>
+                <div class="h-term">
+                    <div class="term-hd">
+                        <span class="td r"></span>
+                        <span class="td y"></span>
+                        <span class="td g"></span>
+                    </div>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>corp.status --global<br>
+                    <span style="color:var(--green)">▶</span> 146 programas activos<br>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>compliance --check ISO-BIO<br>
+                    <span style="color:var(--green)">▶</span> Cumplimiento 99.2%<br>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>_<span style="animation:blink 1s step-end infinite">▌</span>
+                </div>
+            </div>
+        </div>
+        <div class="h-floor"></div>
+    </section>
+
+    <!-- ════ TRUST STRIP ════ -->
+    <div id="trust">
+        <div class="trust-grid">
+            <p>Compliance ISO-BIO 500</p>
+            <p>Defense Logistics Alliance</p>
+            <p>Global Health Protocol Network</p>
+            <p>Strategic Research Council</p>
+        </div>
+    </div>
+
+    <!-- ════ STRATEGIC DIRECTION ════ -->
+    <section id="estrategia">
+        <div class="sec-header">
+            <div class="sec-eyebrow">CORPORATE FRAMEWORK</div>
+            <h2 class="sec-h">Dirección Estratégica</h2>
+        </div>
+        <div class="core-grid">
+            <article class="core-card fade-up" id="mision">
+                <h3>Misión</h3>
+                <p>Impulsar soluciones científicas y tecnológicas de alto impacto para proteger, optimizar y fortalecer la capacidad humana frente a escenarios biológicos complejos.</p>
+            </article>
+            <article class="core-card fade-up" id="vision">
+                <h3>Visión</h3>
+                <p>Ser la corporación de referencia mundial en innovación biotecnológica, reconocida por transformar riesgos globales en sistemas de respuesta inteligente.</p>
+            </article>
+            <article class="core-card fade-up" id="objetivos">
+                <h3>Objetivos</h3>
+                <ul>
+                    <li>Consolidar una red internacional de laboratorios de nueva generación.</li>
+                    <li>Escalar programas de investigación con trazabilidad y control total.</li>
+                    <li>Fortalecer alianzas entre división farmacéutica, industrial y táctica.</li>
+                    <li>Garantizar protocolos éticos y de contención con auditoría continua.</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <!-- ════ INTELLIGENCE SECTION ════ -->
+    <section id="inteligencia">
+        <div class="intel-wrap">
+            <div class="intel-copy fade-up">
+                <div class="intel-eyebrow">UMBRELLA INTELLIGENCE UNIT</div>
+                <h2>Arquitectura operativa de <span class="r">nueva</span> generación.</h2>
+                <p>Integramos unidades de farmacología, analítica molecular y defensa táctica en un solo ecosistema de decisión para ejecución rápida y segura.</p>
+            </div>
+            <div class="intel-cards">
+                <article class="fade-up">
+                    <h4>Bioseguridad</h4>
+                    <p>Monitoreo continuo con detección temprana y respuesta escalable ante amenazas biológicas.</p>
+                </article>
+                <article class="fade-up">
+                    <h4>Farmacéutica</h4>
+                    <p>Modelado de precisión para terapias y vacunas de alta eficiencia con validación internacional.</p>
+                </article>
+                <article class="fade-up">
+                    <h4>Defensa Táctica</h4>
+                    <p>Protocolos de protección para activos críticos y operaciones globales de contención.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════ FOOTER / CONTACT ════ -->
+    <footer id="contacto">
+        <div class="foot-grid">
+            <div>
+                <div class="foot-brand">
+                    <svg viewBox="0 0 64 64" fill="none">
+                        <polygon points="32,8 48,20 48,44 32,56 16,44 16,20" fill="currentColor" opacity="0.8"/>
+                        <polygon points="32,8 48,20 48,44 32,56 16,44 16,20" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span class=\"foot-brand-txt\">UMBRELLA CORPORACION</span>
+                </div>
+                <p class="foot-desc">División Central de Operaciones y Control. Sistemas biotecnológicos estratégicos para entornos de alta complejidad.</p>
+                <a href="mailto:corporate@umbrella-corp.com" class="foot-contact-link">corporate@umbrella-corp.com →</a>
+            </div>
+            <div class="foot-col">
+                <h5>Secciones</h5>
+                <ul class="foot-links">
+                    <li><a href="#hero">Inicio</a></li>
+                    <li><a href="#mision">Misión</a></li>
+                    <li><a href="#vision">Visión</a></li>
+                    <li><a href="#objetivos">Objetivos</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>Snapshot</h5>
+                <div class="foot-stats">
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">28</span>
+                        <span class="foot-stat-lbl">Laboratorios A+</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">146</span>
+                        <span class="foot-stat-lbl">Programas</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">17</span>
+                        <span class="foot-stat-lbl">Centros Regionales</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="foot-bottom">
+            <p class="foot-legal">© 2026 Umbrella Corporation. División Central de Operaciones.</p>
+            <div class="foot-badges">
+                <span class="badge-pill">ISO-BIO 500</span>
+                <span class="badge-pill">Defense Logistics</span>
+                <span class="badge-pill">GHP Network</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Custom Cursor ──
+        const cur  = document.getElementById('cur');
+        const curR = document.getElementById('cur-r');
+        document.addEventListener('mousemove', e => {
+            cur.style.left  = e.clientX + 'px';
+            cur.style.top   = e.clientY + 'px';
+            curR.style.left = e.clientX + 'px';
+            curR.style.top  = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, .core-card, .intel-cards article').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                curR.style.transform = 'translate(-50%,-50%) scale(1.8)';
+                curR.style.borderColor = 'rgba(200,16,46,.7)';
+            });
+            el.addEventListener('mouseleave', () => {
+                curR.style.transform = 'translate(-50%,-50%) scale(1)';
+                curR.style.borderColor = 'rgba(200,16,46,.45)';
+            });
+        });
+
+        // ── Nav scroll effect ──
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('sc', window.scrollY > 50);
+            const sections = ['hero','estrategia','inteligencia','contacto'];
+            let current = '';
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && window.scrollY >= el.offsetTop - 120) current = id;
+            });
+            document.querySelectorAll('.n-links a').forEach(a => {
+                const href = a.getAttribute('href').replace('#','');
+                a.classList.toggle('active', href === current);
+            });
+        });
+
+        // ── Smooth nav links ──
+        document.querySelectorAll('.n-links a, .mob a, .h-btns a, .foot-links a').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ── Mobile nav ──
+        function toggleMob() { document.getElementById('mob-nav').classList.toggle('open'); }
+        function closeMob()  { document.getElementById('mob-nav').classList.remove('open'); }
+
+        // ── Scroll reveal ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // ── Card tilt ──
+        document.querySelectorAll('.core-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = e.clientX - r.left, y = e.clientY - r.top;
+                card.style.transform = `perspective(1000px) rotateX(${(y - r.height/2) * .04}deg) rotateY(${(r.width/2 - x) * .04}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // ── Ripple effect ──
+        document.querySelectorAll('.btn, .n-pill').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const r = btn.getBoundingClientRect();
+                const size = Math.max(r.width, r.height);
+                const rpl = document.createElement('span');
+                rpl.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,.5);left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;pointer-events:none;animation:ripple-animation .6s ease-out;`;
+                btn.appendChild(rpl);
+                setTimeout(() => rpl.remove(), 600);
+            });
+        });
+
+        const s = document.createElement('style');
+        s.textContent = '@keyframes ripple-animation{to{transform:scale(4);opacity:0}}';
+        document.head.appendChild(s);
+    </script>
+</body>
+</html>

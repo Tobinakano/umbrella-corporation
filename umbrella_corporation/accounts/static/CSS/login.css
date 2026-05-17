@@ -1,0 +1,66 @@
+body.login-bg {
+    background: #fff url('/static/images/re_bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #b30000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+
+.login-container {
+    background: rgba(255,255,255,0.95);
+    border: 2px solid #b30000;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #b30000aa;
+    max-width: 350px;
+    margin: 60px auto;
+    padding: 32px 28px 24px 28px;
+    text-align: center;
+}
+
+.logo {
+    width: 90px;
+    margin-bottom: 18px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1.5px solid #b30000;
+    border-radius: 6px;
+    background: #fff;
+    color: #b30000;
+    font-size: 1em;
+}
+
+button {
+    background: #b30000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 30px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+button:hover {
+    background: #ff0000;
+}
+
+.error {
+    color: #fff;
+    background: #b30000;
+    border-radius: 6px;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+a {
+    color: #b30000;
+    text-decoration: underline;
+}
+a:hover {
+    color: #ff0000;
+}

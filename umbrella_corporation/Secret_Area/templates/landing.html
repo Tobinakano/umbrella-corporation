@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMBRELLA - ACCESO INTERNO</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-landing">
+
+        <header class="header-landing">
+            <div class="logo-umbrella">
+                <h1 class="title-glitch">UMBRELLA SYSTEM</h1>
+                <p class="subtitle">Internal Network Access</p>
+            </div>
+        </header>
+
+        <section class="hero-section">
+            <div class="glitch-wrapper">
+                <img src="{% static 'landing_page/umbrella_logo.svg' %}" class="umbrella-logo" alt="Umbrella Logo">
+            </div>
+            <div class="hero-text">
+                <h2>Sistema Interno Detectado</h2>
+                <p class="warning-text">⚠️ VALIDANDO CREDENCIALES ⚠️</p>
+                <p class="description">
+                    Nodo de acceso a la división de armas biológicas.
+                    <br>
+                    <span class="classified">Solo personal autorizado nivel científico</span>
+                </p>
+            </div>
+        </section>
+
+        <section class="content-sections">
+            <div class="section-box danger">
+                <img src="{% static 'landing_page/biohazard.svg' %}" class="section-icon" alt="Biohazard">
+                <h3>🧪 REGISTROS B.O.W.</h3>
+                <p>Acceso a experimentos activos y sujetos en prueba.</p>
+                <a href="{% url 'Secret_Area:index' %}#rd" class="btn-danger">Acceder</a>
+            </div>
+
+            <div class="section-box classified">
+                <img src="{% static 'landing_page/classified_stamp.svg' %}" class="section-icon" alt="Classified">
+                <h3>🔒 ARCHIVOS CLASIFICADOS</h3>
+                <p>Datos de virus y mutaciones registradas.</p>
+                <a href="{% url 'Secret_Area:index' %}#rd" class="btn-classified">Abrir</a>
+            </div>
+
+            <div class="section-box research">
+                <img src="{% static 'landing_page/secure_lock.svg' %}" class="section-icon" alt="Secure">
+                <h3>🧬 INGENIERÍA</h3>
+                <p>Estado actual de desarrollo genético.</p>
+                <a href="{% url 'Secret_Area:index' %}#ingenieria" class="btn-research">Ver</a>
+            </div>
+
+            <div class="section-box facility">
+                <img src="{% static 'landing_page/umbrella_logo.svg' %}" class="section-icon" alt="Umbrella">
+                <h3>🏢 INSTALACIONES</h3>
+                <p>Red de laboratorios y centros activos.</p>
+                <a href="{% url 'Secret_Area:index' %}#laboratorios" class="btn-facility">Ingresar</a>
+            </div>
+        </section>
+
+        <section class="warning-section">
+            <div class="security-alert">
+                <h3>🚨 ALERTA DEL SISTEMA 🚨</h3>
+                <p>Actividad irregular detectada en múltiples instalaciones.</p>
+                <p class="code">STATUS: CONTAINMENT FAILURE</p>
+                <p>Revisión de protocolos requerida</p>
+            </div>
+        </section>
+
+        <footer class="footer-landing">
+            <p>Umbrella Corporation - Red Interna</p>
+            <p class="classified-footer">Nivel de acceso requerido: 5</p>
+            <a href="{% url 'Secret_Area:index' %}" class="back-link">Entrar al sistema</a>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const glitchWrapper = document.querySelector('.glitch-wrapper');
+            setInterval(() => {
+                glitchWrapper.style.opacity = '0.7';
+                setTimeout(() => {
+                    glitchWrapper.style.opacity = '1';
+                }, 120);
+            }, 4000);
+        });
+    </script>
+</body>
+</html>

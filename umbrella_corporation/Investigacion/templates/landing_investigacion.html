@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Centro de Investigación Científica y Biotecnología de Umbrella Corporation">
+    <title>Centro de Investigación | Umbrella Corporation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&family=Barlow+Condensed:wght@300;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ════════════════════════════════════════
+           TOKENS & RESET
+        ════════════════════════════════════════ */
+        :root {
+            --bg:     #e8eaeb;
+            --bg2:    #d2d6d9;
+            --bg3:    #c0c5c8;
+            --light:  #f4f6f7;
+            --dark:   #1a1e21;
+            --dark2:  #252c31;
+            --mid:    #5c666d;
+            --muted:  #9aa3a8;
+            --red:    #c8102e;
+            --red-dim: rgba(200,16,46,.07);
+            --red-line: rgba(200,16,46,.3);
+            --warn:   #e8a000;
+            --green:  #00c864;
+            --border:   rgba(26,30,33,.13);
+            --border-s: rgba(26,30,33,.26);
+            --mono:  'DM Mono', monospace;
+            --cond:  'Barlow Condensed', sans-serif;
+            --body:  'Barlow', sans-serif;
+            --hosp-deep:  #1c3a4a;
+            --hosp-mid:   #2a4f63;
+            --hosp-panel: #1e3d4e;
+            --hosp-term:  #162e3a;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--dark);
+            font-family: var(--body);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+
+        /* ════ CURSOR ════ */
+        #cur {
+            position: fixed; width: 7px; height: 7px;
+            background: var(--red); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%,-50%);
+        }
+        #cur-r {
+            position: fixed; width: 24px; height: 24px;
+            border: 1px solid rgba(200,16,46,.45); border-radius: 50%;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%,-50%);
+            transition: all .2s ease-out;
+        }
+
+        /* ════ NAV ════ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+            height: 56px; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 60px;
+            transition: all .35s;
+        }
+        nav.sc {
+            background: var(--light);
+            border-bottom: 1px solid var(--border-s);
+            box-shadow: 0 1px 0 var(--red);
+        }
+        .n-logo { display: flex; align-items: center; gap: 10px; }
+        .n-logo img { width: 30px; height: 30px; }
+        .n-logo svg { width: 30px; height: 30px; color: var(--dark); }
+        .n-brand {
+            font-family: var(--cond); font-size: 13px;
+            font-weight: 700; letter-spacing: .25em;
+            text-transform: uppercase; color: var(--dark);
+        }
+        .n-brand span { color: var(--red); }
+        .n-brand small {
+            display: block; font-family: var(--mono);
+            font-size: 7px; letter-spacing: .2em;
+            color: var(--muted); margin-top: 1px;
+        }
+        .n-links {
+            display: flex; list-style: none;
+            height: 56px; align-items: stretch;
+        }
+        .n-links a {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--mid); display: flex; align-items: center;
+            padding: 0 16px; border-left: 1px solid var(--border);
+            position: relative; transition: color .25s;
+        }
+        .n-links a::after {
+            content: ''; position: absolute; bottom: 0;
+            left: 0; right: 0; height: 2px;
+            background: var(--red); transform: scaleX(0);
+            transition: transform .3s;
+        }
+        .n-links a:hover { color: var(--dark); }
+        .n-links a:hover::after,
+        .n-links a.active::after { transform: scaleX(1); }
+        .n-links a.active { color: var(--dark); }
+
+        .n-pill {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .15em; text-transform: uppercase;
+            background: var(--red); color: #fff;
+            padding: 9px 20px; border: none; cursor: pointer;
+            transition: filter .3s;
+        }
+        .n-pill:hover { filter: brightness(1.12); }
+
+        .burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+        .burger span { width: 20px; height: 1px; background: var(--dark); }
+
+        /* Mobile nav */
+        .mob {
+            position: fixed; inset: 0; z-index: 400;
+            background: var(--hosp-deep);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 24px;
+            transform: translateX(100%);
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+        .mob.open { transform: none; }
+        .mob a {
+            font-family: var(--cond); font-size: 2rem;
+            font-weight: 700; letter-spacing: .2em;
+            text-transform: uppercase; color: var(--light);
+            transition: color .3s;
+        }
+        .mob a:hover { color: var(--red); }
+
+        /* ════ HERO ════ */
+        #hero {
+            position: relative; min-height: 100vh;
+            background: var(--hosp-deep);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .h-ceiling {
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 5px; display: flex; gap: 2px; z-index: 3;
+        }
+        .h-ceil-p { flex: 1; background: rgba(255,255,255,.04); }
+        .h-ceil-p.on { background: rgba(255,255,255,.3); box-shadow: 0 0 30px rgba(255,255,255,.1); }
+        .h-floor {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 4px; background: var(--warn); opacity: .6; z-index: 3;
+        }
+        .h-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .h-seam {
+            position: absolute; left: 56px; top: 0; bottom: 0;
+            width: 1px; background: rgba(255,255,255,.05); z-index: 1;
+        }
+        .h-stripe {
+            position: absolute; left: 0; right: 0; top: 50%;
+            height: 2px; background: var(--red); opacity: .15;
+        }
+        .h-inner {
+            position: relative; z-index: 2;
+            display: grid; grid-template-columns: 1fr 380px;
+            flex: 1; margin-top: 56px;
+        }
+        .h-left {
+            padding: 72px 48px 72px 80px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .h-specimen {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .35em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 24px;
+        }
+        .h-spec-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--green);
+            animation: blink .9s step-end infinite;
+        }
+        .h-logo { width: 80px; margin-bottom: 24px; mix-blend-mode: screen; }
+        .h-h1 {
+            font-family: var(--cond);
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            font-weight: 800; line-height: .93;
+            letter-spacing: .02em; text-transform: uppercase;
+            color: var(--light); margin-bottom: 10px;
+        }
+        .h-h1 .r { color: var(--red); }
+        .h-h1 .ghost { opacity: .28; font-weight: 300; }
+        .h-sub {
+            font-family: var(--mono); font-size: 9px;
+            letter-spacing: .22em; text-transform: uppercase;
+            color: rgba(255,255,255,.3); margin-bottom: 32px;
+            padding-left: 12px; border-left: 2px solid var(--red);
+        }
+        .h-desc {
+            font-size: .9rem; font-weight: 300; line-height: 1.85;
+            color: rgba(255,255,255,.42); max-width: 440px; margin-bottom: 40px;
+        }
+        .h-stats {
+            display: flex; gap: 32px; margin-bottom: 40px;
+            padding: 20px 0; border-top: 1px solid rgba(255,255,255,.07);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+        .h-stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .h-stat-num {
+            font-family: var(--cond); font-size: 2rem; font-weight: 800;
+            color: var(--light); line-height: 1;
+        }
+        .h-stat-num .r { color: var(--red); }
+        .h-stat-label {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: rgba(255,255,255,.3);
+        }
+        .h-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .2em; text-transform: uppercase;
+            padding: 12px 24px; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .3s; position: relative; overflow: hidden;
+        }
+        .btn.p { background: var(--red); color: #fff; }
+        .btn.p:hover { filter: brightness(1.12); box-shadow: 0 0 20px rgba(200,16,46,.4); }
+        .btn.g {
+            background: transparent; color: rgba(255,255,255,.45);
+            border: 1px solid rgba(255,255,255,.14);
+        }
+        .btn.g:hover { border-color: rgba(255,255,255,.4); color: var(--light); }
+
+        /* Hero right panel */
+        .h-right {
+            background: rgba(0,40,60,.45);
+            border-left: 1px solid rgba(255,255,255,.07);
+            display: flex; flex-direction: column;
+        }
+        .h-plate {
+            background: rgba(0,30,45,.5);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            padding: 12px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .h-plate-id {
+            font-family: var(--cond); font-size: 1.6rem;
+            font-weight: 700; letter-spacing: .2em;
+            color: rgba(255,255,255,.1);
+        }
+        .h-plate-st {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .2em; color: var(--green);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .h-plate-st::before {
+            content: ''; width: 5px; height: 5px;
+            border-radius: 50%; background: var(--green);
+            animation: blink .8s step-end infinite;
+        }
+        .h-rows { padding: 16px; display: flex; flex-direction: column; gap: 1px; flex: 1; }
+        .h-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 10px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+        }
+        .h-row-k {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .14em; color: rgba(255,255,255,.25);
+            text-transform: uppercase;
+        }
+        .h-row-v { font-family: var(--mono); font-size: 9px; font-weight: 500; }
+        .h-row-v.ok  { color: var(--green); }
+        .h-row-v.al  { color: var(--red); }
+        .h-row-v.w   { color: var(--warn); }
+        .h-row-v.n   { color: rgba(255,255,255,.6); }
+        .h-term {
+            margin: 0 16px 16px;
+            background: var(--hosp-term);
+            border: 1px solid rgba(255,255,255,.08);
+            padding: 14px; font-family: var(--mono);
+            font-size: 8px; line-height: 1.85; color: var(--green);
+        }
+        .term-hd {
+            display: flex; gap: 5px; margin-bottom: 8px;
+            padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.05);
+            align-items: center;
+        }
+        .td { width: 8px; height: 8px; border-radius: 50%; }
+        .td.r  { background: #ff5f56; }
+        .td.y  { background: #ffbd2e; }
+        .td.g  { background: #27c93f; }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ════ RESEARCH AREAS ════ */
+        #areas { background: var(--light); border-top: 1px solid var(--border-s); padding: 80px 0; }
+        .sec-header { padding: 0 60px 60px; text-align: center; }
+        .sec-eyebrow {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .3em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .sec-eyebrow::before, .sec-eyebrow::after {
+            content: ''; width: 20px; height: 1px; background: var(--red);
+        }
+        .sec-h {
+            font-family: var(--cond); font-size: clamp(2rem,4vw,3.5rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--dark); margin-bottom: 20px;
+        }
+        .sec-desc {
+            font-size: .95rem; line-height: 1.9; color: var(--mid);
+            font-weight: 300; max-width: 700px; margin: 0 auto;
+        }
+        .areas-grid {
+            display: grid; grid-template-columns: repeat(2,1fr);
+            gap: 1px; background: var(--border-s); padding: 0 60px 80px;
+        }
+        .area-card {
+            background: var(--light); padding: 0;
+            border: 1px solid transparent;
+            transition: all .35s; cursor: default;
+            position: relative; overflow: hidden;
+        }
+        .area-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--border); transition: background .35s;
+        }
+        .area-card:hover { background: #fff; }
+        .area-card:hover::before { background: var(--red); }
+        .card-img-wrap { overflow: hidden; height: 180px; }
+        .card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform .6s ease;
+            filter: grayscale(40%);
+        }
+        .area-card:hover .card-img-wrap img {
+            transform: scale(1.04); filter: grayscale(0%);
+        }
+        .card-body { padding: 28px 32px; }
+        .card-icon {
+            width: 36px; height: 36px; color: var(--red);
+            margin-bottom: 14px; opacity: .7;
+        }
+        .card-title {
+            font-family: var(--cond); font-size: 1.3rem;
+            font-weight: 700; letter-spacing: .05em;
+            text-transform: uppercase; color: var(--dark); margin-bottom: 12px;
+        }
+        .card-desc {
+            font-size: .85rem; line-height: 1.9;
+            color: var(--mid); font-weight: 300; margin-bottom: 16px;
+        }
+        .card-tags {
+            list-style: none; display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .card-tags li {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .14em; text-transform: uppercase;
+            padding: 4px 10px;
+            background: var(--red-dim);
+            border: 1px solid var(--red-line);
+            color: var(--red);
+        }
+
+        /* ════ FACILITIES ════ */
+        #facilities { background: var(--bg); padding: 0; }
+        .fac-wrap {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1px; background: var(--border-s);
+        }
+        .fac-image { position: relative; overflow: hidden; min-height: 480px; }
+        .fac-image img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(30%);
+        }
+        .fac-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(28,58,74,.6) 0%, transparent 60%);
+        }
+        .fac-content {
+            background: var(--light); padding: 60px 48px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .fac-content h2 {
+            font-family: var(--cond); font-size: clamp(1.8rem,3vw,2.8rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--dark); margin-bottom: 20px;
+        }
+        .fac-desc {
+            font-size: .9rem; line-height: 1.9; color: var(--mid);
+            font-weight: 300; margin-bottom: 32px;
+        }
+        .fac-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .fac-list li {
+            display: flex; gap: 16px; align-items: flex-start;
+            padding: 16px; background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--red);
+        }
+        .fac-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+        .fac-list strong {
+            font-family: var(--cond); font-size: .95rem;
+            font-weight: 700; letter-spacing: .04em;
+            text-transform: uppercase; color: var(--dark);
+            display: block; margin-bottom: 4px;
+        }
+        .fac-list p { font-size: .82rem; color: var(--mid); line-height: 1.7; }
+
+        /* ════ ACHIEVEMENTS ════ */
+        #achievements { background: var(--hosp-deep); padding: 80px 0; }
+        .ach-header { padding: 0 60px 60px; text-align: center; }
+        .ach-header .sec-eyebrow { color: rgba(255,255,255,.3); }
+        .ach-header .sec-eyebrow::before,
+        .ach-header .sec-eyebrow::after { background: var(--red); }
+        .ach-header .sec-h { color: var(--light); }
+        .ach-grid {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            gap: 1px; background: rgba(255,255,255,.07);
+            padding: 0 60px;
+        }
+        .ach-item {
+            background: rgba(255,255,255,.03);
+            padding: 32px 24px;
+            border: 1px solid rgba(255,255,255,.06);
+            transition: all .35s;
+            position: relative; overflow: hidden;
+        }
+        .ach-item::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: var(--red); transform: scaleX(0);
+            transition: transform .35s;
+        }
+        .ach-item:hover { background: rgba(255,255,255,.06); }
+        .ach-item:hover::before { transform: scaleX(1); }
+        .ach-badge {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .25em; text-transform: uppercase;
+            color: var(--red); margin-bottom: 16px;
+            display: inline-block;
+            padding: 3px 8px; border: 1px solid var(--red-line);
+            background: var(--red-dim);
+        }
+        .ach-icon {
+            width: 40px; height: 40px; color: rgba(255,255,255,.3);
+            margin-bottom: 16px;
+        }
+        .ach-item h3 {
+            font-family: var(--cond); font-size: 1.05rem;
+            font-weight: 700; letter-spacing: .04em;
+            text-transform: uppercase; color: var(--light);
+            margin-bottom: 8px;
+        }
+        .ach-item p {
+            font-size: .8rem; color: rgba(255,255,255,.3);
+            line-height: 1.75; margin-bottom: 20px;
+        }
+        .ach-progress {
+            height: 2px; background: rgba(255,255,255,.08);
+        }
+        .progress-fill {
+            height: 100%; background: var(--red); transition: width 1.2s ease;
+        }
+
+        /* ════ CONTACT CTA ════ */
+        #contact { background: var(--bg); padding: 80px 60px; }
+        .contact-card {
+            background: var(--hosp-deep);
+            border: 1px solid rgba(255,255,255,.07);
+            padding: 60px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .contact-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--red);
+        }
+        .contact-card h2 {
+            font-family: var(--cond); font-size: clamp(1.8rem,3vw,2.8rem);
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: .05em; color: var(--light); margin-bottom: 16px;
+        }
+        .contact-card p {
+            font-size: .9rem; line-height: 1.9;
+            color: rgba(255,255,255,.4); max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* ════ FOOTER ════ */
+        footer { background: var(--hosp-deep); border-top: 1px solid rgba(255,255,255,.08); }
+        .foot-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px; padding: 60px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .foot-brand {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+        }
+        .foot-brand svg { width: 28px; height: 28px; color: var(--light); opacity: .6; }
+        .foot-brand-txt {
+            font-family: var(--mono); font-size: 10px;
+            letter-spacing: .22em; font-weight: 500;
+            color: rgba(255,255,255,.6);
+        }
+        .foot-desc {
+            font-size: .78rem; color: rgba(255,255,255,.22);
+            line-height: 1.85; font-weight: 300;
+        }
+        .foot-col h5 {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .25em; text-transform: uppercase;
+            color: rgba(255,255,255,.4); margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .foot-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .foot-links a {
+            font-size: .78rem; color: rgba(255,255,255,.22);
+            letter-spacing: .04em; transition: color .3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .foot-links a::before { content: '›'; color: var(--red); font-size: .9rem; }
+        .foot-links a:hover { color: rgba(255,255,255,.6); }
+        .foot-stats { display: flex; flex-direction: column; gap: 12px; }
+        .foot-stat { display: flex; align-items: baseline; gap: 8px; }
+        .foot-stat-val {
+            font-family: var(--cond); font-size: 1.5rem;
+            font-weight: 800; color: var(--light); line-height: 1;
+        }
+        .foot-stat-lbl {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .15em; text-transform: uppercase;
+            color: rgba(255,255,255,.3);
+        }
+        .foot-bottom {
+            padding: 20px 60px;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 12px;
+        }
+        .foot-legal {
+            font-family: var(--mono); font-size: 7px;
+            color: rgba(255,255,255,.18); letter-spacing: .08em; line-height: 1.8;
+        }
+        .foot-badges { display: flex; gap: 6px; }
+        .badge {
+            font-family: var(--mono); font-size: 7px;
+            letter-spacing: .15em; text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid rgba(200,16,46,.3);
+            color: rgba(200,16,46,.5);
+            background: rgba(200,16,46,.04);
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .fade-up.revealed { opacity: 1; transform: none; }
+        .fade-up:nth-child(2) { transition-delay: .1s; }
+        .fade-up:nth-child(3) { transition-delay: .2s; }
+        .fade-up:nth-child(4) { transition-delay: .3s; }
+
+        @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
+
+        /* ════ RESPONSIVE ════ */
+        @media (max-width: 1100px) {
+            nav, nav.sc { padding: 0 36px; }
+            .h-inner { grid-template-columns: 1fr; }
+            .h-right { display: none; }
+            .h-left { padding: 60px 36px; }
+            .areas-grid { grid-template-columns: 1fr; padding: 0 36px 60px; }
+            .sec-header { padding: 0 36px 40px; }
+            .ach-grid { grid-template-columns: repeat(2,1fr); padding: 0 36px; }
+            .ach-header { padding: 0 36px 40px; }
+            .fac-wrap { grid-template-columns: 1fr; }
+            .fac-image { min-height: 280px; }
+            .fac-content { padding: 40px 36px; }
+            .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; padding: 40px; }
+            #contact { padding: 60px 36px; }
+            .contact-card { padding: 40px; }
+        }
+        @media (max-width: 768px) {
+            nav, nav.sc { padding: 0 20px; height: 50px; }
+            .n-links, .n-pill { display: none; }
+            .burger { display: flex; }
+            .h-left { padding: 50px 20px; }
+            .h-stats { gap: 20px; }
+            .areas-grid { padding: 0 20px 40px; }
+            .sec-header { padding: 0 20px 32px; }
+            .ach-grid { grid-template-columns: 1fr; padding: 0 20px; }
+            .ach-header { padding: 0 20px 32px; }
+            .fac-content { padding: 32px 20px; }
+            .foot-grid { grid-template-columns: 1fr; padding: 32px 24px; }
+            .foot-bottom { padding: 16px 24px; flex-direction: column; text-align: center; }
+            #contact { padding: 40px 20px; }
+            .contact-card { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cur"></div>
+    <div id="cur-r"></div>
+
+    <!-- Mobile Nav -->
+    <div class="mob" id="mob-nav">
+        <a href="#hero" onclick="closeMob()">Inicio</a>
+        <a href="#areas" onclick="closeMob()">Investigación</a>
+        <a href="#facilities" onclick="closeMob()">Instalaciones</a>
+        <a href="#achievements" onclick="closeMob()">Logros</a>
+        <a href="#contact" onclick="closeMob()">Contacto</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="n-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+            <div class="n-brand">
+                UMBRELLA <span>CORPORACION</span>
+                <small>RESEARCH DIVISION</small>
+            </div>
+        </div>
+        <ul class="n-links">
+            <li><a href="#hero" class="active">Inicio</a></li>
+            <li><a href="#areas">Investigación</a></li>
+            <li><a href="#facilities">Instalaciones</a></li>
+            <li><a href="#achievements">Logros</a></li>
+            <li><a href="#contact">Contacto</a></li>
+        </ul>
+        <button class="n-pill" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Colaborar →</button>
+        <div class="burger" id="burger" onclick="toggleMob()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ════ HERO ════ -->
+    <section id="hero">
+        <div class="h-ceiling">
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p on"></div>
+            <div class="h-ceil-p"></div><div class="h-ceil-p"></div>
+            <div class="h-ceil-p on"></div><div class="h-ceil-p"></div>
+        </div>
+        <div class="h-grid"></div>
+        <div class="h-seam"></div>
+        <div class="h-stripe"></div>
+
+        <div class="h-inner">
+            <div class="h-left">
+                <div class="h-specimen">
+                    <span class="h-spec-dot"></span>
+                    SPECIMEN — LAB-7C — ACTIVO
+                </div>
+                <img class="h-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+                <h1 class="h-h1">
+                    UMBRELLA<br>
+                    <span class="r">CORPORACION</span>
+                </h1>
+                <p class="h-sub">Centro Científico Avanzado · Umbrella Corporation</p>
+                <p class="h-desc">
+                    Desarrollamos soluciones farmacéuticas, biotecnológicas y de investigación avanzada con estándares internacionales de calidad y seguridad científica.
+                </p>
+                <div class="h-stats">
+                    <div class="h-stat-item">
+                        <span class="h-stat-num" data-target="40"><span class="r">40</span>+</span>
+                        <span class="h-stat-label">Proyectos Activos</span>
+                    </div>
+                    <div class="h-stat-item">
+                        <span class="h-stat-num" data-target="200"><span class="r">200</span>+</span>
+                        <span class="h-stat-label">Científicos</span>
+                    </div>
+                    <div class="h-stat-item">
+                        <span class="h-stat-num" data-target="15"><span class="r">15</span></span>
+                        <span class="h-stat-label">Áreas de Expertise</span>
+                    </div>
+                </div>
+                <div class="h-btns">
+                    <a href="#areas" class="btn p">Explorar Investigación <span>→</span></a>
+                    <a href="#achievements" class="btn g">Ver Logros</a>
+                </div>
+            </div>
+
+            <!-- Right status panel -->
+            <div class="h-right">
+                <div class="h-plate">
+                    <span class="h-plate-id">LAB-7C</span>
+                    <span class="h-plate-st">OPERATIVO</span>
+                </div>
+                <div class="h-rows">
+                    <div class="h-row">
+                        <span class="h-row-k">Temperatura</span>
+                        <span class="h-row-v ok">23.5°C</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Presión</span>
+                        <span class="h-row-v n">1.013 atm</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Humedad</span>
+                        <span class="h-row-v w">45%</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Contención</span>
+                        <span class="h-row-v ok">BSL-3 ✓</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Acceso</span>
+                        <span class="h-row-v al">RESTRINGIDO</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Proyectos</span>
+                        <span class="h-row-v n">40 Activos</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Personal</span>
+                        <span class="h-row-v ok">200+ Científicos</span>
+                    </div>
+                    <div class="h-row">
+                        <span class="h-row-k">Certificación</span>
+                        <span class="h-row-v ok">ISO 13485</span>
+                    </div>
+                </div>
+                <div class="h-term">
+                    <div class="term-hd">
+                        <span class="td r"></span>
+                        <span class="td y"></span>
+                        <span class="td g"></span>
+                    </div>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>sys.status --lab 7C<br>
+                    <span style="color:var(--green)">▶</span> Todos los sistemas nominales<br>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>research --projects --active<br>
+                    <span style="color:var(--green)">▶</span> 40 proyectos en ejecución<br>
+                    <span style="color:rgba(255,255,255,.3)">$ </span>_<span style="animation:blink 1s step-end infinite">▌</span>
+                </div>
+            </div>
+        </div>
+        <div class="h-floor"></div>
+    </section>
+
+    <!-- ════ RESEARCH AREAS ════ -->
+    <section id="areas">
+        <div class="sec-header">
+            <div class="sec-eyebrow">EN PROFUNDIDAD</div>
+            <h2 class="sec-h">Áreas de Investigación Especializada</h2>
+            <p class="sec-desc">
+                Nuestros centros de investigación se enfocan en disciplinas críticas de la biotecnología moderna, con equipamiento de clase mundial y protocolos científicos rigurosos.
+            </p>
+        </div>
+        <div class="areas-grid">
+            <article class="area-card fade-up">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173a7fb3b0d?w=600&h=300&fit=crop" alt="Análisis genómico" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 100 100" fill="none">
+                            <path d="M50 20 L70 40 L70 80 L50 95 L30 80 L30 40 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Genómica Avanzada</h3>
+                    <p class="card-desc">Secuenciación de alto rendimiento, análisis genómico y edición génica utilizando tecnologías CRISPR-Cas9 de última generación.</p>
+                    <ul class="card-tags">
+                        <li>Secuenciación NGS</li>
+                        <li>Bioinformática</li>
+                        <li>Análisis Molecular</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="area-card fade-up">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&h=300&fit=crop" alt="Desarrollo farmacéutico" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 100 100" fill="none">
+                            <rect x="30" y="20" width="40" height="60" stroke="currentColor" stroke-width="2" rx="4"/>
+                            <circle cx="50" cy="35" r="3" fill="currentColor"/>
+                            <circle cx="50" cy="50" r="3" fill="currentColor"/>
+                            <circle cx="50" cy="65" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Desarrollo Farmacéutico</h3>
+                    <p class="card-desc">Síntesis de principios activos, formulación de fármacos y estudios de farmacocinética con supervisión regulatoria internacional.</p>
+                    <ul class="card-tags">
+                        <li>Química Farmacéutica</li>
+                        <li>Formulación</li>
+                        <li>Validación Clínica</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="area-card fade-up">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1576091160421-07ca6f7a77ad?w=600&h=300&fit=crop" alt="Bioingeniería molecular" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 100 100" fill="none">
+                            <path d="M50 20 C65 20 75 30 75 50 C75 70 65 80 50 80 C35 80 25 70 25 50 C25 30 35 20 50 20" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M50 35 L50 65 M35 50 L65 50" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Bioingeniería Molecular</h3>
+                    <p class="card-desc">Diseño y construcción de organismos sintéticos, optimización de rutas metabólicas y producción biotecnológica escalada.</p>
+                    <ul class="card-tags">
+                        <li>Ingeniería Genética</li>
+                        <li>Biología Sintética</li>
+                        <li>Fermentación</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="area-card fade-up">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1530026405186-a18b6642af0c?w=600&h=300&fit=crop" alt="Seguridad biológica" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M50 35 L60 55 L40 55 Z" fill="currentColor" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Seguridad Biológica</h3>
+                    <p class="card-desc">Protocolos de contención, análisis de riesgo biológico y cumplimiento de normativas internacionales de bioseguridad.</p>
+                    <ul class="card-tags">
+                        <li>Contención BSL-3</li>
+                        <li>Protocolos BPL</li>
+                        <li>Certificación ISO</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ════ FACILITIES ════ -->
+    <section id="facilities">
+        <div class="fac-wrap">
+            <div class="fac-image">
+                <img src="https://images.unsplash.com/photo-1576091160550-112173f31c77?w=800&h=600&fit=crop" alt="Instalaciones de investigación" loading="lazy">
+                <div class="fac-overlay"></div>
+            </div>
+            <div class="fac-content">
+                <div class="sec-eyebrow" style="justify-content:flex-start;">INFRAESTRUCTURA</div>
+                <h2>Instalaciones de Clase Mundial</h2>
+                <p class="fac-desc">
+                    Nuestros laboratorios cuentan con tecnología de punta, equipamiento certificado internacionalmente y espacios diseñados para maximizar la precisión científica y la seguridad del personal investigador.
+                </p>
+                <ul class="fac-list">
+                    <li>
+                        <span class="fac-icon">🔬</span>
+                        <div>
+                            <strong>Equipamiento Avanzado</strong>
+                            <p>Secuenciadores NGS, microscopios electrónicos y sistemas de análisis automatizados</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="fac-icon">🏆</span>
+                        <div>
+                            <strong>Certificaciones Internacionales</strong>
+                            <p>ISO 13485, AAALAC, GLP y múltiples acreditaciones en bioseguridad</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="fac-icon">👥</span>
+                        <div>
+                            <strong>Equipo Multidisciplinario</strong>
+                            <p>200+ especialistas con doctorados en biología, química, ingeniería y medicina</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="fac-icon">🌍</span>
+                        <div>
+                            <strong>Estándares Globales</strong>
+                            <p>Cumplimiento con regulaciones FDA, EMA y agencias internacionales de investigación</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════ ACHIEVEMENTS ════ -->
+    <section id="achievements">
+        <div class="ach-header">
+            <div class="sec-eyebrow">RECONOCIMIENTO</div>
+            <h2 class="sec-h">Hitos y Certificaciones</h2>
+        </div>
+        <div class="ach-grid">
+            <div class="ach-item fade-up">
+                <div class="ach-badge">ISO</div>
+                <div class="ach-icon">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <path d="M50 15 L60 40 L85 40 L70 55 L80 80 L50 65 L20 80 L30 55 L15 40 L40 40 Z" fill="currentColor" opacity="0.8"/>
+                    </svg>
+                </div>
+                <h3>Certificación ISO 13485</h3>
+                <p>Estándares internacionales en dispositivos médicos y equipamiento de laboratorio</p>
+                <div class="ach-progress"><div class="progress-fill" data-width="95" style="width:0%"></div></div>
+            </div>
+            <div class="ach-item fade-up">
+                <div class="ach-badge">AAALAC</div>
+                <div class="ach-icon">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <rect x="20" y="30" width="60" height="50" stroke="currentColor" stroke-width="2" fill="none" rx="4"/>
+                        <path d="M35 55 L45 65 L70 45" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Acreditación AAALAC</h3>
+                <p>Reconocimiento en uso y cuidado de animales de laboratorio</p>
+                <div class="ach-progress"><div class="progress-fill" data-width="98" style="width:0%"></div></div>
+            </div>
+            <div class="ach-item fade-up">
+                <div class="ach-badge">24/7</div>
+                <div class="ach-icon">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="45" r="20" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M50 45 L65 45" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M50 45 L50 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Laboratorio Continuo 24/7</h3>
+                <p>Operaciones continuas con monitoreo y control de calidad en tiempo real</p>
+                <div class="ach-progress"><div class="progress-fill" data-width="100" style="width:0%"></div></div>
+            </div>
+            <div class="ach-item fade-up">
+                <div class="ach-badge">AWARD</div>
+                <div class="ach-icon">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <path d="M50 20 L60 35 L75 35 L62 45 L68 60 L50 50 L32 60 L38 45 L25 35 L40 35 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M50 60 L50 80 M35 75 L50 80 L65 75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Premios a Innovación</h3>
+                <p>Reconocimiento internacional en investigación biotecnológica de avanzada</p>
+                <div class="ach-progress"><div class="progress-fill" data-width="92" style="width:0%"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════ CONTACT ════ -->
+    <section id="contact">
+        <div class="contact-card fade-up">
+            <h2>Colaboración Científica</h2>
+            <p>Exploramos oportunidades de investigación conjunta, asociaciones académicas y desarrollos tecnológicos con instituciones especializadas en biotecnología.</p>
+            <a href="mailto:investigacion@umbrella-corp.com" class="btn p">Contactar Departamento →</a>
+        </div>
+    </section>
+
+    <!-- ════ FOOTER ════ -->
+    <footer>
+        <div class="foot-grid">
+            <div>
+                <div class="foot-brand">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Umbrella_Corporation_logo.svg/960px-Umbrella_Corporation_logo.svg.png" alt="Umbrella Logo">
+                    <span class="foot-brand-txt">UMBRELLA CORPORACION</span>
+                </div>
+                <p class="foot-desc">Centro Científico Avanzado dedicado a la investigación y desarrollo biotecnológico de alto nivel.</p>
+            </div>
+            <div class="foot-col">
+                <h5>Ubicaciones</h5>
+                <ul class="foot-links">
+                    <li><a href="#hero">Laboratorio Principal</a></li>
+                    <li><a href="#areas">Centros Regionales</a></li>
+                    <li><a href="#contact">Instalaciones Especializadas</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>Normativas</h5>
+                <ul class="foot-links">
+                    <li><a href="#">Políticas de Bioseguridad</a></li>
+                    <li><a href="#">Cumplimiento Regulatorio</a></li>
+                    <li><a href="#">Ética en Investigación</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>Estadísticas</h5>
+                <div class="foot-stats">
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">40+</span>
+                        <span class="foot-stat-lbl">Proyectos</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">200+</span>
+                        <span class="foot-stat-lbl">Científicos</span>
+                    </div>
+                    <div class="foot-stat">
+                        <span class="foot-stat-val">15</span>
+                        <span class="foot-stat-lbl">Disciplinas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="foot-bottom">
+            <p class="foot-legal">© 2026 Umbrella Corporation. Reporte de Investigación Actualizado.</p>
+            <div class="foot-badges">
+                <span class="badge">ISO 13485</span>
+                <span class="badge">AAALAC</span>
+                <span class="badge">GLP</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Custom Cursor ──
+        const cur  = document.getElementById('cur');
+        const curR = document.getElementById('cur-r');
+        document.addEventListener('mousemove', e => {
+            cur.style.left  = e.clientX + 'px';
+            cur.style.top   = e.clientY + 'px';
+            curR.style.left = e.clientX + 'px';
+            curR.style.top  = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, .area-card, .ach-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                curR.style.transform = 'translate(-50%,-50%) scale(1.8)';
+                curR.style.borderColor = 'rgba(200,16,46,.7)';
+            });
+            el.addEventListener('mouseleave', () => {
+                curR.style.transform = 'translate(-50%,-50%) scale(1)';
+                curR.style.borderColor = 'rgba(200,16,46,.45)';
+            });
+        });
+
+        // ── Nav scroll effect ──
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('sc', window.scrollY > 50);
+
+            // Active link tracking
+            const sections = ['hero','areas','facilities','achievements','contact'];
+            let current = '';
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && window.scrollY >= el.offsetTop - 120) current = id;
+            });
+            document.querySelectorAll('.n-links a').forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            });
+        });
+
+        // ── Smooth nav links ──
+        document.querySelectorAll('.n-links a, .mob a').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // ── Mobile nav ──
+        function toggleMob() { document.getElementById('mob-nav').classList.toggle('open'); }
+        function closeMob()  { document.getElementById('mob-nav').classList.remove('open'); }
+
+        // ── Scroll reveal ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    // Animate progress bars when achievements visible
+                    entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+                        bar.style.width = bar.dataset.width + '%';
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-up, .ach-item').forEach(el => observer.observe(el));
+
+        // Also trigger progress bars if ach-items are observed separately
+        const achObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+                        setTimeout(() => bar.style.width = bar.dataset.width + '%', 200);
+                    });
+                    achObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.ach-item').forEach(el => achObserver.observe(el));
+
+        // ── Card tilt ──
+        document.querySelectorAll('.area-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = e.clientX - r.left, y = e.clientY - r.top;
+                card.style.transform = `perspective(1000px) rotateX(${(y - r.height/2) * .04}deg) rotateY(${(r.width/2 - x) * .04}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // ── Ripple effect ──
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const r = btn.getBoundingClientRect();
+                const size = Math.max(r.width, r.height);
+                const rpl = document.createElement('span');
+                rpl.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,.5);left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;pointer-events:none;animation:ripple-animation .6s ease-out;`;
+                btn.appendChild(rpl);
+                setTimeout(() => rpl.remove(), 600);
+            });
+        });
+
+        // Inject ripple keyframe
+        const s = document.createElement('style');
+        s.textContent = '@keyframes ripple-animation{to{transform:scale(4);opacity:0}}';
+        document.head.appendChild(s);
+    </script>
+</body>
+</html>
